@@ -14,8 +14,11 @@ import { repairMojibake } from "../lib/text.ts";
 const BASE_URL = "https://v3.football.api-sports.io";
 const KEY = process.env.API_FOOTBALL_KEY;
 
-/** The free tier allows ~10 requests/minute, so pace calls just under that. */
-const MIN_CALL_INTERVAL_MS = 6_500;
+/**
+ * Free tier allows ~10 requests/minute; Pro allows ~300. Override with
+ * API_FOOTBALL_MIN_INTERVAL_MS — 6500 suits Free, 250 suits Pro.
+ */
+const MIN_CALL_INTERVAL_MS = Number(process.env.API_FOOTBALL_MIN_INTERVAL_MS ?? 6_500);
 const MAX_RETRIES = 4;
 
 if (!KEY) {

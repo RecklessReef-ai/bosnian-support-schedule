@@ -10,17 +10,35 @@ function escapeText(value: string): string {
   return value.replace(/([,;\\])/g, "\\$1").replace(/\n/g, "\\n");
 }
 
-/** RFC 5545 caps content lines at 75 octets; continuations start with a single space. */
+/**
+ * RFC 5545 caps content lines at 75 *octets* and forbids splitting a multi-octet
+ * character. Bosnian names and em-dashes are multi-byte in UTF-8, so folding has
+ * to count encoded bytes per code point rather than string length.
+ */
 function foldLine(line: string): string {
-  if (line.length <= 75) return line;
-  const chunks: string[] = [line.slice(0, 75)];
-  let rest = line.slice(75);
-  while (rest.length > 74) {
-    chunks.push(` ${rest.slice(0, 74)}`);
-    rest = rest.slice(74);
+  const chunks: string[] = [];
+  let current = "";
+  let bytes = 0;
+  // Continuation lines spend one octet on their leading space.
+  let limit = 75;
+
+  for (const char of line) {
+    const size = Buffer.byteLength(char, "utf8");
+    if (bytes + size > limit) {
+      chunks.push(current);
+      current = char;
+      bytes = size;
+      limit = 74;
+    } else {
+      current += char;
+      bytes += size;
+    }
   }
-  if (rest) chunks.push(` ${rest}`);
-  return chunks.join("\r\n");
+  if (current) chunks.push(current);
+
+  return chunks
+    .map((chunk, index) => (index === 0 ? chunk : ` ${chunk}`))
+    .join("\r\n");
 }
 
 export function buildIcs(fixtures: Fixture[], feedUrl: string): string {

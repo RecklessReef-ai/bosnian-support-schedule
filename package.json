@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "refresh:roster": "node --env-file=.env.local --experimental-strip-types scripts/refresh-roster.mts"
+    "refresh:roster": "node --env-file=.env.local --experimental-strip-types scripts/refresh-roster.mts",
+    "resolve:clubs": "node --env-file=.env.local --experimental-strip-types scripts/resolve-clubs.mts"
   },
   "dependencies": {
     "next": "16.3.4",
