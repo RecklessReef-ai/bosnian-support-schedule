@@ -27,6 +27,16 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Check the API key secret is set
+        # Without this the run would "succeed" having fetched nothing, and the
+        # schedule would quietly rot. Fail loudly instead.
+        run: |
+          if [ -z "${{ secrets.API_FOOTBALL_KEY }}" ]; then
+            echo "::error::API_FOOTBALL_KEY repository secret is not set."
+            echo "Set it with: gh secret set API_FOOTBALL_KEY"
+            exit 1
+          fi
+
       - name: Refresh fixtures
         env:
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
