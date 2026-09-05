@@ -6,7 +6,7 @@ import { TimezoneNote } from "./kickoff-time";
 export const revalidate = 86400;
 
 export default async function Home() {
-  const { fixtures, members, degraded } = await getSchedule();
+  const { fixtures, members, degraded, unavailableClubs } = await getSchedule();
 
   return (
     <main className="mx-auto w-full max-w-4xl px-5 py-10 sm:py-14">
@@ -45,6 +45,16 @@ export default async function Home() {
           No <code className="text-accent">API_FOOTBALL_KEY</code> is configured, so
           fixtures can&apos;t be loaded. The squads below come from the committed
           roster.
+        </p>
+      )}
+
+      {unavailableClubs.length > 0 && (
+        <p className="mb-6 rounded-xl border border-accent/40 bg-accent/10 p-4 text-sm text-foreground">
+          Fixtures for{" "}
+          {unavailableClubs.map((club) => club.name).join(", ")} couldn&apos;t be
+          loaded, so matches for players at{" "}
+          {unavailableClubs.length === 1 ? "that club" : "those clubs"} are missing
+          below. This usually clears on the next refresh.
         </p>
       )}
 

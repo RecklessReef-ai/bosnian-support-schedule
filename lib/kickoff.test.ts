@@ -1,6 +1,29 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { formatKickoff } from "./kickoff.ts";
+import { formatKickoff, kickoffDayKey } from "./kickoff.ts";
+
+describe("kickoffDayKey", () => {
+  it("returns a sortable YYYY-MM-DD key", () => {
+    assert.match(kickoffDayKey("2026-09-12T18:30:00.000Z", null), /^\d{4}-\d{2}-\d{2}$/);
+  });
+
+  it("falls back to the UTC day before the viewer's timezone is known", () => {
+    assert.equal(kickoffDayKey("2026-09-12T23:30:00.000Z", null), "2026-09-12");
+  });
+
+  it("groups by the viewer's day, not the UTC one", () => {
+    // 23:30 UTC on the 12th is already the 13th in Sarajevo.
+    assert.equal(kickoffDayKey("2026-09-12T23:30:00.000Z", "Europe/Sarajevo"), "2026-09-13");
+    // ...and still the 12th in Chicago.
+    assert.equal(kickoffDayKey("2026-09-12T23:30:00.000Z", "America/Chicago"), "2026-09-12");
+  });
+
+  it("puts two fixtures on the same local evening under one key", () => {
+    const a = kickoffDayKey("2026-09-12T16:00:00.000Z", "Europe/Sarajevo");
+    const b = kickoffDayKey("2026-09-12T19:45:00.000Z", "Europe/Sarajevo");
+    assert.equal(a, b);
+  });
+});
 
 describe("formatKickoff", () => {
   // The bug this guards: before hydration the server has no viewer timezone, and

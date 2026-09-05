@@ -1,13 +1,7 @@
 import overridesFile from "@/data/overrides.json";
 import rosterFile from "@/data/roster.json";
-import type { NationalTeamMember, Squad } from "./types";
-
-interface OverrideEntry {
-  player: string;
-  clubId: number;
-  clubName: string;
-  position?: string;
-}
+import { syntheticMemberId } from "./ids";
+import type { NationalTeamMember, OverrideEntry, Squad } from "./types";
 
 interface RosterFile {
   generatedAt: string;
@@ -17,17 +11,9 @@ interface RosterFile {
 const overrides = overridesFile as Record<Squad, OverrideEntry[]>;
 const roster = rosterFile as RosterFile;
 
-function hashName(name: string): number {
-  let hash = 0;
-  for (const char of name) {
-    hash = (hash * 31 + char.charCodeAt(0)) % 1_000_000_007;
-  }
-  return hash;
-}
-
 function memberFromOverride(entry: OverrideEntry, squad: Squad): NationalTeamMember {
   return {
-    id: -hashName(entry.player),
+    id: syntheticMemberId(squad, entry.player),
     name: entry.player,
     photo: null,
     position: entry.position ?? null,

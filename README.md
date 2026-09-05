@@ -63,8 +63,10 @@ npm test        # node:test, no extra dependencies
 ```
 
 The pure logic is covered: Schedule merging and the horizon (`lib/merge.ts`),
-kickoff formatting (`lib/kickoff.ts`), ICS generation (`lib/ics.ts`), mojibake
-repair (`lib/text.ts`), and bounded concurrency (`lib/concurrency.ts`).
+kickoff formatting and day grouping (`lib/kickoff.ts`), ICS generation
+(`lib/ics.ts`), mojibake repair (`lib/text.ts`), bounded concurrency
+(`lib/concurrency.ts`), retry/throttle policy (`lib/pacing.ts`), synthetic member
+ids (`lib/ids.ts`), and rate-limit classification (`lib/api-football.ts`).
 
 `lib/cache-policy.test.ts` is a guard rather than a unit test: Next.js needs
 `export const revalidate` to be a literal, so the routes can't import
@@ -81,11 +83,19 @@ requests/minute**. Both matter:
   ~6.5s per call and checkpoints after each player, so an interrupted run resumes
   for free.
 - **Fixtures** cost ~1 call per distinct club, cached 24h (`FIXTURES_TTL_SECONDS`,
-  mirrored by each route's `revalidate`) — about 31/day at the current roster.
+  mirrored by each route's `revalidate`) — about 39/day at the current roster.
 
-Together that's ~31/day steady-state, with headroom for an occasional roster
-refresh. Shortening the fixture TTL or adding v2 stats is what would push you to
-a paid tier.
+The **per-minute cap binds first**. All three surfaces (page, JSON API, ICS feed)
+compute the Schedule independently, so a cold build fans out over every club three
+times — ~120 calls in a few seconds. Over the cap, API-Football answers HTTP 200
+with a `rateLimit` error body rather than 429; `lib/api-football.ts` treats both as
+retryable and backs off briefly. Anything else (bad key, daily quota gone) fails at
+once instead of burning retries.
+
+Clubs that still fail land in `ScheduleData.unavailableClubs` and are named on the
+page and in the JSON. That matters because an empty fixture list otherwise looks
+exactly like a club with no upcoming matches — one build quietly published a
+schedule missing 12 of 39 clubs before this was added.
 
 ## Scope
 

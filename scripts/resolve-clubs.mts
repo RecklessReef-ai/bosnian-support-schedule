@@ -13,21 +13,21 @@
  *   npm run resolve:clubs
  */
 import { readFile, writeFile } from "node:fs/promises";
+import { hasApiKey } from "../lib/api-football.ts";
+import { createPacedClient } from "../lib/paced-api.ts";
+import type { OverrideEntry, Squad } from "../lib/types.ts";
 
-const BASE_URL = "https://v3.football.api-sports.io";
-const KEY = process.env.API_FOOTBALL_KEY;
-const MIN_CALL_INTERVAL_MS = Number(process.env.API_FOOTBALL_MIN_INTERVAL_MS ?? 6_500);
-
-if (!KEY) {
+if (!hasApiKey()) {
   console.error("API_FOOTBALL_KEY is not set. Add it to .env.local.");
   process.exit(1);
 }
 
+const { call: api } = createPacedClient();
+
 const PENDING_PATH = new URL("../data/pending-overrides.json", import.meta.url);
 const OVERRIDES_PATH = new URL("../data/overrides.json", import.meta.url);
 
-type Squad = "men" | "women";
-
+/** The hand-written input format; only this script reads it. */
 interface Pending {
   player: string;
   squad: Squad;
@@ -35,15 +35,16 @@ interface Pending {
   position?: string;
 }
 
-interface Override {
-  player: string;
-  clubId: number;
+/**
+ * A club to look up. Players are deduplicated onto these first, so N players at
+ * one club cost one call rather than N.
+ */
+interface ClubLookup {
+  squad: Squad;
   clubName: string;
-  position?: string;
 }
 
-let lastCallAt = 0;
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const lookupKey = (squad: Squad, clubName: string) => `${squad}\u0000${clubName}`;
 
 interface FoundTeam {
   id: number;
@@ -90,30 +91,18 @@ async function searchClubWithFallback(rawName: string): Promise<FoundTeam[]> {
 }
 
 async function searchClub(rawName: string): Promise<FoundTeam[]> {
-  const name = searchable(rawName);
-  const wait = lastCallAt + MIN_CALL_INTERVAL_MS - Date.now();
-  if (wait > 0) await sleep(wait);
-  lastCallAt = Date.now();
-
-  const url = new URL(`${BASE_URL}/teams`);
-  url.searchParams.set("search", name);
-  const res = await fetch(url, { headers: { "x-apisports-key": KEY! } });
-  if (!res.ok) throw new Error(`teams?search=${name} -> HTTP ${res.status}`);
-
-  const body = await res.json();
-  if (body.errors && !Array.isArray(body.errors) && Object.keys(body.errors).length) {
-    throw new Error(`teams?search=${name} -> ${JSON.stringify(body.errors)}`);
-  }
-
-  return (body.response ?? []).map(
-    (r: { team: { id: number; name: string }; country?: string }) => ({
-      id: r.team.id,
-      name: r.team.name,
-      country: r.country ?? null,
-      // API-Football suffixes women's sides with "W".
-      women: /\bW$/.test(r.team.name),
-    }),
+  const found = await api<{ team: { id: number; name: string }; country?: string }[]>(
+    "teams",
+    { search: searchable(rawName) },
   );
+
+  return (found ?? []).map((r) => ({
+    id: r.team.id,
+    name: r.team.name,
+    country: r.country ?? null,
+    // API-Football suffixes women's sides with "W".
+    women: /\bW$/.test(r.team.name),
+  }));
 }
 
 /** Prefers a women's side. Ambiguity is surfaced rather than silently resolved. */
@@ -138,15 +127,20 @@ async function main() {
     process.exit(1);
   }
 
-  const uniqueClubs = [...new Set(pending.map((p) => `${p.squad}|${p.clubName}`))];
+  const seen = new Set<string>();
+  const uniqueClubs: ClubLookup[] = [];
+  for (const entry of pending) {
+    const key = lookupKey(entry.squad, entry.clubName);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    uniqueClubs.push({ squad: entry.squad, clubName: entry.clubName });
+  }
   console.log(`${pending.length} players across ${uniqueClubs.length} distinct clubs.`);
 
   const resolved = new Map<string, FoundTeam>();
   const failed: string[] = [];
 
-  for (const key of uniqueClubs) {
-    const [squad, clubName] = key.split("|") as [Squad, string];
-
+  for (const { squad, clubName } of uniqueClubs) {
     // One bad lookup must not discard the ones that already succeeded.
     let candidates: FoundTeam[];
     try {
@@ -159,7 +153,7 @@ async function main() {
 
     const { team, ambiguous } = pickTeam(candidates, squad === "women");
     if (team) {
-      resolved.set(key, team);
+      resolved.set(lookupKey(squad, clubName), team);
       console.log(`  ${clubName} -> ${team.id} (${team.name})`);
       if (ambiguous.length) {
         console.log(
@@ -175,14 +169,14 @@ async function main() {
 
   const existing = JSON.parse(await readFile(OVERRIDES_PATH, "utf8")) as Record<
     Squad,
-    Override[]
+    OverrideEntry[]
   >;
 
   for (const entry of pending) {
-    const team = resolved.get(`${entry.squad}|${entry.clubName}`);
+    const team = resolved.get(lookupKey(entry.squad, entry.clubName));
     if (!team) continue;
     const list = (existing[entry.squad] ??= []);
-    const next: Override = {
+    const next: OverrideEntry = {
       player: entry.player,
       clubId: team.id,
       clubName: team.name,

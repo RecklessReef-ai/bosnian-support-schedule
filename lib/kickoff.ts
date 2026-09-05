@@ -25,6 +25,25 @@ function dayPart(iso: string, timeZone: string): string {
 }
 
 /**
+ * The calendar day a kickoff falls on, as a sortable `YYYY-MM-DD` key, in the
+ * viewer's timezone once it is known and UTC before that.
+ *
+ * The feed groups fixtures under day headings, so this has to agree with the day
+ * the heading itself renders — otherwise one evening's matches split across two
+ * headings. It takes the same `timeZone | null` as `formatKickoff` rather than a
+ * hydrated flag, so both sides of that agreement are stated the same way.
+ */
+export function kickoffDayKey(iso: string, timeZone: string | null): string {
+  // en-CA formats as YYYY-MM-DD, which sorts lexicographically.
+  return new Intl.DateTimeFormat("en-CA", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    timeZone: timeZone ?? "UTC",
+  }).format(new Date(iso));
+}
+
+/**
  * Chooses what to show for a kickoff.
  *
  * The server cannot know the viewer's timezone, so before hydration there is no

@@ -17,6 +17,14 @@ export interface NationalTeamMember {
   clubOverridden?: boolean;
 }
 
+/** A row of the Manual Override table (data/overrides.json). */
+export interface OverrideEntry {
+  player: string;
+  clubId: number;
+  clubName: string;
+  position?: string;
+}
+
 export interface Fixture {
   id: number;
   /** Kickoff as an ISO-8601 UTC instant. All timezone rendering happens client-side. */
@@ -37,4 +45,9 @@ export interface ScheduleData {
   generatedAt: string;
   /** True when no upstream API key is configured and the roster came from the seed file. */
   degraded: boolean;
+  /**
+   * Clubs whose fixtures could not be fetched. Their players' matches are missing
+   * from `fixtures`, so an incomplete Schedule can be told apart from a quiet week.
+   */
+  unavailableClubs: Club[];
 }

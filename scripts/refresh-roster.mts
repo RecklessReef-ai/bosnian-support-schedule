@@ -9,63 +9,18 @@
  *   npm run refresh:roster
  */
 import { readFile, writeFile } from "node:fs/promises";
+import { hasApiKey } from "../lib/api-football.ts";
+import { syntheticMemberId } from "../lib/ids.ts";
+import { createPacedClient } from "../lib/paced-api.ts";
 import { repairMojibake } from "../lib/text.ts";
+import type { Club, NationalTeamMember, Squad } from "../lib/types.ts";
 
-const BASE_URL = "https://v3.football.api-sports.io";
-const KEY = process.env.API_FOOTBALL_KEY;
-
-/**
- * Free tier allows ~10 requests/minute; Pro allows ~300. Override with
- * API_FOOTBALL_MIN_INTERVAL_MS — 6500 suits Free, 250 suits Pro.
- */
-const MIN_CALL_INTERVAL_MS = Number(process.env.API_FOOTBALL_MIN_INTERVAL_MS ?? 6_500);
-const MAX_RETRIES = 4;
-
-if (!KEY) {
+if (!hasApiKey()) {
   console.error("API_FOOTBALL_KEY is not set. Add it to .env.local.");
   process.exit(1);
 }
 
-let callsUsed = 0;
-let lastCallAt = 0;
-
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-async function api<T>(path: string, params: Record<string, string | number>): Promise<T> {
-  const url = new URL(`${BASE_URL}/${path}`);
-  for (const [k, v] of Object.entries(params)) url.searchParams.set(k, String(v));
-
-  for (let attempt = 0; ; attempt += 1) {
-    const wait = lastCallAt + MIN_CALL_INTERVAL_MS - Date.now();
-    if (wait > 0) await sleep(wait);
-
-    lastCallAt = Date.now();
-    const res = await fetch(url, { headers: { "x-apisports-key": KEY! } });
-    callsUsed += 1;
-
-    if (res.status === 429) {
-      if (attempt >= MAX_RETRIES) throw new Error(`${path} -> rate limited, giving up`);
-      const backoff = MIN_CALL_INTERVAL_MS * 2 ** (attempt + 1);
-      console.log(`  rate limited, waiting ${Math.round(backoff / 1000)}s...`);
-      await sleep(backoff);
-      continue;
-    }
-    if (!res.ok) throw new Error(`${path} -> HTTP ${res.status}`);
-
-    const body = await res.json();
-    const errors = body.errors;
-    if (errors && !Array.isArray(errors) && Object.keys(errors).length > 0) {
-      throw new Error(`${path} -> ${JSON.stringify(errors)}`);
-    }
-    return body.response as T;
-  }
-}
-
-interface TeamRef {
-  id: number;
-  name: string;
-  logo: string | null;
-}
+const { call: api, stats } = createPacedClient();
 
 /**
  * Every Bosnian representative side — senior, U21, U19, U17, and the women's
@@ -73,7 +28,7 @@ interface TeamRef {
  * mistaken for a Club.
  */
 async function bosnianNationalTeamIds(): Promise<Map<number, string>> {
-  const teams = await api<{ team: TeamRef & { national: boolean } }[]>("teams", {
+  const teams = await api<{ team: Club & { national: boolean } }[]>("teams", {
     search: "Bosnia",
   });
   const ids = new Map<number, string>();
@@ -106,12 +61,12 @@ interface SquadPlayer {
 async function currentClubFor(
   playerId: number,
   nationalTeams: Map<number, string>,
-): Promise<TeamRef | null> {
-  const history = await api<{ team: TeamRef; seasons: number[] }[]>("players/teams", {
+): Promise<Club | null> {
+  const history = await api<{ team: Club; seasons: number[] }[]>("players/teams", {
     player: playerId,
   });
 
-  let best: TeamRef | null = null;
+  let best: Club | null = null;
   let bestSeason = -Infinity;
   for (const entry of history) {
     if (nationalTeams.has(entry.team.id)) continue;
@@ -125,22 +80,10 @@ async function currentClubFor(
   return best;
 }
 
-function hashName(value: string): number {
-  let hash = 0;
-  for (const char of value) hash = (hash * 31 + char.charCodeAt(0)) % 1_000_000_007;
-  return hash;
-}
-
 const ROSTER_PATH = new URL("../data/roster.json", import.meta.url);
 
-interface StoredMember {
-  id: number;
-  name: string;
-  photo: string | null;
-  position: string | null;
-  squad: "men" | "women";
-  club: TeamRef | null;
-}
+/** What data/roster.json holds: the app's member shape, before overrides. */
+type StoredMember = Omit<NationalTeamMember, "clubOverridden">;
 
 /** Re-runs resume from what's already on disk, so a rate-limit stop costs nothing. */
 async function loadExisting(): Promise<Map<number, StoredMember>> {
@@ -172,7 +115,7 @@ async function main() {
   const members: StoredMember[] = [];
   const unresolved: string[] = [];
 
-  for (const squad of ["men", "women"] as const) {
+  for (const squad of ["men", "women"] as const satisfies readonly Squad[]) {
     const response = await api<{ players: SquadPlayer[] }[]>("players/squads", {
       team: squads[squad],
     });
@@ -187,7 +130,7 @@ async function main() {
       if (!player.id) {
         unresolved.push(`${squad}: ${name} (no upstream player id)`);
         members.push({
-          id: -Math.abs(hashName(`${squad}:${name}`)),
+          id: syntheticMemberId(squad, name),
           name,
           photo: player.photo,
           position: player.position,
@@ -221,7 +164,7 @@ async function main() {
 
   const clubs = new Set(members.filter((m) => m.club).map((m) => m.club!.id));
   console.log(`\nWrote ${members.length} members across ${clubs.size} distinct clubs.`);
-  console.log(`API calls used: ${callsUsed}`);
+  console.log(`API calls used: ${stats.calls}`);
   if (unresolved.length) {
     console.log(`\nNo club resolved (add to data/overrides.json):`);
     for (const u of unresolved) console.log(`  - ${u}`);

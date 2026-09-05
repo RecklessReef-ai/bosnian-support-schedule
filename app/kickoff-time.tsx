@@ -2,16 +2,12 @@
 
 import { formatKickoff } from "@/lib/kickoff";
 import { useHydrated } from "./use-hydrated";
-
-function viewerTimeZone(hydrated: boolean): string | null {
-  if (!hydrated) return null;
-  return Intl.DateTimeFormat().resolvedOptions().timeZone;
-}
+import { useViewerTimeZone } from "./use-viewer-timezone";
 
 export function KickoffTime({ kickoff }: { kickoff: string }) {
   const { primary, primaryIsLocal, secondary } = formatKickoff(
     kickoff,
-    viewerTimeZone(useHydrated()),
+    useViewerTimeZone(),
   );
 
   return (
@@ -45,7 +41,7 @@ export function DayHeading({ kickoff }: { kickoff: string }) {
 }
 
 export function TimezoneNote() {
-  const zone = viewerTimeZone(useHydrated());
+  const zone = useViewerTimeZone();
 
   // Before hydration every time on the page is labelled UTC, so say that rather
   // than rendering nothing and leaving the reader to assume it's local.

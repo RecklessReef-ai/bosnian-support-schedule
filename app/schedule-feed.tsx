@@ -2,18 +2,11 @@
 
 import { useMemo, useState } from "react";
 import { DayHeading, KickoffTime } from "./kickoff-time";
-import { useHydrated } from "./use-hydrated";
+import { useViewerTimeZone } from "./use-viewer-timezone";
+import { kickoffDayKey } from "@/lib/kickoff";
 import type { Fixture, NationalTeamMember, Squad } from "@/lib/types";
 
 type SquadFilter = Squad | "all";
-
-function dayKey(iso: string, useLocal: boolean): string {
-  if (!useLocal) return iso.slice(0, 10);
-  const d = new Date(iso);
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
-    d.getDate(),
-  ).padStart(2, "0")}`;
-}
 
 export function ScheduleFeed({
   fixtures,
@@ -22,7 +15,7 @@ export function ScheduleFeed({
   fixtures: Fixture[];
   members: NationalTeamMember[];
 }) {
-  const hydrated = useHydrated();
+  const timeZone = useViewerTimeZone();
   const [squad, setSquad] = useState<SquadFilter>("all");
   const [playerId, setPlayerId] = useState<string>("all");
 
@@ -47,13 +40,13 @@ export function ScheduleFeed({
   const groups = useMemo(() => {
     const map = new Map<string, Fixture[]>();
     for (const fixture of visible) {
-      const key = dayKey(fixture.kickoff, hydrated);
+      const key = kickoffDayKey(fixture.kickoff, timeZone);
       const list = map.get(key);
       if (list) list.push(fixture);
       else map.set(key, [fixture]);
     }
     return [...map.entries()];
-  }, [visible, hydrated]);
+  }, [visible, timeZone]);
 
   return (
     <div className="flex flex-col gap-6">

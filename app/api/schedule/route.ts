@@ -11,6 +11,9 @@ export async function GET() {
       source: "API-Football",
       members: schedule.members,
       fixtures: schedule.fixtures,
+      // Non-empty when some clubs' fixtures are missing, so a consumer can tell an
+      // incomplete Schedule from a quiet week.
+      unavailableClubs: schedule.unavailableClubs,
     },
     {
       headers: {
