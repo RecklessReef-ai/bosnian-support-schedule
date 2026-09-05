@@ -1,15 +1,12 @@
-import overridesFile from "@/data/overrides.json";
-import rosterFile from "@/data/roster.json";
-import { syntheticMemberId } from "./ids";
-import type { NationalTeamMember, OverrideEntry, Squad } from "./types";
+import { syntheticMemberId } from "./ids.ts";
+import type { NationalTeamMember, OverrideEntry, Squad } from "./types.ts";
 
-interface RosterFile {
+export interface RosterFile {
   generatedAt: string;
   members: NationalTeamMember[];
 }
 
-const overrides = overridesFile as Record<Squad, OverrideEntry[]>;
-const roster = rosterFile as RosterFile;
+export type OverridesFile = Record<Squad, OverrideEntry[]>;
 
 function memberFromOverride(entry: OverrideEntry, squad: Squad): NationalTeamMember {
   return {
@@ -23,7 +20,19 @@ function memberFromOverride(entry: OverrideEntry, squad: Squad): NationalTeamMem
   };
 }
 
-function applyOverrides(members: NationalTeamMember[]): NationalTeamMember[] {
+/**
+ * Layers the Manual Override table over a resolved roster: a matching name corrects
+ * that member's Club, a name with no match adds them.
+ *
+ * Pure, and takes both files as arguments, because the app loads them through the
+ * bundler's JSON imports while the offline scripts read them off disk — and both
+ * must end up with exactly the same member list, or the fixtures fetched offline
+ * would be for a different set of Clubs than the app renders.
+ */
+export function applyOverrides(
+  members: readonly NationalTeamMember[],
+  overrides: OverridesFile,
+): NationalTeamMember[] {
   const used = new Set<string>();
 
   const corrected = members.map((member) => {
@@ -46,16 +55,4 @@ function applyOverrides(members: NationalTeamMember[]): NationalTeamMember[] {
   );
 
   return [...corrected, ...added];
-}
-
-/**
- * The roster is resolved offline by `npm run refresh:roster` and committed to
- * data/roster.json, so serving a page costs no roster API calls. Manual Overrides
- * are layered on at read time.
- */
-export function getRoster(): { members: NationalTeamMember[]; generatedAt: string } {
-  return {
-    members: applyOverrides(roster.members),
-    generatedAt: roster.generatedAt,
-  };
 }

@@ -1,13 +1,6 @@
-import type { Club } from "./types.ts";
+import type { RawFixtureRecord } from "./types.ts";
 
 const BASE_URL = "https://v3.football.api-sports.io";
-
-/**
- * ~39 distinct clubs x 1 call per refresh, x3 surfaces that each build the Schedule
- * (page, JSON, ICS). At 24h that is well inside the daily budget; the per-minute cap
- * is the one that binds, which is what the retry below exists for.
- */
-export const FIXTURES_TTL_SECONDS = 60 * 60 * 24;
 
 export function hasApiKey(): boolean {
   return Boolean(process.env.API_FOOTBALL_KEY);
@@ -91,44 +84,5 @@ export async function requestApiFootball<T>(
   return body.response;
 }
 
-export interface RawFixture {
-  fixture: {
-    id: number;
-    date: string;
-    venue: { name: string | null } | null;
-  };
-  league: { name: string; logo: string | null; round: string | null };
-  teams: { home: Club; away: Club };
-}
-
-/**
- * Retries a rate-limited call on a short budget.
- *
- * A cold render fans out over every Club at once, so a burst can push the last few
- * over the per-minute cap. Without this they resolved to "no fixtures" and the club
- * silently vanished from the published Schedule. The budget is deliberately small —
- * this can run while somebody waits for a page — and only rate limits are retried;
- * a bad key or an exhausted daily quota fails immediately.
- */
-const RATE_LIMIT_RETRIES = 3;
-const RATE_LIMIT_BACKOFF_MS = 1_500;
-
-export async function getUpcomingFixtures(
-  teamId: number,
-  count: number,
-): Promise<RawFixture[]> {
-  for (let attempt = 0; ; attempt += 1) {
-    try {
-      return await requestApiFootball<RawFixture[]>(
-        "fixtures",
-        { team: teamId, next: count },
-        { revalidate: FIXTURES_TTL_SECONDS },
-      );
-    } catch (error) {
-      if (!(error instanceof RateLimitedError) || attempt >= RATE_LIMIT_RETRIES) throw error;
-      await new Promise((resolve) =>
-        setTimeout(resolve, RATE_LIMIT_BACKOFF_MS * 2 ** attempt),
-      );
-    }
-  }
-}
+/** Declared once in lib/types.ts, since the committed file holds the same shape. */
+export type RawFixture = RawFixtureRecord;

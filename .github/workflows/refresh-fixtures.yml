@@ -1,0 +1,47 @@
+name: Refresh fixtures
+
+# The app serves fixtures from a committed file and makes no upstream calls when
+# rendering. That is what keeps it inside the free tier, but it means the file has
+# to be refreshed on a schedule or the Schedule quietly goes stale.
+on:
+  schedule:
+    # 04:10 UTC daily — early enough that a new day's fixtures are listed before
+    # anyone in Europe looks, and off the hour to avoid the scheduler's rush.
+    - cron: "10 4 * * *"
+  workflow_dispatch: {}
+
+# Only one refresh at a time: two overlapping runs would both push to the same file.
+concurrency:
+  group: refresh-fixtures
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Refresh fixtures
+        env:
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          # Free tier allows ~10 requests/minute. 6500ms keeps ~39 calls under it.
+          API_FOOTBALL_MIN_INTERVAL_MS: "6500"
+        run: node --experimental-strip-types scripts/refresh-fixtures.mts
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- data/fixtures.json; then
+            echo "No fixture changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/fixtures.json
+          git commit -m "Refresh fixtures"
+          git push

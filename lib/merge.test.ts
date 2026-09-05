@@ -107,3 +107,50 @@ describe("mergeFixtures", () => {
     assert.equal(out[0].kickoff, "2026-09-10T18:00:00.000Z");
   });
 });
+
+/**
+ * The bug these guard: fixtures used to come from a live "next 20" query, which by
+ * definition only ever returned upcoming matches, so nothing had to drop past ones.
+ * They now come from a file refreshed once a day — a stored fixture becomes a past
+ * fixture just by sitting there — so without a lower bound yesterday's matches would
+ * keep showing at the top of the feed.
+ */
+describe("mergeFixtures window start", () => {
+  const members = buildMembersByClub([member(1, "A", 10)]);
+  const start = new Date("2026-09-12T12:00:00.000Z");
+
+  it("drops fixtures that kicked off before the window", () => {
+    const out = mergeFixtures(
+      [raw(1, "2026-09-12T08:00:00.000Z", 10, 20)],
+      members,
+      HORIZON,
+      start,
+    );
+    assert.equal(out.length, 0);
+  });
+
+  it("keeps fixtures at or after the window start", () => {
+    const out = mergeFixtures(
+      [raw(1, "2026-09-12T14:00:00.000Z", 10, 20)],
+      members,
+      HORIZON,
+      start,
+    );
+    assert.equal(out.length, 1);
+  });
+
+  it("still applies the far horizon", () => {
+    const out = mergeFixtures(
+      [raw(1, "2026-11-01T14:00:00.000Z", 10, 20)],
+      members,
+      HORIZON,
+      start,
+    );
+    assert.equal(out.length, 0);
+  });
+
+  it("keeps everything when no window start is given", () => {
+    const out = mergeFixtures([raw(1, "2020-01-01T00:00:00.000Z", 10, 20)], members, HORIZON);
+    assert.equal(out.length, 1);
+  });
+});

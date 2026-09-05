@@ -39,6 +39,27 @@ export interface Fixture {
   members: NationalTeamMember[];
 }
 
+/**
+ * What `npm run refresh:fixtures` writes to data/fixtures.json.
+ *
+ * Fixtures are stored in their upstream (trimmed) form rather than already merged,
+ * so editing the roster or an override takes effect on the next render instead of
+ * needing another API refresh.
+ */
+export interface FixturesFile {
+  generatedAt: string;
+  fixtures: RawFixtureRecord[];
+  /** Clubs whose fetch failed during the refresh. Their matches are missing. */
+  unavailableClubs: Club[];
+}
+
+/** The upstream fixture shape, trimmed to what the app renders. */
+export interface RawFixtureRecord {
+  fixture: { id: number; date: string; venue: { name: string | null } | null };
+  league: { name: string; logo: string | null; round: string | null };
+  teams: { home: Club; away: Club };
+}
+
 export interface ScheduleData {
   fixtures: Fixture[];
   members: NationalTeamMember[];

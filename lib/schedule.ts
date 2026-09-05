@@ -1,8 +1,6 @@
-import { getUpcomingFixtures, hasApiKey, type RawFixture } from "./api-football";
-import { mapWithConcurrency } from "./concurrency";
+import { getFixturesFile, getRoster } from "./data-files";
 import { buildMembersByClub, mergeFixtures } from "./merge";
-import { getRoster } from "./roster";
-import type { Club, ScheduleData } from "./types";
+import type { ScheduleData } from "./types";
 
 /**
  * How far ahead the Schedule looks. Bounding by time rather than by a match count
@@ -11,61 +9,40 @@ import type { Club, ScheduleData } from "./types";
  */
 const HORIZON_DAYS = 21;
 
-/** Upper bound per club — generous enough that HORIZON_DAYS is the real limit. */
-const FIXTURES_PER_CLUB = 20;
+/**
+ * How long a kicked-off match stays on the Schedule. Roughly a match plus stoppage
+ * and half-time, so a game in progress is still listed while a finished one drops
+ * off. Fixtures come from a file now, so nothing else removes them.
+ */
+const SHOW_AFTER_KICKOFF_MINUTES = 130;
 
-/** Concurrent upstream calls. Keeps a cold request under the per-minute cap. */
-const FETCH_CONCURRENCY = 4;
-
-interface ClubResult {
-  club: Club;
-  fixtures: RawFixture[];
-  failed: boolean;
-}
-
+/**
+ * Assembles the Schedule from the committed data files. Makes no upstream calls:
+ * `npm run refresh:fixtures` does that offline, so all three surfaces — page, JSON
+ * API, ICS feed — cost nothing to serve however often they are rendered.
+ *
+ * The horizon is applied here rather than at fetch time, so it stays measured from
+ * now and not from whenever the refresh last ran.
+ */
 export async function getSchedule(): Promise<ScheduleData> {
   const { members } = getRoster();
-  const generatedAt = new Date().toISOString();
+  const { fixtures: raw, generatedAt, unavailableClubs } = getFixturesFile();
 
-  if (!hasApiKey()) {
-    return { fixtures: [], members, generatedAt, degraded: true, unavailableClubs: [] };
-  }
-
-  const membersByClub = buildMembersByClub(members);
-  const clubs = [...membersByClub.values()].map((forClub) => forClub[0].club!);
-
-  const results = await mapWithConcurrency<Club, ClubResult>(
-    clubs,
-    FETCH_CONCURRENCY,
-    async (club) => {
-      try {
-        return {
-          club,
-          fixtures: await getUpcomingFixtures(club.id, FIXTURES_PER_CLUB),
-          failed: false,
-        };
-      } catch (error) {
-        // A failed club used to resolve to an empty list, which is indistinguishable
-        // from a club with no upcoming matches — so a partial outage published a
-        // confidently wrong Schedule. Report it instead.
-        console.error(`[schedule] fixtures for ${club.name} (${club.id}) failed:`, error);
-        return { club, fixtures: [], failed: true };
-      }
-    },
-  );
-
-  const horizonEnd = new Date(Date.now() + HORIZON_DAYS * 24 * 60 * 60 * 1000);
+  const now = Date.now();
+  const horizonEnd = new Date(now + HORIZON_DAYS * 24 * 60 * 60 * 1000);
+  const windowStart = new Date(now - SHOW_AFTER_KICKOFF_MINUTES * 60 * 1000);
   const fixtures = mergeFixtures(
-    results.flatMap((result) => result.fixtures),
-    membersByClub,
+    raw,
+    buildMembersByClub(members),
     horizonEnd,
+    windowStart,
   );
 
   return {
     fixtures,
     members,
     generatedAt,
-    degraded: false,
-    unavailableClubs: results.filter((r) => r.failed).map((r) => r.club),
+    degraded: raw.length === 0,
+    unavailableClubs,
   };
 }

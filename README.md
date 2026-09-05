@@ -12,11 +12,12 @@ See [`CONTEXT.md`](./CONTEXT.md) for the domain vocabulary and
 ```bash
 cp .env.example .env.local   # add your API-Football key
 npm run refresh:roster       # resolve squads + clubs into data/roster.json
+npm run refresh:fixtures     # fetch each club's matches into data/fixtures.json
 npm run dev
 ```
 
-Without `API_FOOTBALL_KEY` the site still runs: it renders the committed roster
-from `data/roster.json` with a banner, and no fixtures.
+Both data files are committed, so `npm run dev` works with no key at all — the key
+is only needed to refresh them.
 
 ## What it serves
 
@@ -31,8 +32,9 @@ muted text.
 
 ## How the data flows
 
-The roster is resolved **offline**; only fixtures are fetched at request time.
-That split is what keeps the app inside the free tier — see the budget below.
+Both the roster and the fixtures are resolved **offline** and committed. Rendering
+makes no upstream calls at all, which is what keeps the app inside the free tier —
+see [ADR-0003](./docs/adr/0003-fetch-fixtures-offline-into-a-committed-file.md).
 
 **Offline, via `npm run refresh:roster`:**
 
@@ -43,15 +45,19 @@ That split is what keeps the app inside the free tier — see the budget below.
    ignoring every Bosnian representative side.
 3. Write `data/roster.json` and commit it.
 
-**At request time:**
+**Offline, via `npm run refresh:fixtures`** (daily, by GitHub Actions):
 
 4. Read `data/roster.json` and apply the Manual Override table
    (`data/overrides.json`) — see [`data/README.md`](./data/README.md).
-5. Fetch fixtures per distinct Club, across all competitions, at most 4 clubs at
-   a time so one cold request can't trip the provider's per-minute cap.
-6. Merge into one chronological Schedule, keeping everything inside a **21-day
-   horizon** and deduplicating fixtures that involve more than one National Team
-   Member.
+5. Fetch upcoming matches for each distinct Club, one call each, paced under the
+   free tier's ~10/minute cap. Clubs that fail are recorded, not silently skipped.
+6. Write `data/fixtures.json` and commit it.
+
+**At render time — no network:**
+
+7. Merge into one chronological Schedule, keeping everything inside a **21-day
+   horizon**, dropping matches that kicked off more than ~2 hours ago, and
+   deduplicating fixtures that involve more than one National Team Member.
 
 The horizon is a time bound, not a match count. An earlier fixed "next 5 per
 club" silently dropped cup and continental ties for clubs playing twice a week.
@@ -74,28 +80,24 @@ ids (`lib/ids.ts`), and rate-limit classification (`lib/api-football.ts`).
 
 ## Request budget
 
-The free API-Sports tier allows **100 requests/day** and roughly **10
-requests/minute**. Both matter:
+Nothing is fetched while rendering, so **traffic costs nothing** — one visitor or a
+hundred thousand make the same zero upstream calls. Only the two refresh scripts
+spend anything:
 
-- **Roster refresh** costs ~1 call per player (~64 for both squads). This is why
-  it's an offline script rather than a runtime fetch — doing it on a cold page
-  load, plus fixtures, would exceed 100/day every day. The script paces itself at
-  ~6.5s per call and checkpoints after each player, so an interrupted run resumes
-  for free.
-- **Fixtures** cost ~1 call per distinct club, cached 24h (`FIXTURES_TTL_SECONDS`,
-  mirrored by each route's `revalidate`) — about 39/day at the current roster.
+| Script | Calls | How often |
+| --- | --- | --- |
+| `refresh:fixtures` | ~39 (1 per club) | daily |
+| `refresh:roster` | ~64 (1 per player) | after each call-up window |
 
-The **per-minute cap binds first**. All three surfaces (page, JSON API, ICS feed)
-compute the Schedule independently, so a cold build fans out over every club three
-times — ~120 calls in a few seconds. Over the cap, API-Football answers HTTP 200
-with a `rateLimit` error body rather than 429; `lib/api-football.ts` treats both as
-retryable and backs off briefly. Anything else (bad key, daily quota gone) fails at
-once instead of burning retries.
+That fits the **free tier** (100/day, ~10/minute), which is what this layout is for.
+One caveat: **don't run both scripts on the same day** — 39 + 64 exceeds 100. The
+scripts pace themselves at ~6.5s per call to stay under the per-minute cap, so a
+fixture refresh takes about four minutes.
 
-Clubs that still fail land in `ScheduleData.unavailableClubs` and are named on the
-page and in the JSON. That matters because an empty fixture list otherwise looks
-exactly like a club with no upcoming matches — one build quietly published a
-schedule missing 12 of 39 clubs before this was added.
+Rendering used to fetch every club, three times over (page, JSON, ICS), for ~120
+calls a day. Over the per-minute cap API-Football replies HTTP 200 with a `rateLimit`
+error body rather than 429, so those reads looked like "this club has no matches" and
+clubs vanished from the published schedule unnoticed. See ADR-0003.
 
 ## Scope
 

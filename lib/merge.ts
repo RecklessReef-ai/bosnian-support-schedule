@@ -34,21 +34,30 @@ export function buildMembersByClub(
 }
 
 /**
- * Folds every club's fixture list into one chronological Schedule.
+ * Folds every club's fixture list into one chronological Schedule, keeping only
+ * matches inside [`windowStart`, `horizonEnd`].
  *
  * Two National Team Members at the same club — or facing each other — share a
  * single Fixture, so the same match can arrive from several clubs' feeds and must
  * collapse to one entry listing everyone involved.
+ *
+ * `windowStart` matters because fixtures now come from a file refreshed once a day
+ * rather than a live "next 20" query. Upstream only ever returned upcoming matches,
+ * so nothing needed to drop them; a stored fixture, by contrast, becomes a past
+ * fixture just by sitting there. Callers pass a start slightly in the past so a
+ * match already under way still shows.
  */
 export function mergeFixtures(
   raws: readonly RawFixture[],
   membersByClub: Map<number, NationalTeamMember[]>,
   horizonEnd: Date,
+  windowStart: Date = new Date(0),
 ): Fixture[] {
   const merged = new Map<number, Fixture>();
 
   for (const raw of raws) {
-    if (new Date(raw.fixture.date) > horizonEnd) continue;
+    const kickoff = new Date(raw.fixture.date);
+    if (kickoff > horizonEnd || kickoff < windowStart) continue;
 
     const involved = [
       ...(membersByClub.get(raw.teams.home.id) ?? []),

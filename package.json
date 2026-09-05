@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "refresh:roster": "node --env-file=.env.local --experimental-strip-types scripts/refresh-roster.mts",
+    "refresh:fixtures": "node --env-file=.env.local --experimental-strip-types scripts/refresh-fixtures.mts",
     "resolve:clubs": "node --env-file=.env.local --experimental-strip-types scripts/resolve-clubs.mts",
     "test": "node --test --experimental-strip-types \"lib/*.test.ts\""
   },
