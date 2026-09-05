@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Transient input for `npm run resolve:clubs`; overrides.json is the artifact.
+data/pending-overrides.json

@@ -1,4 +1,65 @@
 {
   "men": [],
-  "women": []
+  "women": [
+    {
+      "player": "N. Brnić",
+      "clubId": 27869,
+      "clubName": "Hajduk Split W"
+    },
+    {
+      "player": "A. Gavrić",
+      "clubId": 10902,
+      "clubName": "SFK 2000 W"
+    },
+    {
+      "player": "L. Radulović",
+      "clubId": 10903,
+      "clubName": "Spartak Subotica W"
+    },
+    {
+      "player": "Đ. Velagić",
+      "clubId": 10902,
+      "clubName": "SFK 2000 W"
+    },
+    {
+      "player": "S. Kapetanović",
+      "clubId": 10904,
+      "clubName": "Split W"
+    },
+    {
+      "player": "D. Spasojević",
+      "clubId": 10902,
+      "clubName": "SFK 2000 W"
+    },
+    {
+      "player": "U. Rankić",
+      "clubId": 16038,
+      "clubName": "Basel W"
+    },
+    {
+      "player": "A. Zukić",
+      "clubId": 10902,
+      "clubName": "SFK 2000 W"
+    },
+    {
+      "player": "M. Gačanica",
+      "clubId": 10915,
+      "clubName": "PAOK W"
+    },
+    {
+      "player": "S. Krajšumović",
+      "clubId": 14131,
+      "clubName": "CSKA Moskva W"
+    },
+    {
+      "player": "A. Grebenar",
+      "clubId": 14132,
+      "clubName": "Lokomotiv Moskva W"
+    },
+    {
+      "player": "M. Hrelja",
+      "clubId": 10916,
+      "clubName": "Górnik Łęczna W"
+    }
+  ]
 }

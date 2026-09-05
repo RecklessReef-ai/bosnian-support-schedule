@@ -52,7 +52,45 @@ interface FoundTeam {
   women: boolean;
 }
 
-async function searchClub(name: string): Promise<FoundTeam[]> {
+/**
+ * API-Football rejects search terms containing anything but alphanumerics and
+ * spaces, which rules out most Bosnian, Croatian and Polish club names. Accent
+ * decomposition handles "ć"/"š"; the stroked letters ("Ł", "Đ", "ø") have no
+ * decomposition and need mapping by hand.
+ */
+const STROKED: Record<string, string> = {
+  Ł: "L", ł: "l", Đ: "D", đ: "d", Ø: "O", ø: "o", Ħ: "H", ħ: "h", Ə: "E", ə: "e",
+};
+
+function searchable(name: string): string {
+  return name
+    .replace(/[ŁłĐđØøĦħƏə]/g, (c) => STROKED[c] ?? c)
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .replace(/[^A-Za-z0-9 ]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/**
+ * Upstream search is only partly diacritic-insensitive: it matches "Gornik"
+ * against "Górnik" but not "Leczna" against "Łęczna". When a multi-word term
+ * finds nothing, retry on the first word alone and let pickTeam narrow it.
+ */
+async function searchClubWithFallback(rawName: string): Promise<FoundTeam[]> {
+  const found = await searchClub(rawName);
+  if (found.length > 0) return found;
+
+  const [firstWord] = searchable(rawName).split(" ");
+  if (!firstWord || firstWord.length < 3 || firstWord === searchable(rawName)) {
+    return found;
+  }
+  console.log(`      no match for "${rawName}", retrying on "${firstWord}"`);
+  return searchClub(firstWord);
+}
+
+async function searchClub(rawName: string): Promise<FoundTeam[]> {
+  const name = searchable(rawName);
   const wait = lastCallAt + MIN_CALL_INTERVAL_MS - Date.now();
   if (wait > 0) await sleep(wait);
   lastCallAt = Date.now();
@@ -78,11 +116,14 @@ async function searchClub(name: string): Promise<FoundTeam[]> {
   );
 }
 
-/** Prefers a women's side, then an exact-ish name match. */
-function pickTeam(candidates: FoundTeam[], wantWomen: boolean): FoundTeam | null {
+/** Prefers a women's side. Ambiguity is surfaced rather than silently resolved. */
+function pickTeam(
+  candidates: FoundTeam[],
+  wantWomen: boolean,
+): { team: FoundTeam | null; ambiguous: FoundTeam[] } {
   const pool = wantWomen ? candidates.filter((c) => c.women) : candidates;
-  if (pool.length === 0) return null;
-  return pool[0];
+  if (pool.length === 0) return { team: null, ambiguous: [] };
+  return { team: pool[0], ambiguous: pool.length > 1 ? pool : [] };
 }
 
 async function main() {
@@ -105,11 +146,27 @@ async function main() {
 
   for (const key of uniqueClubs) {
     const [squad, clubName] = key.split("|") as [Squad, string];
-    const candidates = await searchClub(clubName);
-    const team = pickTeam(candidates, squad === "women");
+
+    // One bad lookup must not discard the ones that already succeeded.
+    let candidates: FoundTeam[];
+    try {
+      candidates = await searchClubWithFallback(clubName);
+    } catch (err) {
+      failed.push(clubName);
+      console.log(`  ${clubName} -> ERROR (${(err as Error).message})`);
+      continue;
+    }
+
+    const { team, ambiguous } = pickTeam(candidates, squad === "women");
     if (team) {
       resolved.set(key, team);
       console.log(`  ${clubName} -> ${team.id} (${team.name})`);
+      if (ambiguous.length) {
+        console.log(
+          `      ambiguous, picked the first of ${ambiguous.length}: ` +
+            ambiguous.map((c) => `${c.id} ${c.name}`).join(", "),
+        );
+      }
     } else {
       failed.push(clubName);
       console.log(`  ${clubName} -> NOT FOUND (${candidates.length} candidates)`);
