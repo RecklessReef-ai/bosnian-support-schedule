@@ -47,9 +47,28 @@ That split is what keeps the app inside the free tier — see the budget below.
 
 4. Read `data/roster.json` and apply the Manual Override table
    (`data/overrides.json`) — see [`data/README.md`](./data/README.md).
-5. Fetch the next 5 fixtures per distinct Club, across all competitions.
-6. Merge into one chronological Schedule, deduplicating fixtures that involve
-   more than one National Team Member.
+5. Fetch fixtures per distinct Club, across all competitions, at most 4 clubs at
+   a time so one cold request can't trip the provider's per-minute cap.
+6. Merge into one chronological Schedule, keeping everything inside a **21-day
+   horizon** and deduplicating fixtures that involve more than one National Team
+   Member.
+
+The horizon is a time bound, not a match count. An earlier fixed "next 5 per
+club" silently dropped cup and continental ties for clubs playing twice a week.
+
+## Testing
+
+```bash
+npm test        # node:test, no extra dependencies
+```
+
+The pure logic is covered: Schedule merging and the horizon (`lib/merge.ts`),
+kickoff formatting (`lib/kickoff.ts`), ICS generation (`lib/ics.ts`), mojibake
+repair (`lib/text.ts`), and bounded concurrency (`lib/concurrency.ts`).
+
+`lib/cache-policy.test.ts` is a guard rather than a unit test: Next.js needs
+`export const revalidate` to be a literal, so the routes can't import
+`FIXTURES_TTL_SECONDS`. The test asserts they agree, because they once drifted.
 
 ## Request budget
 
@@ -61,10 +80,12 @@ requests/minute**. Both matter:
   load, plus fixtures, would exceed 100/day every day. The script paces itself at
   ~6.5s per call and checkpoints after each player, so an interrupted run resumes
   for free.
-- **Fixtures** cost ~1 call per distinct club, cached 24h — about 50/day.
+- **Fixtures** cost ~1 call per distinct club, cached 24h (`FIXTURES_TTL_SECONDS`,
+  mirrored by each route's `revalidate`) — about 31/day at the current roster.
 
-Together that's ~50/day steady-state, with headroom for an occasional roster
-refresh. Move to the $19/mo tier if you shorten the fixture TTL.
+Together that's ~31/day steady-state, with headroom for an occasional roster
+refresh. Shortening the fixture TTL or adding v2 stats is what would push you to
+a paid tier.
 
 ## Scope
 

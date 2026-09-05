@@ -1,27 +1,31 @@
 "use client";
 
+import { formatKickoff } from "@/lib/kickoff";
 import { useHydrated } from "./use-hydrated";
 
-function utcLabel(iso: string): string {
-  const d = new Date(iso);
-  const hh = String(d.getUTCHours()).padStart(2, "0");
-  const mm = String(d.getUTCMinutes()).padStart(2, "0");
-  return `${hh}:${mm} UTC`;
+function viewerTimeZone(hydrated: boolean): string | null {
+  if (!hydrated) return null;
+  return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
 
 export function KickoffTime({ kickoff }: { kickoff: string }) {
-  const hydrated = useHydrated();
-  const local = hydrated
-    ? new Date(kickoff).toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      })
-    : utcLabel(kickoff).replace(" UTC", "");
+  const { primary, primaryIsLocal, secondary } = formatKickoff(
+    kickoff,
+    viewerTimeZone(useHydrated()),
+  );
 
   return (
     <div className="flex flex-col items-start tabular-nums">
-      <span className="text-lg font-semibold text-foreground">{local}</span>
-      <span className="text-[11px] text-faint">{utcLabel(kickoff)}</span>
+      <span
+        className={
+          primaryIsLocal
+            ? "text-lg font-semibold text-foreground"
+            : "text-lg font-semibold text-muted"
+        }
+      >
+        {primary}
+      </span>
+      {secondary && <span className="text-[11px] text-faint">{secondary}</span>}
     </div>
   );
 }
@@ -41,13 +45,17 @@ export function DayHeading({ kickoff }: { kickoff: string }) {
 }
 
 export function TimezoneNote() {
-  const hydrated = useHydrated();
-  if (!hydrated) return null;
+  const zone = viewerTimeZone(useHydrated());
+
+  // Before hydration every time on the page is labelled UTC, so say that rather
+  // than rendering nothing and leaving the reader to assume it's local.
+  if (!zone) {
+    return <p className="text-xs text-faint">Times shown in UTC.</p>;
+  }
 
   return (
     <p className="text-xs text-faint">
-      Times shown in your timezone (
-      {Intl.DateTimeFormat().resolvedOptions().timeZone}), with UTC underneath.
+      Times shown in your timezone ({zone}), with UTC underneath.
     </p>
   );
 }

@@ -1,22 +1,21 @@
 import { getUpcomingFixtures, hasApiKey, type RawFixture } from "./api-football";
+import { mapWithConcurrency } from "./concurrency";
+import { buildMembersByClub, mergeFixtures } from "./merge";
 import { getRoster } from "./roster";
-import type { Fixture, NationalTeamMember, ScheduleData } from "./types";
+import type { ScheduleData } from "./types";
 
-const FIXTURES_PER_CLUB = 5;
+/**
+ * How far ahead the Schedule looks. Bounding by time rather than by a match count
+ * is what a calendar wants: a fixed per-club limit silently truncated clubs deep
+ * in a cup run.
+ */
+const HORIZON_DAYS = 21;
 
-function toFixture(raw: RawFixture, members: NationalTeamMember[]): Fixture {
-  return {
-    id: raw.fixture.id,
-    kickoff: new Date(raw.fixture.date).toISOString(),
-    competition: raw.league.name,
-    competitionLogo: raw.league.logo,
-    round: raw.league.round,
-    venue: raw.fixture.venue?.name ?? null,
-    home: raw.teams.home,
-    away: raw.teams.away,
-    members,
-  };
-}
+/** Upper bound per club — generous enough that HORIZON_DAYS is the real limit. */
+const FIXTURES_PER_CLUB = 20;
+
+/** Concurrent upstream calls. Keeps a cold request under the per-minute cap. */
+const FETCH_CONCURRENCY = 4;
 
 export async function getSchedule(): Promise<ScheduleData> {
   const { members } = getRoster();
@@ -26,42 +25,16 @@ export async function getSchedule(): Promise<ScheduleData> {
     return { fixtures: [], members, generatedAt, degraded: true };
   }
 
-  const membersByClub = new Map<number, NationalTeamMember[]>();
-  for (const member of members) {
-    if (!member.club) continue;
-    const existing = membersByClub.get(member.club.id);
-    if (existing) existing.push(member);
-    else membersByClub.set(member.club.id, [member]);
-  }
-
-  const perClub = await Promise.all(
-    [...membersByClub.keys()].map((clubId) =>
+  const membersByClub = buildMembersByClub(members);
+  const perClub = await mapWithConcurrency(
+    [...membersByClub.keys()],
+    FETCH_CONCURRENCY,
+    (clubId) =>
       getUpcomingFixtures(clubId, FIXTURES_PER_CLUB).catch(() => [] as RawFixture[]),
-    ),
   );
 
-  // Two National Team Members at the same club, or facing each other, share one Fixture.
-  const merged = new Map<number, Fixture>();
-  for (const raw of perClub.flat()) {
-    const involved = [
-      ...(membersByClub.get(raw.teams.home.id) ?? []),
-      ...(membersByClub.get(raw.teams.away.id) ?? []),
-    ];
-    const existing = merged.get(raw.fixture.id);
-    if (existing) {
-      for (const member of involved) {
-        if (!existing.members.some((m) => m.id === member.id)) {
-          existing.members.push(member);
-        }
-      }
-    } else {
-      merged.set(raw.fixture.id, toFixture(raw, involved));
-    }
-  }
-
-  const fixtures = [...merged.values()].sort((a, b) =>
-    a.kickoff.localeCompare(b.kickoff),
-  );
+  const horizonEnd = new Date(Date.now() + HORIZON_DAYS * 24 * 60 * 60 * 1000);
+  const fixtures = mergeFixtures(perClub.flat(), membersByClub, horizonEnd);
 
   return { fixtures, members, generatedAt, degraded: false };
 }

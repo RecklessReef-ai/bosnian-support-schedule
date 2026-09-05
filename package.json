@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "refresh:roster": "node --env-file=.env.local --experimental-strip-types scripts/refresh-roster.mts",
-    "resolve:clubs": "node --env-file=.env.local --experimental-strip-types scripts/resolve-clubs.mts"
+    "resolve:clubs": "node --env-file=.env.local --experimental-strip-types scripts/resolve-clubs.mts",
+    "test": "node --test --experimental-strip-types \"lib/*.test.ts\""
   },
   "dependencies": {
     "next": "16.3.4",

@@ -3,7 +3,7 @@ import { ScheduleFeed } from "./schedule-feed";
 import { SquadList } from "./squad-list";
 import { TimezoneNote } from "./kickoff-time";
 
-export const revalidate = 43200;
+export const revalidate = 86400;
 
 export default async function Home() {
   const { fixtures, members, degraded } = await getSchedule();

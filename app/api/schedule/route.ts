@@ -1,6 +1,6 @@
 import { getSchedule } from "@/lib/schedule";
 
-export const revalidate = 43200;
+export const revalidate = 86400;
 
 export async function GET() {
   const schedule = await getSchedule();
@@ -14,7 +14,7 @@ export async function GET() {
     },
     {
       headers: {
-        "Cache-Control": "public, s-maxage=43200, stale-while-revalidate=86400",
+        "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=172800",
         "Access-Control-Allow-Origin": "*",
       },
     },
