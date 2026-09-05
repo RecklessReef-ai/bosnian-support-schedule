@@ -51,6 +51,14 @@ export interface FixturesFile {
   fixtures: RawFixtureRecord[];
   /** Clubs whose fetch failed during the refresh. Their matches are missing. */
   unavailableClubs: Club[];
+  /** When each Club was last fetched, so a refresh can skip ones still fresh. */
+  clubs: ClubFetchRecord[];
+}
+
+export interface ClubFetchRecord {
+  id: number;
+  name: string;
+  fetchedAt: string;
 }
 
 /** The upstream fixture shape, trimmed to what the app renders. */

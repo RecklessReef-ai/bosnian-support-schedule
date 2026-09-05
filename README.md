@@ -86,13 +86,18 @@ spend anything:
 
 | Script | Calls | How often |
 | --- | --- | --- |
-| `refresh:fixtures` | ~39 (1 per club) | daily |
-| `refresh:roster` | ~64 (1 per player) | after each call-up window |
+| `refresh:fixtures` | ~19/day average (39 on a full refresh) | daily |
+| `refresh:roster` | ~64 (1 per player), resumes from disk | after each call-up window |
 
 That fits the **free tier** (100/day, ~10/minute), which is what this layout is for.
-One caveat: **don't run both scripts on the same day** — 39 + 64 exceeds 100. The
-scripts pace themselves at ~6.5s per call to stay under the per-minute cap, so a
-fixture refresh takes about four minutes.
+The scripts pace themselves at ~6.5s per call to stay under the per-minute cap.
+
+`refresh:fixtures` only fetches clubs whose stored data has gone stale. One call
+returns a club's next ~20 matches — months, against a 21-day display window — so
+re-fetching every club daily spent most of its calls re-downloading unchanged data.
+Clubs playing within three days are re-checked every run, since those are the
+fixtures that move; everything else is re-checked at least every four days. Measured
+over a week that is 136 calls rather than 273. Use `--all` to force a full refresh.
 
 Rendering used to fetch every club, three times over (page, JSON, ICS), for ~120
 calls a day. Over the per-minute cap API-Football replies HTTP 200 with a `rateLimit`

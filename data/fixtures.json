@@ -1,84 +1,6 @@
 {
-  "generatedAt": "2026-09-05T15:59:36.035Z",
+  "generatedAt": "2026-09-05T16:09:20.196Z",
   "fixtures": [
-    {
-      "fixture": {
-        "id": 1548522,
-        "date": "2026-09-05T16:00:00+00:00",
-        "venue": {
-          "name": "Stadion Maksimir"
-        }
-      },
-      "league": {
-        "name": "HNL",
-        "logo": "https://media.api-sports.io/football/leagues/210.png",
-        "round": "Regular Season - 6"
-      },
-      "teams": {
-        "home": {
-          "id": 620,
-          "name": "Dinamo Zagreb",
-          "logo": "https://media.api-sports.io/football/teams/620.png"
-        },
-        "away": {
-          "id": 1068,
-          "name": "HNK Gorica",
-          "logo": "https://media.api-sports.io/football/teams/1068.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1555384,
-        "date": "2026-09-05T16:00:00+00:00",
-        "venue": {
-          "name": "Stadion Wankdorf"
-        }
-      },
-      "league": {
-        "name": "Super League",
-        "logo": "https://media.api-sports.io/football/leagues/207.png",
-        "round": "Regular Season - 7"
-      },
-      "teams": {
-        "home": {
-          "id": 565,
-          "name": "BSC Young Boys",
-          "logo": "https://media.api-sports.io/football/teams/565.png"
-        },
-        "away": {
-          "id": 644,
-          "name": "FC Luzern",
-          "logo": "https://media.api-sports.io/football/teams/644.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1560011,
-        "date": "2026-09-05T16:00:00+00:00",
-        "venue": {
-          "name": "Town Stadium Karvina"
-        }
-      },
-      "league": {
-        "name": "Czech Liga",
-        "logo": "https://media.api-sports.io/football/leagues/345.png",
-        "round": "Regular Season - 7"
-      },
-      "teams": {
-        "home": {
-          "id": 4257,
-          "name": "Artis",
-          "logo": "https://media.api-sports.io/football/teams/4257.png"
-        },
-        "away": {
-          "id": 567,
-          "name": "Plzen",
-          "logo": "https://media.api-sports.io/football/teams/567.png"
-        }
-      }
-    },
     {
       "fixture": {
         "id": 1575156,
@@ -12691,6 +12613,58 @@
     },
     {
       "fixture": {
+        "id": 1636320,
+        "date": "2027-01-21T17:45:00+00:00",
+        "venue": {
+          "name": "Anoeta"
+        }
+      },
+      "league": {
+        "name": "UEFA Europa League",
+        "logo": "https://media.api-sports.io/football/leagues/3.png",
+        "round": "League Stage - 7"
+      },
+      "teams": {
+        "home": {
+          "id": 548,
+          "name": "Real Sociedad",
+          "logo": "https://media.api-sports.io/football/teams/548.png"
+        },
+        "away": {
+          "id": 567,
+          "name": "Plzen",
+          "logo": "https://media.api-sports.io/football/teams/567.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1636220,
+        "date": "2027-01-21T20:00:00+00:00",
+        "venue": {
+          "name": "AFAS Stadion"
+        }
+      },
+      "league": {
+        "name": "UEFA Europa League",
+        "logo": "https://media.api-sports.io/football/leagues/3.png",
+        "round": "League Stage - 7"
+      },
+      "teams": {
+        "home": {
+          "id": 201,
+          "name": "AZ Alkmaar",
+          "logo": "https://media.api-sports.io/football/teams/201.png"
+        },
+        "away": {
+          "id": 620,
+          "name": "Dinamo Zagreb",
+          "logo": "https://media.api-sports.io/football/teams/620.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1636224,
         "date": "2027-01-21T20:00:00+00:00",
         "venue": {
@@ -14574,5 +14548,202 @@
       }
     }
   ],
-  "unavailableClubs": []
+  "unavailableClubs": [],
+  "clubs": [
+    {
+      "id": 63,
+      "name": "Leeds",
+      "fetchedAt": "2026-09-05T16:09:01.442Z"
+    },
+    {
+      "id": 172,
+      "name": "VfB Stuttgart",
+      "fetchedAt": "2026-09-05T16:09:05.025Z"
+    },
+    {
+      "id": 174,
+      "name": "FC Schalke 04",
+      "fetchedAt": "2026-09-05T16:09:00.869Z"
+    },
+    {
+      "id": 197,
+      "name": "PSV Eindhoven",
+      "fetchedAt": "2026-09-05T16:09:04.514Z"
+    },
+    {
+      "id": 211,
+      "name": "Benfica",
+      "fetchedAt": "2026-09-05T16:09:00.422Z"
+    },
+    {
+      "id": 407,
+      "name": "Brondby",
+      "fetchedAt": "2026-09-05T16:09:03.593Z"
+    },
+    {
+      "id": 496,
+      "name": "Juventus",
+      "fetchedAt": "2026-09-05T16:09:04.322Z"
+    },
+    {
+      "id": 499,
+      "name": "Atalanta",
+      "fetchedAt": "2026-09-05T16:09:01.119Z"
+    },
+    {
+      "id": 549,
+      "name": "Beşiktaş",
+      "fetchedAt": "2026-09-05T16:09:02.830Z"
+    },
+    {
+      "id": 556,
+      "name": "Qarabag",
+      "fetchedAt": "2026-09-05T16:08:59.870Z"
+    },
+    {
+      "id": 562,
+      "name": "FC Astana",
+      "fetchedAt": "2026-09-05T16:09:02.261Z"
+    },
+    {
+      "id": 565,
+      "name": "BSC Young Boys",
+      "fetchedAt": "2026-09-05T16:09:02.467Z"
+    },
+    {
+      "id": 567,
+      "name": "Plzen",
+      "fetchedAt": "2026-09-05T16:09:03.741Z"
+    },
+    {
+      "id": 571,
+      "name": "Red Bull Salzburg",
+      "fetchedAt": "2026-09-05T16:09:05.538Z"
+    },
+    {
+      "id": 608,
+      "name": "HNK Hajduk Split",
+      "fetchedAt": "2026-09-05T16:09:00.730Z"
+    },
+    {
+      "id": 620,
+      "name": "Dinamo Zagreb",
+      "fetchedAt": "2026-09-05T16:09:01.956Z"
+    },
+    {
+      "id": 637,
+      "name": "Sturm Graz",
+      "fetchedAt": "2026-09-05T16:09:00.218Z"
+    },
+    {
+      "id": 735,
+      "name": "St. Truiden",
+      "fetchedAt": "2026-09-05T16:09:04.746Z"
+    },
+    {
+      "id": 785,
+      "name": "Karlsruher SC",
+      "fetchedAt": "2026-09-05T16:09:04.106Z"
+    },
+    {
+      "id": 1009,
+      "name": "Erzurumspor FK",
+      "fetchedAt": "2026-09-05T16:09:01.622Z"
+    },
+    {
+      "id": 1869,
+      "name": "Turbine Potsdam W",
+      "fetchedAt": "2026-09-05T16:09:07.590Z"
+    },
+    {
+      "id": 2599,
+      "name": "Universitatea Cluj",
+      "fetchedAt": "2026-09-05T16:09:05.333Z"
+    },
+    {
+      "id": 2998,
+      "name": "Houston Dash W",
+      "fetchedAt": "2026-09-05T16:09:08.821Z"
+    },
+    {
+      "id": 3403,
+      "name": "Pafos",
+      "fetchedAt": "2026-09-05T16:09:03.285Z"
+    },
+    {
+      "id": 6343,
+      "name": "Çorum FK",
+      "fetchedAt": "2026-09-05T16:09:03.100Z"
+    },
+    {
+      "id": 7533,
+      "name": "Inter Milano W",
+      "fetchedAt": "2026-09-05T16:09:06.793Z"
+    },
+    {
+      "id": 10902,
+      "name": "SFK 2000 W",
+      "fetchedAt": "2026-09-05T16:09:07.099Z"
+    },
+    {
+      "id": 10903,
+      "name": "Spartak Subotica W",
+      "fetchedAt": "2026-09-05T16:09:07.306Z"
+    },
+    {
+      "id": 10904,
+      "name": "Split W",
+      "fetchedAt": "2026-09-05T16:09:07.844Z"
+    },
+    {
+      "id": 10915,
+      "name": "PAOK W",
+      "fetchedAt": "2026-09-05T16:09:09.326Z"
+    },
+    {
+      "id": 10916,
+      "name": "Górnik Łęczna W",
+      "fetchedAt": "2026-09-05T16:09:09.122Z"
+    },
+    {
+      "id": 13981,
+      "name": "KoldingQ W",
+      "fetchedAt": "2026-09-05T16:09:05.740Z"
+    },
+    {
+      "id": 14131,
+      "name": "CSKA Moskva W",
+      "fetchedAt": "2026-09-05T16:09:08.306Z"
+    },
+    {
+      "id": 14132,
+      "name": "Lokomotiv Moskva W",
+      "fetchedAt": "2026-09-05T16:09:08.035Z"
+    },
+    {
+      "id": 15954,
+      "name": "Arna-Bjørnar W",
+      "fetchedAt": "2026-09-05T16:09:06.563Z"
+    },
+    {
+      "id": 16038,
+      "name": "Basel W",
+      "fetchedAt": "2026-09-05T16:09:08.610Z"
+    },
+    {
+      "id": 20498,
+      "name": "Hamburger SV W",
+      "fetchedAt": "2026-09-05T16:09:06.144Z"
+    },
+    {
+      "id": 26738,
+      "name": "Al Diriyah",
+      "fetchedAt": "2026-09-05T16:08:59.724Z"
+    },
+    {
+      "id": 27869,
+      "name": "Hajduk Split W",
+      "fetchedAt": "2026-09-05T16:09:06.376Z"
+    }
+  ]
 }

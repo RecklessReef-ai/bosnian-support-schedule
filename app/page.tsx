@@ -42,9 +42,8 @@ export default async function Home() {
 
       {degraded && (
         <p className="mb-6 rounded-xl border border-accent/40 bg-accent/10 p-4 text-sm text-foreground">
-          No <code className="text-accent">API_FOOTBALL_KEY</code> is configured, so
-          fixtures can&apos;t be loaded. The squads below come from the committed
-          roster.
+          No fixtures are stored yet, so only the squads are shown. Run{" "}
+          <code className="text-accent">npm run refresh:fixtures</code> to fetch them.
         </p>
       )}
 
