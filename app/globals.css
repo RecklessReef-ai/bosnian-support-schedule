@@ -1,33 +1,148 @@
 @import "tailwindcss";
 
+/* "Jadran" — the Pričaj design tokens, shared verbatim so the two sites read as
+   one family: Adriatic limestone and harbour ink (OKLCH). Light is whitewashed
+   stone in the sun; dark is the same harbour after it. Accent roles hold across
+   both: teal = sea, honey = sand (the schedule's own accent, and the flag's
+   yellow), coral = terracotta roof, sage = olive.
+   `--faint` is this site's one addition: a third text level the dense fixture
+   rows need, sitting a step below --muted. */
 :root {
-  --background: #0b1020;
-  --surface: #141b30;
-  --surface-raised: #1b2440;
-  --border: #27324f;
-  --foreground: #eef2ff;
-  --muted: #8f9cbd;
-  --faint: #5d6a8c;
-  --accent: #f2c94c;
-  --accent-deep: #0b3f8f;
+  --page-bg: oklch(92% 0.012 85);
+  --bg: oklch(96.5% 0.008 85);
+  --app: oklch(95% 0.010 85);
+  --card: oklch(99.5% 0.003 85);
+  --fg: oklch(24% 0.030 225);
+  --muted: oklch(48% 0.022 220);
+  --faint: oklch(62% 0.018 220);
+  --line: oklch(89% 0.018 85);
+  --on-accent: oklch(97% 0.008 85);
+  --teal: oklch(42% 0.075 225);
+  --teal-soft: oklch(93% 0.028 220);
+  --honey: oklch(62% 0.095 80);
+  --honey-soft: oklch(94% 0.038 80);
+  --honey-text: oklch(42% 0.075 65);
+  --coral: oklch(60% 0.120 45);
+  --coral-soft: oklch(93% 0.042 45);
+  --coral-text: oklch(45% 0.105 42);
+  --sage: oklch(48% 0.070 145);
+  --sage-soft: oklch(93% 0.030 145);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page-bg: oklch(15% 0.022 235);
+    --bg: oklch(20% 0.026 233);
+    --app: oklch(17.5% 0.024 234);
+    --card: oklch(24% 0.028 232);
+    --fg: oklch(94% 0.010 85);
+    --muted: oklch(70% 0.020 220);
+    --faint: oklch(58% 0.020 220);
+    --line: oklch(31% 0.026 232);
+    --on-accent: oklch(15% 0.022 235);
+    --teal: oklch(76% 0.085 215);
+    --teal-soft: oklch(30% 0.045 220);
+    --honey: oklch(80% 0.095 80);
+    --honey-soft: oklch(31% 0.050 75);
+    --honey-text: oklch(88% 0.070 80);
+    --coral: oklch(73% 0.115 45);
+    --coral-soft: oklch(31% 0.055 42);
+    --coral-text: oklch(86% 0.080 45);
+    --sage: oklch(74% 0.070 145);
+    --sage-soft: oklch(28% 0.045 145);
+  }
+}
+
+/* Explicit theme toggle wins over the OS preference, both directions. */
+:root[data-theme="light"] {
+  --page-bg: oklch(92% 0.012 85);
+  --bg: oklch(96.5% 0.008 85);
+  --app: oklch(95% 0.010 85);
+  --card: oklch(99.5% 0.003 85);
+  --fg: oklch(24% 0.030 225);
+  --muted: oklch(48% 0.022 220);
+  --faint: oklch(62% 0.018 220);
+  --line: oklch(89% 0.018 85);
+  --on-accent: oklch(97% 0.008 85);
+  --teal: oklch(42% 0.075 225);
+  --teal-soft: oklch(93% 0.028 220);
+  --honey: oklch(62% 0.095 80);
+  --honey-soft: oklch(94% 0.038 80);
+  --honey-text: oklch(42% 0.075 65);
+  --coral: oklch(60% 0.120 45);
+  --coral-soft: oklch(93% 0.042 45);
+  --coral-text: oklch(45% 0.105 42);
+  --sage: oklch(48% 0.070 145);
+  --sage-soft: oklch(93% 0.030 145);
+}
+:root[data-theme="dark"] {
+  --page-bg: oklch(15% 0.022 235);
+  --bg: oklch(20% 0.026 233);
+  --app: oklch(17.5% 0.024 234);
+  --card: oklch(24% 0.028 232);
+  --fg: oklch(94% 0.010 85);
+  --muted: oklch(70% 0.020 220);
+  --faint: oklch(58% 0.020 220);
+  --line: oklch(31% 0.026 232);
+  --on-accent: oklch(15% 0.022 235);
+  --teal: oklch(76% 0.085 215);
+  --teal-soft: oklch(30% 0.045 220);
+  --honey: oklch(80% 0.095 80);
+  --honey-soft: oklch(31% 0.050 75);
+  --honey-text: oklch(88% 0.070 80);
+  --coral: oklch(73% 0.115 45);
+  --coral-soft: oklch(31% 0.055 42);
+  --coral-text: oklch(86% 0.080 45);
+  --sage: oklch(74% 0.070 145);
+  --sage-soft: oklch(28% 0.045 145);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-surface: var(--surface);
-  --color-surface-raised: var(--surface-raised);
-  --color-border-subtle: var(--border);
-  --color-foreground: var(--foreground);
+  --color-page: var(--page-bg);
+  --color-app: var(--app);
+  --color-bg: var(--bg);
+  --color-card: var(--card);
+  --color-fg: var(--fg);
   --color-muted: var(--muted);
   --color-faint: var(--faint);
-  --color-accent: var(--accent);
-  --color-accent-deep: var(--accent-deep);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-line: var(--line);
+  --color-on-accent: var(--on-accent);
+  --color-teal: var(--teal);
+  --color-teal-soft: var(--teal-soft);
+  --color-honey: var(--honey);
+  --color-honey-soft: var(--honey-soft);
+  --color-honey-text: var(--honey-text);
+  --color-coral: var(--coral);
+  --color-coral-soft: var(--coral-soft);
+  --color-coral-text: var(--coral-text);
+  --color-sage: var(--sage);
+  --color-sage-soft: var(--sage-soft);
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-karla);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  background: var(--page-bg);
+  color: var(--fg);
+  font-family: var(--font-karla), system-ui, sans-serif;
+  transition: background 0.3s ease;
+}
+
+.wave-rule {
+  height: 14px;
+  background: radial-gradient(
+      circle at 7px 14px,
+      transparent 6.5px,
+      var(--line) 7px 7.6px,
+      transparent 8px
+    )
+    0 0 / 14px 14px repeat-x;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

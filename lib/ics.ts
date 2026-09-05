@@ -45,11 +45,11 @@ export function buildIcs(fixtures: Fixture[], feedUrl: string): string {
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Bosnian Support Schedule//EN",
+    "PRODID:-//Pricaj//Bosnian Support Schedule//EN",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "X-WR-CALNAME:Bosnian Support Schedule",
-    "X-WR-CALDESC:Upcoming club matches for Bosnia and Herzegovina national team members",
+    "X-WR-CALDESC:Upcoming club matches for Bosnia and Herzegovina national team members. Built by Pricaj — pricaj.vercel.app",
     "REFRESH-INTERVAL;VALUE=DURATION:PT12H",
     "X-PUBLISHED-TTL:PT12H",
   ];

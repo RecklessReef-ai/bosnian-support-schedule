@@ -11,7 +11,7 @@ function SquadColumn({
 
   return (
     <div className="flex-1 min-w-[16rem]">
-      <h3 className="mb-2 text-sm font-semibold text-accent">
+      <h3 className="mb-2.5 text-[11.5px] font-semibold uppercase tracking-[0.12em] text-honey-text">
         {title}{" "}
         <span className="font-normal text-faint">({members.length})</span>
       </h3>
@@ -19,16 +19,16 @@ function SquadColumn({
         {members.map((member) => (
           <li
             key={member.id}
-            className="flex items-baseline justify-between gap-3 border-b border-border-subtle/60 py-1.5 text-sm"
+            className="flex items-baseline justify-between gap-3 border-b border-line py-1.5 text-[13.5px]"
           >
-            <span className="text-foreground">{member.name}</span>
-            <span className="text-right text-xs text-muted">
+            <span className="text-fg">{member.name}</span>
+            <span className="text-right text-[12.5px] text-muted">
               {member.club?.name ?? (
                 <span className="text-faint italic">no club resolved</span>
               )}
               {member.clubOverridden && (
                 <span
-                  className="ml-1 text-accent"
+                  className="ml-1 text-coral-text"
                   title="Set by manual override"
                   aria-label="Set by manual override"
                 >
@@ -47,8 +47,10 @@ export function SquadList({ members }: { members: NationalTeamMember[] }) {
   const byName = [...members].sort((a, b) => a.name.localeCompare(b.name));
 
   return (
-    <section className="mt-12 border-t border-border-subtle pt-8">
-      <h2 className="mb-4 text-lg font-semibold">Who we&apos;re tracking</h2>
+    <section className="mt-12 border-t border-line pt-8">
+      <h2 className="mb-5 font-display text-[19px] font-semibold tracking-tight text-fg">
+        Who we&apos;re tracking
+      </h2>
       <div className="flex flex-wrap gap-x-10 gap-y-6">
         <SquadColumn
           title="Men's national team"

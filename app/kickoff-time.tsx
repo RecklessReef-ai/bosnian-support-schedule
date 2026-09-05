@@ -15,13 +15,15 @@ export function KickoffTime({ kickoff }: { kickoff: string }) {
       <span
         className={
           primaryIsLocal
-            ? "text-lg font-semibold text-foreground"
-            : "text-lg font-semibold text-muted"
+            ? "text-[17px] font-bold text-fg"
+            : "text-[17px] font-bold text-muted"
         }
       >
         {primary}
       </span>
-      {secondary && <span className="text-[11px] text-faint">{secondary}</span>}
+      {secondary && (
+        <span className="text-[11px] text-faint">{secondary}</span>
+      )}
     </div>
   );
 }
@@ -46,11 +48,11 @@ export function TimezoneNote() {
   // Before hydration every time on the page is labelled UTC, so say that rather
   // than rendering nothing and leaving the reader to assume it's local.
   if (!zone) {
-    return <p className="text-xs text-faint">Times shown in UTC.</p>;
+    return <p className="text-[12px] text-faint">Times shown in UTC.</p>;
   }
 
   return (
-    <p className="text-xs text-faint">
+    <p className="text-[12px] text-faint">
       Times shown in your timezone ({zone}), with UTC underneath.
     </p>
   );

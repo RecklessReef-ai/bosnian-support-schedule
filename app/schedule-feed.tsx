@@ -50,8 +50,8 @@ export function ScheduleFeed({
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="flex rounded-lg border border-border-subtle bg-surface p-1">
+      <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex gap-1 rounded-full border border-line bg-card p-1">
           {(["all", "men", "women"] as const).map((option) => (
             <button
               key={option}
@@ -60,10 +60,10 @@ export function ScheduleFeed({
                 setSquad(option);
                 setPlayerId("all");
               }}
-              className={`rounded-md px-3 py-1.5 text-sm font-medium capitalize transition ${
+              className={`rounded-full px-3.5 py-1.5 text-[13px] font-semibold capitalize transition-colors ${
                 squad === option
-                  ? "bg-accent text-[#0b1020]"
-                  : "text-muted hover:text-foreground"
+                  ? "bg-teal-soft text-teal"
+                  : "text-muted hover:text-fg"
               }`}
             >
               {option === "all" ? "Both squads" : option}
@@ -74,7 +74,7 @@ export function ScheduleFeed({
         <select
           value={playerId}
           onChange={(e) => setPlayerId(e.target.value)}
-          className="rounded-lg border border-border-subtle bg-surface px-3 py-2 text-sm text-foreground"
+          className="rounded-full border border-line bg-card px-4 py-2 text-[13px] text-fg outline-none focus:border-teal"
           aria-label="Filter by player"
         >
           <option value="all">All players</option>
@@ -86,35 +86,36 @@ export function ScheduleFeed({
           ))}
         </select>
 
-        <span className="text-sm text-muted">
+        <span className="text-[13px] text-muted">
           {visible.length} upcoming {visible.length === 1 ? "match" : "matches"}
         </span>
       </div>
 
       {groups.length === 0 ? (
-        <p className="rounded-xl border border-border-subtle bg-surface p-6 text-sm text-muted">
+        <p className="rounded-[20px] border border-line bg-card p-7 text-center text-[14px] text-muted">
           No upcoming matches for this filter.
         </p>
       ) : (
         groups.map(([key, dayFixtures]) => (
           <section key={key} className="flex flex-col gap-2">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-accent">
+            <h2 className="text-[11.5px] font-semibold uppercase tracking-[0.12em] text-honey-text">
               <DayHeading kickoff={dayFixtures[0].kickoff} />
             </h2>
             <ul className="flex flex-col gap-2">
               {dayFixtures.map((fixture) => (
                 <li
                   key={fixture.id}
-                  className="flex flex-wrap items-center gap-x-5 gap-y-3 rounded-xl border border-border-subtle bg-surface p-4"
+                  className="flex flex-wrap items-center gap-x-5 gap-y-3 rounded-[20px] border border-line bg-card p-4"
                 >
                   <KickoffTime kickoff={fixture.kickoff} />
 
                   <div className="min-w-[14rem] flex-1">
-                    <p className="font-medium text-foreground">
+                    <p className="text-[15px] font-semibold text-fg">
                       {fixture.home.name}{" "}
-                      <span className="text-faint">v</span> {fixture.away.name}
+                      <span className="font-normal text-faint">v</span>{" "}
+                      {fixture.away.name}
                     </p>
-                    <p className="text-xs text-muted">
+                    <p className="text-[12.5px] text-muted">
                       {fixture.competition}
                       {fixture.round ? ` · ${fixture.round}` : ""}
                     </p>
@@ -124,12 +125,14 @@ export function ScheduleFeed({
                     {fixture.members.map((member) => (
                       <li
                         key={member.id}
-                        className="rounded-full border border-border-subtle bg-surface-raised px-2.5 py-1 text-xs text-foreground"
+                        className="rounded-full border border-line bg-bg px-2.5 py-1 text-[12px] text-fg"
                         title={`${member.name} — ${member.squad === "women" ? "Women's" : "Men's"} national team`}
                       >
                         {member.name}
                         {member.squad === "women" && (
-                          <span className="ml-1 text-accent">W</span>
+                          <span className="ml-1 font-semibold text-coral-text">
+                            W
+                          </span>
                         )}
                       </li>
                     ))}
