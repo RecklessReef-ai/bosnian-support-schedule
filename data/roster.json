@@ -1,0 +1,621 @@
+{
+  "generatedAt": "2026-09-05T14:29:47.634Z",
+  "members": [
+    {
+      "id": 446130,
+      "name": "M. Jurkas",
+      "photo": "https://media.api-sports.io/football/players/446130.png",
+      "position": "Goalkeeper",
+      "squad": "men",
+      "club": null
+    },
+    {
+      "id": 9026,
+      "name": "N. Vasilj",
+      "photo": "https://media.api-sports.io/football/players/9026.png",
+      "position": "Goalkeeper",
+      "squad": "men",
+      "club": {
+        "id": 26738,
+        "name": "Al Diriyah",
+        "logo": "https://media.api-sports.io/football/teams/26738.png"
+      }
+    },
+    {
+      "id": 108370,
+      "name": "M. Zlomislic",
+      "photo": "https://media.api-sports.io/football/players/108370.png",
+      "position": "Goalkeeper",
+      "squad": "men",
+      "club": {
+        "id": 556,
+        "name": "Qarabag",
+        "logo": "https://media.api-sports.io/football/teams/556.png"
+      }
+    },
+    {
+      "id": 409670,
+      "name": "A. Malic",
+      "photo": "https://media.api-sports.io/football/players/409670.png",
+      "position": "Defender",
+      "squad": "men",
+      "club": {
+        "id": 637,
+        "name": "Sturm Graz",
+        "logo": "https://media.api-sports.io/football/teams/637.png"
+      }
+    },
+    {
+      "id": 7318,
+      "name": "A. Dedic",
+      "photo": "https://media.api-sports.io/football/players/7318.png",
+      "position": "Defender",
+      "squad": "men",
+      "club": {
+        "id": 211,
+        "name": "Benfica",
+        "logo": "https://media.api-sports.io/football/teams/211.png"
+      }
+    },
+    {
+      "id": 53517,
+      "name": "D. Hadzikadunic",
+      "photo": "https://media.api-sports.io/football/players/53517.png",
+      "position": "Defender",
+      "squad": "men",
+      "club": {
+        "id": 608,
+        "name": "HNK Hajduk Split",
+        "logo": "https://media.api-sports.io/football/teams/608.png"
+      }
+    },
+    {
+      "id": 1741,
+      "name": "N. Katic",
+      "photo": "https://media.api-sports.io/football/players/1741.png",
+      "position": "Defender",
+      "squad": "men",
+      "club": {
+        "id": 174,
+        "name": "FC Schalke 04",
+        "logo": "https://media.api-sports.io/football/teams/174.png"
+      }
+    },
+    {
+      "id": 1442,
+      "name": "S. Kolasinac",
+      "photo": "https://media.api-sports.io/football/players/1442.png",
+      "position": "Defender",
+      "squad": "men",
+      "club": {
+        "id": 499,
+        "name": "Atalanta",
+        "logo": "https://media.api-sports.io/football/teams/499.png"
+      }
+    },
+    {
+      "id": 271350,
+      "name": "T. Muharemovic",
+      "photo": "https://media.api-sports.io/football/players/271350.png",
+      "position": "Defender",
+      "squad": "men",
+      "club": {
+        "id": 63,
+        "name": "Leeds",
+        "logo": "https://media.api-sports.io/football/teams/63.png"
+      }
+    },
+    {
+      "id": 76867,
+      "name": "N. Mujakic",
+      "photo": "https://media.api-sports.io/football/players/76867.png",
+      "position": "Defender",
+      "squad": "men",
+      "club": {
+        "id": 1009,
+        "name": "Erzurumspor FK",
+        "logo": "https://media.api-sports.io/football/teams/1009.png"
+      }
+    },
+    {
+      "id": 14301,
+      "name": "S. Radeljic",
+      "photo": "https://media.api-sports.io/football/players/14301.png",
+      "position": "Defender",
+      "squad": "men",
+      "club": {
+        "id": 620,
+        "name": "Dinamo Zagreb",
+        "logo": "https://media.api-sports.io/football/teams/620.png"
+      }
+    },
+    {
+      "id": 162222,
+      "name": "I. Basic",
+      "photo": "https://media.api-sports.io/football/players/162222.png",
+      "position": "Midfielder",
+      "squad": "men",
+      "club": {
+        "id": 562,
+        "name": "FC Astana",
+        "logo": "https://media.api-sports.io/football/teams/562.png"
+      }
+    },
+    {
+      "id": 70514,
+      "name": "A. Gigovic",
+      "photo": "https://media.api-sports.io/football/players/70514.png",
+      "position": "Midfielder",
+      "squad": "men",
+      "club": {
+        "id": 565,
+        "name": "BSC Young Boys",
+        "logo": "https://media.api-sports.io/football/teams/565.png"
+      }
+    },
+    {
+      "id": 50006,
+      "name": "A. Hadziahmetovic",
+      "photo": "https://media.api-sports.io/football/players/50006.png",
+      "position": "Midfielder",
+      "squad": "men",
+      "club": {
+        "id": 549,
+        "name": "Beşiktaş",
+        "logo": "https://media.api-sports.io/football/teams/549.png"
+      }
+    },
+    {
+      "id": 340173,
+      "name": "Ermin Mahmic",
+      "photo": "https://media.api-sports.io/football/players/340173.png",
+      "position": "Midfielder",
+      "squad": "men",
+      "club": {
+        "id": 6343,
+        "name": "Çorum FK",
+        "logo": "https://media.api-sports.io/football/teams/6343.png"
+      }
+    },
+    {
+      "id": 1324,
+      "name": "I. Sunjic",
+      "photo": "https://media.api-sports.io/football/players/1324.png",
+      "position": "Midfielder",
+      "squad": "men",
+      "club": {
+        "id": 3403,
+        "name": "Pafos",
+        "logo": "https://media.api-sports.io/football/teams/3403.png"
+      }
+    },
+    {
+      "id": 264094,
+      "name": "B. Tahirovic",
+      "photo": "https://media.api-sports.io/football/players/264094.png",
+      "position": "Midfielder",
+      "squad": "men",
+      "club": {
+        "id": 407,
+        "name": "Brondby",
+        "logo": "https://media.api-sports.io/football/teams/407.png"
+      }
+    },
+    {
+      "id": 322101,
+      "name": "A. Memic",
+      "photo": "https://media.api-sports.io/football/players/322101.png",
+      "position": "Midfielder",
+      "squad": "men",
+      "club": {
+        "id": 567,
+        "name": "Plzen",
+        "logo": "https://media.api-sports.io/football/teams/567.png"
+      }
+    },
+    {
+      "id": 25129,
+      "name": "D. Burnic",
+      "photo": "https://media.api-sports.io/football/players/25129.png",
+      "position": "Midfielder",
+      "squad": "men",
+      "club": {
+        "id": 785,
+        "name": "Karlsruher SC",
+        "logo": "https://media.api-sports.io/football/teams/785.png"
+      }
+    },
+    {
+      "id": 395559,
+      "name": "Kerim-Sam Alajbegovic",
+      "photo": "https://media.api-sports.io/football/players/395559.png",
+      "position": "Midfielder",
+      "squad": "men",
+      "club": {
+        "id": 496,
+        "name": "Juventus",
+        "logo": "https://media.api-sports.io/football/teams/496.png"
+      }
+    },
+    {
+      "id": 329409,
+      "name": "E. Bajraktarevic",
+      "photo": "https://media.api-sports.io/football/players/329409.png",
+      "position": "Midfielder",
+      "squad": "men",
+      "club": {
+        "id": 197,
+        "name": "PSV Eindhoven",
+        "logo": "https://media.api-sports.io/football/teams/197.png"
+      }
+    },
+    {
+      "id": 314377,
+      "name": "S. Bazdar",
+      "photo": "https://media.api-sports.io/football/players/314377.png",
+      "position": "Attacker",
+      "squad": "men",
+      "club": {
+        "id": 735,
+        "name": "St. Truiden",
+        "logo": "https://media.api-sports.io/football/teams/735.png"
+      }
+    },
+    {
+      "id": 46930,
+      "name": "E. Demirovic",
+      "photo": "https://media.api-sports.io/football/players/46930.png",
+      "position": "Attacker",
+      "squad": "men",
+      "club": {
+        "id": 172,
+        "name": "VfB Stuttgart",
+        "logo": "https://media.api-sports.io/football/teams/172.png"
+      }
+    },
+    {
+      "id": 790,
+      "name": "E. Dzeko",
+      "photo": "https://media.api-sports.io/football/players/790.png",
+      "position": "Attacker",
+      "squad": "men",
+      "club": {
+        "id": 174,
+        "name": "FC Schalke 04",
+        "logo": "https://media.api-sports.io/football/teams/174.png"
+      }
+    },
+    {
+      "id": 77037,
+      "name": "J. Lukic",
+      "photo": "https://media.api-sports.io/football/players/77037.png",
+      "position": "Attacker",
+      "squad": "men",
+      "club": {
+        "id": 2599,
+        "name": "Universitatea Cluj",
+        "logo": "https://media.api-sports.io/football/teams/2599.png"
+      }
+    },
+    {
+      "id": 28382,
+      "name": "H. Tabakovic",
+      "photo": "https://media.api-sports.io/football/players/28382.png",
+      "position": "Attacker",
+      "squad": "men",
+      "club": {
+        "id": 571,
+        "name": "Red Bull Salzburg",
+        "logo": "https://media.api-sports.io/football/teams/571.png"
+      }
+    },
+    {
+      "id": 213752,
+      "name": "A. Hodžić",
+      "photo": "https://media.api-sports.io/football/players/213752.png",
+      "position": "Goalkeeper",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 299724,
+      "name": "I. Faković",
+      "photo": "https://media.api-sports.io/football/players/299724.png",
+      "position": "Goalkeeper",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 523189,
+      "name": "I. Dumanjić",
+      "photo": "https://media.api-sports.io/football/players/523189.png",
+      "position": "Goalkeeper",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 446806,
+      "name": "A. Delić",
+      "photo": "https://media.api-sports.io/football/players/446806.png",
+      "position": "Goalkeeper",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 517216,
+      "name": "L. Burek",
+      "photo": "https://media.api-sports.io/football/players/517216.png",
+      "position": "Goalkeeper",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 213456,
+      "name": "E. Hasanbegović",
+      "photo": "https://media.api-sports.io/football/players/213456.png",
+      "position": "Goalkeeper",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 213806,
+      "name": "M. Hasanbegović",
+      "photo": "https://media.api-sports.io/football/players/213806.png",
+      "position": "Defender",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 283215,
+      "name": "E. Veletanlic",
+      "photo": "https://media.api-sports.io/football/players/283215.png",
+      "position": "Defender",
+      "squad": "women",
+      "club": {
+        "id": 13981,
+        "name": "KoldingQ W",
+        "logo": "https://media.api-sports.io/football/teams/13981.png"
+      }
+    },
+    {
+      "id": 337042,
+      "name": "G. Slišković",
+      "photo": "https://media.api-sports.io/football/players/337042.png",
+      "position": "Defender",
+      "squad": "women",
+      "club": {
+        "id": 20498,
+        "name": "Hamburger SV W",
+        "logo": "https://media.api-sports.io/football/teams/20498.png"
+      }
+    },
+    {
+      "id": 458491,
+      "name": "N. Brnić",
+      "photo": "https://media.api-sports.io/football/players/458491.png",
+      "position": "Defender",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 422462,
+      "name": "S. Muhić",
+      "photo": "https://media.api-sports.io/football/players/422462.png",
+      "position": "Defender",
+      "squad": "women",
+      "club": {
+        "id": 15954,
+        "name": "Arna-Bjørnar W",
+        "logo": "https://media.api-sports.io/football/teams/15954.png"
+      }
+    },
+    {
+      "id": 290008,
+      "name": "M. Milinković",
+      "photo": "https://media.api-sports.io/football/players/290008.png",
+      "position": "Defender",
+      "squad": "women",
+      "club": {
+        "id": 7533,
+        "name": "Inter Milano W",
+        "logo": "https://media.api-sports.io/football/teams/7533.png"
+      }
+    },
+    {
+      "id": 446805,
+      "name": "A. Ćule",
+      "photo": "https://media.api-sports.io/football/players/446805.png",
+      "position": "Defender",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 363443,
+      "name": "E. Šabanagić",
+      "photo": "https://media.api-sports.io/football/players/363443.png",
+      "position": "Defender",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 299272,
+      "name": "A. Gavrić",
+      "photo": "https://media.api-sports.io/football/players/299272.png",
+      "position": "Defender",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 299196,
+      "name": "N. Milović",
+      "photo": "https://media.api-sports.io/football/players/299196.png",
+      "position": "Defender",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 510921,
+      "name": "L. Radulović",
+      "photo": "https://media.api-sports.io/football/players/510921.png",
+      "position": "Defender",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 290007,
+      "name": "Đ. Velagić",
+      "photo": "https://media.api-sports.io/football/players/290007.png",
+      "position": "Midfielder",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 213398,
+      "name": "A. Krajnić",
+      "photo": "https://media.api-sports.io/football/players/213398.png",
+      "position": "Midfielder",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 299479,
+      "name": "E. Taslidža",
+      "photo": "https://media.api-sports.io/football/players/299479.png",
+      "position": "Midfielder",
+      "squad": "women",
+      "club": {
+        "id": 1869,
+        "name": "Turbine Potsdam W",
+        "logo": "https://media.api-sports.io/football/teams/1869.png"
+      }
+    },
+    {
+      "id": 213292,
+      "name": "S. Kapetanović",
+      "photo": "https://media.api-sports.io/football/players/213292.png",
+      "position": "Midfielder",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 290374,
+      "name": "A. Hadžić",
+      "photo": "https://media.api-sports.io/football/players/290374.png",
+      "position": "Midfielder",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 290373,
+      "name": "A. Grebenar",
+      "photo": "https://media.api-sports.io/football/players/290373.png",
+      "position": "Midfielder",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 299194,
+      "name": "S. Krajšumović",
+      "photo": "https://media.api-sports.io/football/players/299194.png",
+      "position": "Midfielder",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 213746,
+      "name": "D. Spasojević",
+      "photo": "https://media.api-sports.io/football/players/213746.png",
+      "position": "Midfielder",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 441889,
+      "name": "E. Husić",
+      "photo": "https://media.api-sports.io/football/players/441889.png",
+      "position": "Midfielder",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 441861,
+      "name": "U. Rankić",
+      "photo": "https://media.api-sports.io/football/players/441861.png",
+      "position": "Midfielder",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 310541,
+      "name": "E. Ekic",
+      "photo": "https://media.api-sports.io/football/players/310541.png",
+      "position": "Attacker",
+      "squad": "women",
+      "club": {
+        "id": 2998,
+        "name": "Houston Dash W",
+        "logo": "https://media.api-sports.io/football/teams/2998.png"
+      }
+    },
+    {
+      "id": 88334,
+      "name": "M. Nikolić",
+      "photo": "https://media.api-sports.io/football/players/88334.png",
+      "position": "Attacker",
+      "squad": "women",
+      "club": {
+        "id": 16038,
+        "name": "Basel W",
+        "logo": "https://media.api-sports.io/football/teams/16038.png"
+      }
+    },
+    {
+      "id": 299478,
+      "name": "A. Zukić",
+      "photo": "https://media.api-sports.io/football/players/299478.png",
+      "position": "Attacker",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 299557,
+      "name": "S. Hasić",
+      "photo": "https://media.api-sports.io/football/players/299557.png",
+      "position": "Attacker",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": -744035497,
+      "name": "M. Hrelja",
+      "photo": null,
+      "position": "Attacker",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 524239,
+      "name": "A. Jurić",
+      "photo": "https://media.api-sports.io/football/players/524239.png",
+      "position": "Attacker",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 213243,
+      "name": "M. Medić",
+      "photo": "https://media.api-sports.io/football/players/213243.png",
+      "position": "Attacker",
+      "squad": "women",
+      "club": null
+    },
+    {
+      "id": 299273,
+      "name": "M. Gačanica",
+      "photo": "https://media.api-sports.io/football/players/299273.png",
+      "position": "Attacker",
+      "squad": "women",
+      "club": null
+    }
+  ]
+}
