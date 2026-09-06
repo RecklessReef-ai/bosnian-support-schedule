@@ -9,11 +9,7 @@ import { SCHEDULE_REVALIDATE_SECONDS } from "./cache-policy.ts";
  * stops the two drifting apart — which they already did once, leaving the constant
  * at 24h while every route said 12h.
  */
-const ROUTES = [
-  "app/page.tsx",
-  "app/api/schedule/route.ts",
-  "app/api/calendar.ics/route.ts",
-];
+const ROUTES = ["app/page.tsx", "app/api/schedule/route.ts"];
 
 const read = (path: string) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 

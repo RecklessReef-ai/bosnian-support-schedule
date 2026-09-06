@@ -18,8 +18,8 @@ const SHOW_AFTER_KICKOFF_MINUTES = 130;
 
 /**
  * Assembles the Schedule from the committed data files. Makes no upstream calls:
- * `npm run refresh:fixtures` does that offline, so all three surfaces — page, JSON
- * API, ICS feed — cost nothing to serve however often they are rendered.
+ * `npm run refresh:fixtures` does that offline, so both surfaces — page and JSON
+ * API — cost nothing to serve however often they are rendered.
  *
  * The horizon is applied here rather than at fetch time, so it stays measured from
  * now and not from whenever the refresh last ran.

@@ -2,14 +2,14 @@
  * Fetches each Club's upcoming fixtures and writes data/fixtures.json.
  *
  * This runs offline for the same reason the roster does. Serving the Schedule used
- * to fetch every Club at request time, and each of the three surfaces — page, JSON
- * API, ICS feed — did it independently, so a cold build made ~120 calls in a few
- * seconds. That fits no free tier, and over the per-minute cap the provider answers
- * HTTP 200 with a `rateLimit` body, so failures looked like "this club has no
- * matches" and Clubs silently vanished from the published Schedule.
+ * to fetch every Club at request time, and every surface did it independently, so a
+ * cold build made ~120 calls in a few seconds. That fits no free tier, and over the
+ * per-minute cap the provider answers HTTP 200 with a `rateLimit` body, so failures
+ * looked like "this club has no matches" and Clubs silently vanished from the
+ * published Schedule.
  *
  * Fetching here instead costs one call per Club, paced under the free tier's
- * ~10/minute cap, and the app then serves all three surfaces from this file with no
+ * ~10/minute cap, and the app then serves every surface from this file with no
  * upstream calls at all.
  *
  *   npm run refresh:fixtures

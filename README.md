@@ -28,7 +28,6 @@ is only needed to refresh them.
 | Surface | Path | Notes |
 | --- | --- | --- |
 | Website | `/` | Flat chronological feed, filterable by squad and player |
-| Calendar feed | `/api/calendar.ics` | Subscribe in Google/Apple Calendar |
 | JSON API | `/api/schedule` | Read-only, CORS-open |
 
 Kickoff times render in the viewer's own timezone, with UTC shown underneath in
@@ -73,10 +72,10 @@ npm test        # node:test, no extra dependencies
 ```
 
 The pure logic is covered: Schedule merging and the horizon (`lib/merge.ts`),
-kickoff formatting and day grouping (`lib/kickoff.ts`), ICS generation
-(`lib/ics.ts`), mojibake repair (`lib/text.ts`), bounded concurrency
-(`lib/concurrency.ts`), retry/throttle policy (`lib/pacing.ts`), synthetic member
-ids (`lib/ids.ts`), and rate-limit classification (`lib/api-football.ts`).
+kickoff formatting and day grouping (`lib/kickoff.ts`), mojibake repair
+(`lib/text.ts`), bounded concurrency (`lib/concurrency.ts`), retry/throttle policy
+(`lib/pacing.ts`), synthetic member ids (`lib/ids.ts`), and rate-limit
+classification (`lib/api-football.ts`).
 
 `lib/cache-policy.test.ts` is a guard rather than a unit test: Next.js needs
 `export const revalidate` to be a literal, so the routes can't import
@@ -103,15 +102,16 @@ Clubs playing within three days are re-checked every run, since those are the
 fixtures that move; everything else is re-checked at least every four days. Measured
 over a week that is 136 calls rather than 273. Use `--all` to force a full refresh.
 
-Rendering used to fetch every club, three times over (page, JSON, ICS), for ~120
-calls a day. Over the per-minute cap API-Football replies HTTP 200 with a `rateLimit`
-error body rather than 429, so those reads looked like "this club has no matches" and
-clubs vanished from the published schedule unnoticed. See ADR-0003.
+Rendering used to fetch every club, and each surface did it independently, for
+~120 calls a day. Over the per-minute cap API-Football replies HTTP 200 with a
+`rateLimit` error body rather than 429, so those reads looked like "this club has no
+matches" and clubs vanished from the published schedule unnoticed. See ADR-0003.
 
 ## Scope
 
-**In v1:** website, ICS feed, read-only JSON API, upcoming fixtures only, all
-competitions (league, cup, continental).
+**In v1:** website and read-only JSON API, upcoming fixtures only, all competitions
+(league, cup, continental). An ICS calendar feed was published early on and then
+withdrawn, so there are two surfaces to keep correct rather than three.
 
 **Deferred to v2:** player stats (goals, appearances, cards, minutes — already
 available from the same API), and an admin UI for editing Manual Overrides.

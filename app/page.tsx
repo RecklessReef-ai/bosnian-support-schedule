@@ -37,12 +37,6 @@ export default async function Home() {
         <TimezoneNote />
         <div className="mt-1 flex flex-wrap gap-2">
           <a
-            href="/api/calendar.ics"
-            className="rounded-full bg-fg px-5 py-3 text-[14.5px] font-semibold text-on-accent"
-          >
-            Subscribe to calendar
-          </a>
-          <a
             href="/api/schedule"
             className="rounded-full border border-line bg-card px-5 py-3 text-[14.5px] font-semibold text-muted transition-colors hover:text-fg"
           >
