@@ -1,0 +1,164 @@
+{
+  "generatedAt": "2026-09-06T01:54:43.228Z",
+  "squads": [
+    {
+      "squad": "men",
+      "teamId": 1113,
+      "status": "scheduled",
+      "fetchedAt": "2026-09-06T01:54:43.228Z",
+      "internationals": [
+        {
+          "fixture": {
+            "id": 1528885,
+            "date": "2026-09-25T18:45:00+00:00",
+            "venue": null
+          },
+          "league": {
+            "name": "UEFA Nations League",
+            "logo": "https://media.api-sports.io/football/leagues/5.png",
+            "round": "1"
+          },
+          "teams": {
+            "home": {
+              "id": 24,
+              "name": "Poland",
+              "logo": "https://media.api-sports.io/football/teams/24.png"
+            },
+            "away": {
+              "id": 1113,
+              "name": "Bosnia & Herzegovina",
+              "logo": "https://media.api-sports.io/football/teams/1113.png"
+            }
+          }
+        },
+        {
+          "fixture": {
+            "id": 1528908,
+            "date": "2026-09-28T18:45:00+00:00",
+            "venue": null
+          },
+          "league": {
+            "name": "UEFA Nations League",
+            "logo": "https://media.api-sports.io/football/leagues/5.png",
+            "round": "2"
+          },
+          "teams": {
+            "home": {
+              "id": 774,
+              "name": "Romania",
+              "logo": "https://media.api-sports.io/football/teams/774.png"
+            },
+            "away": {
+              "id": 1113,
+              "name": "Bosnia & Herzegovina",
+              "logo": "https://media.api-sports.io/football/teams/1113.png"
+            }
+          }
+        },
+        {
+          "fixture": {
+            "id": 1528929,
+            "date": "2026-10-02T18:45:00+00:00",
+            "venue": null
+          },
+          "league": {
+            "name": "UEFA Nations League",
+            "logo": "https://media.api-sports.io/football/leagues/5.png",
+            "round": "3"
+          },
+          "teams": {
+            "home": {
+              "id": 1113,
+              "name": "Bosnia & Herzegovina",
+              "logo": "https://media.api-sports.io/football/teams/1113.png"
+            },
+            "away": {
+              "id": 5,
+              "name": "Sweden",
+              "logo": "https://media.api-sports.io/football/teams/5.png"
+            }
+          }
+        },
+        {
+          "fixture": {
+            "id": 1528948,
+            "date": "2026-10-05T18:45:00+00:00",
+            "venue": null
+          },
+          "league": {
+            "name": "UEFA Nations League",
+            "logo": "https://media.api-sports.io/football/leagues/5.png",
+            "round": "4"
+          },
+          "teams": {
+            "home": {
+              "id": 1113,
+              "name": "Bosnia & Herzegovina",
+              "logo": "https://media.api-sports.io/football/teams/1113.png"
+            },
+            "away": {
+              "id": 24,
+              "name": "Poland",
+              "logo": "https://media.api-sports.io/football/teams/24.png"
+            }
+          }
+        },
+        {
+          "fixture": {
+            "id": 1528978,
+            "date": "2026-11-14T19:45:00+00:00",
+            "venue": null
+          },
+          "league": {
+            "name": "UEFA Nations League",
+            "logo": "https://media.api-sports.io/football/leagues/5.png",
+            "round": "5"
+          },
+          "teams": {
+            "home": {
+              "id": 5,
+              "name": "Sweden",
+              "logo": "https://media.api-sports.io/football/teams/5.png"
+            },
+            "away": {
+              "id": 1113,
+              "name": "Bosnia & Herzegovina",
+              "logo": "https://media.api-sports.io/football/teams/1113.png"
+            }
+          }
+        },
+        {
+          "fixture": {
+            "id": 1528999,
+            "date": "2026-11-17T19:45:00+00:00",
+            "venue": null
+          },
+          "league": {
+            "name": "UEFA Nations League",
+            "logo": "https://media.api-sports.io/football/leagues/5.png",
+            "round": "6"
+          },
+          "teams": {
+            "home": {
+              "id": 1113,
+              "name": "Bosnia & Herzegovina",
+              "logo": "https://media.api-sports.io/football/teams/1113.png"
+            },
+            "away": {
+              "id": 774,
+              "name": "Romania",
+              "logo": "https://media.api-sports.io/football/teams/774.png"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "squad": "women",
+      "teamId": 14455,
+      "status": "none-scheduled",
+      "fetchedAt": "2026-09-06T01:54:43.228Z",
+      "internationals": []
+    }
+  ]
+}

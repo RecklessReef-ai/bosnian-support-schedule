@@ -16,11 +16,11 @@ See [`CONTEXT.md`](./CONTEXT.md) for the domain vocabulary and
 ```bash
 cp .env.example .env.local   # add your API-Football key
 npm run refresh:roster       # resolve squads + clubs into data/roster.json
-npm run refresh:fixtures     # fetch each club's matches into data/fixtures.json
+npm run refresh:fixtures     # the daily refresh: squads, club fixtures, internationals
 npm run dev
 ```
 
-Both data files are committed, so `npm run dev` works with no key at all — the key
+Every data file is committed, so `npm run dev` works with no key at all — the key
 is only needed to refresh them.
 
 ## What it serves
@@ -51,15 +51,21 @@ see [ADR-0003](./docs/adr/0003-fetch-fixtures-offline-into-a-committed-file.md).
 
 **Offline, via `npm run refresh:fixtures`** (daily, by GitHub Actions):
 
-4. Read `data/roster.json` and apply the Manual Override table
-   (`data/overrides.json`) — see [`data/README.md`](./data/README.md).
-5. Fetch upcoming matches for each distinct Club, one call each, paced under the
+4. Re-fetch both squad lists, one call each, and rewrite `data/roster.json`. A
+   Member's Club is only looked up when there isn't one on record already.
+5. Apply the Manual Override table (`data/overrides.json`) — see
+   [`data/README.md`](./data/README.md).
+6. Fetch upcoming matches for each distinct Club, one call each, paced under the
    free tier's ~10/minute cap. Clubs that fail are recorded, not silently skipped.
-6. Write `data/fixtures.json` and commit it.
+   Write `data/fixtures.json`.
+7. Fetch each squad's own upcoming **Internationals**, one call each, into
+   `data/internationals.json`. Both squads are recorded whatever happens, and a
+   squad with none scheduled reads differently from one that could not be fetched.
+   Nothing renders these yet.
 
 **At render time — no network:**
 
-7. Merge into one chronological Schedule, keeping everything inside a **21-day
+8. Merge into one chronological Schedule, keeping everything inside a **21-day
    horizon**, dropping matches that kicked off more than ~2 hours ago, and
    deduplicating fixtures that involve more than one National Team Member.
 
@@ -75,8 +81,12 @@ npm test        # node:test, no extra dependencies
 The pure logic is covered: Schedule merging and the horizon (`lib/merge.ts`),
 kickoff formatting and day grouping (`lib/kickoff.ts`), ICS generation
 (`lib/ics.ts`), mojibake repair (`lib/text.ts`), bounded concurrency
-(`lib/concurrency.ts`), retry/throttle policy (`lib/pacing.ts`), synthetic member
-ids (`lib/ids.ts`), and rate-limit classification (`lib/api-football.ts`).
+(`lib/concurrency.ts`), retry/throttle policy (`lib/pacing.ts`), club staleness
+(`lib/refresh-policy.ts`), squad reconciliation and Club-lookup reuse
+(`lib/roster.ts`), the Internationals record and its three states
+(`lib/internationals.ts`), upstream record trimming (`lib/fixture-record.ts`),
+synthetic member ids (`lib/ids.ts`), and rate-limit classification
+(`lib/api-football.ts`).
 
 `lib/cache-policy.test.ts` is a guard rather than a unit test: Next.js needs
 `export const revalidate` to be a literal, so the routes can't import
@@ -90,8 +100,11 @@ spend anything:
 
 | Script | Calls | How often |
 | --- | --- | --- |
-| `refresh:fixtures` | ~19/day average (39 on a full refresh) | daily |
-| `refresh:roster` | ~64 (1 per player), resumes from disk | after each call-up window |
+| `refresh:fixtures` | ~23/day average (~45 on a full refresh) | daily |
+| `refresh:roster` | ~64 (1 per player), resumes from disk | only to rebuild a suspect roster |
+
+The daily ~23 is ~19 stale clubs, two squad lists and two Internationals. On the
+days a squad changes, add a call for each new Member's Club.
 
 That fits the **free tier** (100/day, ~10/minute), which is what this layout is for.
 The scripts pace themselves at ~6.5s per call to stay under the per-minute cap.
@@ -102,6 +115,12 @@ re-fetching every club daily spent most of its calls re-downloading unchanged da
 Clubs playing within three days are re-checked every run, since those are the
 fixtures that move; everything else is re-checked at least every four days. Measured
 over a week that is 136 calls rather than 273. Use `--all` to force a full refresh.
+
+The squads work the same way in miniature: the two list calls happen every run, but
+a Member's Club is only looked up when there isn't one on record, and a lookup that
+finds nothing isn't repeated for a week. Without that, the twenty-nine Members
+upstream has no Club for would cost twenty-nine calls every morning to learn the
+same nothing.
 
 Rendering used to fetch every club, three times over (page, JSON, ICS), for ~120
 calls a day. Over the per-minute cap API-Football replies HTTP 200 with a `rateLimit`

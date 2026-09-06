@@ -1,8 +1,9 @@
 name: Refresh fixtures
 
-# The app serves fixtures from a committed file and makes no upstream calls when
-# rendering. That is what keeps it inside the free tier, but it means the file has
-# to be refreshed on a schedule or the Schedule quietly goes stale.
+# The app serves the squads, their Club Fixtures and the Internationals from
+# committed files and makes no upstream calls when rendering. That is what keeps it
+# inside the free tier, but it means the files have to be refreshed on a schedule or
+# the Schedule quietly goes stale.
 on:
   schedule:
     # 04:10 UTC daily — early enough that a new day's fixtures are listed before
@@ -42,16 +43,22 @@ jobs:
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
           # Free tier allows ~10 requests/minute. 6500ms keeps ~39 calls under it.
           API_FOOTBALL_MIN_INTERVAL_MS: "6500"
+          # Public facts, not secrets. Pinning them spares the run a lookup call
+          # every single day; the script falls back to discovering them if they go
+          # missing or wrong.
+          BIH_MEN_TEAM_ID: "1113"
+          BIH_WOMEN_TEAM_ID: "14455"
         run: node --experimental-strip-types scripts/refresh-fixtures.mts
 
       - name: Commit if changed
         run: |
-          if git diff --quiet -- data/fixtures.json; then
-            echo "No fixture changes."
+          FILES="data/fixtures.json data/internationals.json data/roster.json"
+          if git diff --quiet -- $FILES; then
+            echo "No fixture, international or roster changes."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/fixtures.json
+          git add $FILES
           git commit -m "Refresh fixtures"
           git push
