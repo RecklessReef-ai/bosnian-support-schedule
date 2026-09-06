@@ -11,6 +11,7 @@ import type {
   NationalTeamMember,
   RawFixtureRecord,
   Roster,
+  ScheduleData,
   Squad,
   SquadInternationals,
 } from "./types.ts";
@@ -937,5 +938,255 @@ describe("assembleSchedule hand-entered Internationals", () => {
     const second = scheduleWith([squadRecord("men", [])], entries);
 
     assert.equal(JSON.stringify(first), JSON.stringify(second));
+  });
+});
+
+/**
+ * `data/hand-entered-internationals.json` is the one input no type can vouch for:
+ * a maintainer edits it by hand, commits, and the site renders whatever is in
+ * there. So assembly checks it, and these say what happens to an entry that does
+ * not survive the check.
+ *
+ * Two things matter equally. A record must never be published crediting
+ * API-Football for a match a human took off the federation's announcement — that
+ * is the whole point of ADR-0004's per-record provenance, and the one mistake the
+ * type alone could not stop. And a bad record must cost only itself: the Schedule
+ * is assembled at render time, so a file that could take assembly down would take
+ * the site down with it.
+ */
+describe("assembleSchedule rejecting a hand entry a maintainer got wrong", () => {
+  const GOOD = {
+    kickoff: fromNow(20 * DAYS),
+    opponent: { name: "Estonia" },
+    atHome: true,
+    source: "NFSBiH",
+  };
+
+  /** Assembles from whatever is in the file, however wrong, exactly as disk gives it. */
+  function scheduleFrom(file: unknown, squads = [squadRecord("men", [])], now = NOW) {
+    return assembleSchedule(
+      input([], {
+        roster: roster({ members: BOTH_SQUADS }),
+        internationalsFile: internationalsFile(squads),
+        handEnteredInternationals: file,
+      }),
+      now,
+    );
+  }
+
+  /** The one complaint a single-fault file produces. */
+  function soleRejection(schedule: ScheduleData): string {
+    assert.equal(schedule.handEntryRejections.length, 1);
+    return schedule.handEntryRejections[0];
+  }
+
+  // The reason this check exists at all. A maintainer who types the API's name
+  // into the one file the API never wrote is claiming the API found a match a
+  // human read in a news article.
+  it("refuses to publish an entry that credits API-Football", () => {
+    const schedule = scheduleFrom({
+      men: [{ ...GOOD, source: "API-Football" }],
+      women: [],
+    });
+
+    assert.deepEqual(schedule.fixtures, []);
+    assert.equal(schedule.squadInternationals[0].status, "none-scheduled");
+  });
+
+  it("names the refused entry and says the Source is what is wrong with it", () => {
+    const schedule = scheduleFrom({
+      men: [{ ...GOOD, source: "API-Football" }],
+      women: [],
+    });
+
+    const rejection = soleRejection(schedule);
+    assert.match(rejection, /hand-entered-internationals\.json/);
+    assert.match(rejection, /men\[0\]/);
+    assert.match(rejection, /Estonia/);
+    assert.match(rejection, /"source"/);
+    assert.match(rejection, /API-Football/);
+    assert.match(rejection, /NFSBiH/);
+  });
+
+  // The design constraint. One entry is wrong; the rest of the Schedule is not.
+  it("publishes the rest of the Schedule around the refused entry", () => {
+    const schedule = scheduleFrom(
+      {
+        men: [{ ...GOOD, source: "API-Football" }],
+        women: [{ ...GOOD, kickoff: fromNow(21 * DAYS) }],
+      },
+      [
+        squadRecord("men", [international(900, fromNow(20 * DAYS))]),
+        squadRecord("women", []),
+      ],
+    );
+
+    assert.deepEqual(
+      schedule.fixtures.map((f) => f.source),
+      ["API-Football", "NFSBiH"],
+    );
+    assert.equal(schedule.handEntryRejections.length, 1);
+  });
+
+  it("has nothing to complain about when the file is right", () => {
+    const schedule = scheduleFrom({ men: [GOOD], women: [] });
+
+    assert.deepEqual(schedule.handEntryRejections, []);
+    assert.equal(schedule.fixtures.length, 1);
+  });
+
+  // Every field is hand-typed, so every field can be wrong, and each one is
+  // refused in the words of the maintainer who has to fix it.
+  it("refuses an entry whose kickoff is not a readable instant", () => {
+    const schedule = scheduleFrom({ men: [{ ...GOOD, kickoff: "28. studenoga 2026." }] });
+
+    assert.deepEqual(schedule.fixtures, []);
+    const rejection = soleRejection(schedule);
+    assert.match(rejection, /men\[0\]/);
+    assert.match(rejection, /"kickoff"/);
+    assert.match(rejection, /ISO-8601/);
+  });
+
+  /**
+   * `new Date` takes far more than ISO-8601, and every extra thing it takes is a
+   * silent wrong answer rather than a missing match: "28 November" is the year
+   * 2001, and a kickoff with no offset is read in whatever zone the server keeps —
+   * so the same file would publish a different time depending on where it rendered.
+   */
+  it("refuses a kickoff that leans on the server's own timezone", () => {
+    const schedule = scheduleFrom({ men: [{ ...GOOD, kickoff: "2026-11-28 18:00" }] });
+
+    assert.deepEqual(schedule.fixtures, []);
+    assert.match(soleRejection(schedule), /trailing Z/);
+  });
+
+  it("refuses a kickoff a maintainer would never see fail", () => {
+    const schedule = scheduleFrom({ men: [{ ...GOOD, kickoff: "28 November" }] });
+
+    assert.deepEqual(schedule.fixtures, []);
+    assert.match(soleRejection(schedule), /"kickoff" of "28 November"/);
+  });
+
+  it("refuses an entry that does not name the other Side", () => {
+    const schedule = scheduleFrom({ men: [{ ...GOOD, opponent: { name: "  " } }] });
+
+    assert.deepEqual(schedule.fixtures, []);
+    assert.match(soleRejection(schedule), /other Side/);
+  });
+
+  it("refuses an entry whose opponent id is not a number", () => {
+    const schedule = scheduleFrom({
+      men: [{ ...GOOD, opponent: { name: "Estonia", id: "1100" } }],
+    });
+
+    assert.deepEqual(schedule.fixtures, []);
+    assert.match(soleRejection(schedule), /"opponent" id of "1100"/);
+  });
+
+  it("refuses an entry that does not say which Side is at home", () => {
+    const schedule = scheduleFrom({ men: [{ ...GOOD, atHome: "true" }] });
+
+    assert.deepEqual(schedule.fixtures, []);
+    assert.match(soleRejection(schedule), /"atHome"/);
+  });
+
+  it("refuses an entry whose Source is not one this file accepts", () => {
+    const schedule = scheduleFrom({ men: [{ ...GOOD, source: "nfsbih.ba" }] });
+
+    assert.deepEqual(schedule.fixtures, []);
+    assert.match(soleRejection(schedule), /"source" of "nfsbih\.ba"/);
+    assert.match(soleRejection(schedule), /NFSBiH/);
+  });
+
+  it("refuses an entry whose optional fields are not text", () => {
+    const schedule = scheduleFrom({ men: [{ ...GOOD, venue: 42 }] });
+
+    assert.deepEqual(schedule.fixtures, []);
+    assert.match(soleRejection(schedule), /"venue" of 42/);
+  });
+
+  // A maintainer fixing an entry should see all of what is wrong with it at once,
+  // rather than one fault per deploy.
+  it("says everything that is wrong with one entry", () => {
+    const schedule = scheduleFrom({
+      men: [{ kickoff: "soon", opponent: {}, atHome: 1, source: "API-Football" }],
+    });
+
+    assert.equal(schedule.handEntryRejections.length, 4);
+  });
+
+  /**
+   * The same squad twice on the same day is the same match, which is how a hand
+   * entry replaces a fetched one — so two hand entries there are one match claimed
+   * twice, and they would be published as two Fixtures sharing an id.
+   */
+  it("refuses a second entry for the same squad on the same day", () => {
+    const kickoff = fromNow(20 * DAYS);
+    const later = new Date(new Date(kickoff).getTime() + 3 * 60 * 60 * 1000).toISOString();
+    const schedule = scheduleFrom({
+      men: [GOOD, { ...GOOD, kickoff: later, opponent: { name: "Estonija" } }],
+    });
+
+    assert.equal(schedule.fixtures.length, 1);
+    assert.equal(schedule.fixtures[0].away.name, "Estonia");
+    const rejection = soleRejection(schedule);
+    assert.match(rejection, /men\[1\]/);
+    assert.match(rejection, /men\[0\]/);
+  });
+
+  it("still publishes the good entries either side of a bad one", () => {
+    const schedule = scheduleFrom({
+      men: [{ ...GOOD, kickoff: "soon" }, GOOD, { ...GOOD, kickoff: fromNow(21 * DAYS) }],
+    });
+
+    assert.equal(schedule.fixtures.length, 2);
+    assert.equal(schedule.handEntryRejections.length, 1);
+  });
+
+  // Structural faults cost the list they are in, never the Schedule.
+  it("survives a file that is not an object at all", () => {
+    const schedule = scheduleFrom("[]", [
+      squadRecord("men", [international(900, fromNow(20 * DAYS))]),
+    ]);
+
+    assert.equal(schedule.fixtures.length, 1);
+    assert.equal(schedule.handEntryRejections.length, 1);
+  });
+
+  it("survives a squad whose entries are not a list", () => {
+    const schedule = scheduleFrom({ men: GOOD, women: [GOOD] }, [
+      squadRecord("men", []),
+      squadRecord("women", []),
+    ]);
+
+    assert.equal(schedule.fixtures.length, 1);
+    assert.match(soleRejection(schedule), /"men" is not a list/);
+  });
+
+  it("survives an entry that is not an object", () => {
+    const schedule = scheduleFrom({ men: [null, GOOD] });
+
+    assert.equal(schedule.fixtures.length, 1);
+    assert.match(soleRejection(schedule), /men\[0\] is not an object/);
+  });
+
+  // A misspelled squad key is otherwise silent: the entries under it are simply
+  // never looked at, and the maintainer is left staring at a match that is
+  // nowhere on the page.
+  it("complains about entries filed under something that is not a squad", () => {
+    const schedule = scheduleFrom({ men: [], women: [], womens: [GOOD] });
+
+    assert.deepEqual(schedule.fixtures, []);
+    assert.match(soleRejection(schedule), /"womens" is not a squad/);
+  });
+
+  it("treats a squad the file leaves out as one with nothing to add", () => {
+    const schedule = scheduleFrom({ women: [GOOD] }, [
+      squadRecord("men", []),
+      squadRecord("women", []),
+    ]);
+
+    assert.deepEqual(schedule.handEntryRejections, []);
+    assert.equal(schedule.fixtures.length, 1);
   });
 });
