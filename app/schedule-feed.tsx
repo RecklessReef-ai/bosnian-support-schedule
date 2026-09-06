@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { DayHeading, KickoffTime } from "./kickoff-time";
 import { useViewerTimeZone } from "./use-viewer-timezone";
+import { competitionLine } from "@/lib/competition-line";
 import { kickoffDayKey } from "@/lib/kickoff";
 import type {
   ClubFixture,
@@ -31,8 +32,7 @@ function MatchLine({ fixture }: { fixture: Fixture }) {
         {fixture.away.name}
       </p>
       <p className="text-[12.5px] text-muted">
-        {fixture.competition}
-        {fixture.round ? ` · ${fixture.round}` : ""}
+        {competitionLine(fixture)}
         {/* Named only where it differs from the footer's site-wide credit.
             Repeating "API-Football" on every one of hundreds of rows is noise; a
             match a human took from the federation's own announcement must never

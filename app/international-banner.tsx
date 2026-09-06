@@ -1,5 +1,6 @@
 "use client";
 
+import { competitionLine } from "@/lib/competition-line";
 import { useEffect, useState } from "react";
 import { DayHeading } from "./kickoff-time";
 import { useHydrated } from "./use-hydrated";
@@ -26,20 +27,6 @@ const SQUAD_LABEL: Record<Squad, string> = {
   men: "Men's national team",
   women: "Women's national team",
 };
-
-/**
- * The competition line, e.g. "UEFA Nations League · Round 1".
- *
- * Upstream gives an International's round as a bare number, which reads as a
- * stray digit — "UEFA Nations League · 1" — in a line this prominent. The word is
- * supplied only when the round really is just a number, so a named round ("Group
- * Stage") is never mangled into "Round Group Stage".
- */
-function competitionLine({ competition, round }: International): string {
-  if (!round) return competition;
-  const named = /^\d+$/.test(round) ? `Round ${round}` : round;
-  return `${competition} · ${named}`;
-}
 
 /**
  * The current second while the tab is being looked at, or null until hydration.
