@@ -54,3 +54,31 @@ stats want rethinking rather than bolting onto this.
 **A failed Club is now recorded, not inferred.** The refresh writes `unavailableClubs`
 into the file, and the app names them on the page and in the JSON. An incomplete
 Schedule must never render as a complete one.
+
+## Amended
+
+The body above records the decision as taken. Two of its statements have since stopped
+being true, and are corrected here rather than edited away.
+
+**There are two surfaces, not three.** The ICS feed was removed in `d495c40`, leaving
+the page and the JSON API. The reasoning is unaffected — it counted surfaces only to
+show how request-time fetching multiplied the call cost.
+
+**One refresh now covers both, so "don't run both on the same day" no longer applies.**
+The Cost consequence above splits the work into a ~39-call fixture refresh and a
+separate ~64-call roster refresh that together exceed the free tier's 100/day. Since
+`72c9d35`, `npm run refresh:fixtures` is the single daily run: it re-fetches both squad
+lists, every Club due a refresh, and both National Teams' own Internationals, writing
+`data/roster.json`, `data/fixtures.json` and `data/internationals.json`.
+
+Its cost is two calls for the squad lists, two for the Internationals, one per Club due
+a refresh, and one per Member whose Club is not already on record — usually none, since
+squads only change at a call-up. A fruitless Club lookup is believed for a week, which
+matters because twenty-nine of sixty-one Members have no Club anywhere upstream and
+asking after each every morning would spend a third of the tier learning the same
+nothing. Steady state is roughly 23 calls a day against 100, and the run reports its own
+usage on finishing.
+
+`npm run refresh:roster` is no longer part of the daily budget. It is now the tool for a
+*suspect* Roster rather than a stale one — a full rebuild, run by hand when the stored
+Roster looks wrong.
