@@ -42,3 +42,7 @@ next-env.d.ts
 
 # Transient input for `npm run resolve:clubs`; overrides.json is the artifact.
 data/pending-overrides.json
+
+# agent worktrees and scratch specs (the tracker holds the spec)
+.claude/
+.scratch/
