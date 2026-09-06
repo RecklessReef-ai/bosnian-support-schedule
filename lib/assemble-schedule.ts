@@ -35,8 +35,12 @@ const HORIZON_DAYS = 21;
  * How long a kicked-off match stays on the Schedule. Roughly a match plus stoppage
  * and half-time, so a game in progress is still listed while a finished one drops
  * off. Fixtures come from a file now, so nothing else removes them.
+ *
+ * Exported only so a test can hold `IN_PROGRESS_MINUTES` in `lib/kickoff.ts` to
+ * the same number. The banner's countdown has to agree with how long the feed
+ * beneath it keeps a match, and nothing else would notice if they drifted.
  */
-const SHOW_AFTER_KICKOFF_MINUTES = 130;
+export const SHOW_AFTER_KICKOFF_MINUTES = 130;
 
 /**
  * Everything the Schedule is assembled from, as one object rather than a handful

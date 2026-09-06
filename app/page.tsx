@@ -1,5 +1,6 @@
 import { getSchedule } from "@/lib/schedule";
-import type { Squad, SquadInternationalsState } from "@/lib/types";
+import type { Fixture, International } from "@/lib/types";
+import { InternationalBanner } from "./international-banner";
 import { ScheduleFeed } from "./schedule-feed";
 import { SquadList } from "./squad-list";
 import { TimezoneNote } from "./kickoff-time";
@@ -7,49 +8,8 @@ import { ThemeToggle } from "./theme-toggle";
 
 export const revalidate = 3600;
 
-const SQUAD_LABEL: Record<Squad, string> = { men: "men's", women: "women's" };
-
-/**
- * What each squad's international calendar is doing, when it is not simply full.
- *
- * The two quiet answers must not read alike. The women's side genuinely has
- * nothing scheduled — their qualifying group finished in June 2026 and the
- * federation has announced nothing since — and a fan who reads that as a broken
- * page goes looking for matches that do not exist, while a fan who reads an outage
- * as an empty calendar stops checking back. So one is a plain statement and the
- * other is a warning, in the colour the site already uses for "something is
- * missing here".
- */
-function InternationalsNotes({ states }: { states: SquadInternationalsState[] }) {
-  const quiet = states.filter((state) => state.status !== "scheduled");
-  if (quiet.length === 0) return null;
-
-  return (
-    <div className="mb-6 flex flex-col gap-2">
-      {quiet.map((state) =>
-        state.status === "unavailable" ? (
-          <p
-            key={state.squad}
-            className="rounded-[16px] bg-honey-soft p-4 text-[13.5px] leading-relaxed text-honey-text"
-          >
-            The {SQUAD_LABEL[state.squad]} national team&apos;s own matches
-            couldn&apos;t be loaded, so any of theirs may be missing from the
-            schedule below. This usually clears on the next refresh.
-          </p>
-        ) : (
-          <p
-            key={state.squad}
-            className="rounded-[16px] border border-line bg-card p-4 text-[13.5px] leading-relaxed text-muted"
-          >
-            The {SQUAD_LABEL[state.squad]} national team has no international
-            matches scheduled. That is the calendar as it stands, not a problem
-            loading it.
-          </p>
-        ),
-      )}
-    </div>
-  );
-}
+const isInternational = (fixture: Fixture): fixture is International =>
+  fixture.kind === "international";
 
 export default async function Home() {
   const {
@@ -115,7 +75,15 @@ export default async function Home() {
         </p>
       )}
 
-      <InternationalsNotes states={squadInternationals} />
+      {/* Pinned above the Schedule rather than left to its chronological place:
+          Internationals ignore the 21-day horizon, so between International
+          Windows the next one sits below a hundred-odd Club Fixtures. Only the
+          Internationals are handed over — the banner has no use for the rest of
+          the feed, and sending it twice would double the page's payload. */}
+      <InternationalBanner
+        internationals={fixtures.filter(isInternational)}
+        states={squadInternationals}
+      />
 
       <ScheduleFeed fixtures={fixtures} members={members} />
 
