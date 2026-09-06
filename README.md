@@ -4,8 +4,8 @@ A public, no-login site that merges the club fixture schedules of Bosnia and
 Herzegovina's senior men's and women's national team players into one calendar,
 so fans know when and where to watch each of them next.
 
-Built by [Pričaj](https://pricaj.vercel.app) — speaking practice for Croatian,
-Bosnian and Serbian — and it shares Pričaj's "Jadran" design system: the same
+Built by [Pričaj](https://pricaj.vercel.app) — speaking practice for Bosnian, Croatian,
+English, and Serbian — and it shares Pričaj's "Jadran" design system: the same
 OKLCH tokens, Fraunces/Karla type, and light/dark toggle.
 
 See [`CONTEXT.md`](./CONTEXT.md) for the domain vocabulary and
