@@ -1,5 +1,23 @@
 import type { NationalTeamMember } from "@/lib/types";
 
+/**
+ * The gathered-at date, rendered identically for every reader.
+ *
+ * Kickoff times go through a client component and `useHydrated`, because a fan has
+ * to be in front of a screen at a particular hour and an hour is exactly what a
+ * timezone shifts. This date is coarser: it answers "how current is this list",
+ * where a calendar day either way changes no one's judgement. So it is formatted
+ * from a fixed locale in UTC, which reads the same on the server and in every
+ * browser — no hydration mismatch to guard against, and no flash of one date
+ * turning into another once the client takes over.
+ */
+const gatheredOn = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+});
+
 function SquadColumn({
   title,
   members,
@@ -43,14 +61,29 @@ function SquadColumn({
   );
 }
 
-export function SquadList({ members }: { members: NationalTeamMember[] }) {
+export function SquadList({
+  members,
+  generatedAt,
+}: {
+  members: NationalTeamMember[];
+  /** When the Roster was gathered — not when the fixtures were fetched. */
+  generatedAt: string;
+}) {
   const byName = [...members].sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <section className="mt-12 border-t border-line pt-8">
-      <h2 className="mb-5 font-display text-[19px] font-semibold tracking-tight text-fg">
+      <h2 className="mb-1.5 font-display text-[19px] font-semibold tracking-tight text-fg">
         Who we&apos;re tracking
       </h2>
+      <p className="mb-5 text-[12px] leading-[1.6] text-faint">
+        Squad list gathered{" "}
+        <time dateTime={generatedAt}>
+          {gatheredOn.format(new Date(generatedAt))}
+        </time>
+        . It is whatever the source last published, so a player stays listed until
+        a newer squad is named.
+      </p>
       <div className="flex flex-wrap gap-x-10 gap-y-6">
         <SquadColumn
           title="Men's national team"

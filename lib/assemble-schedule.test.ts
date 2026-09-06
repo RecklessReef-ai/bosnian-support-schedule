@@ -5,6 +5,7 @@ import type {
   FixturesFile,
   NationalTeamMember,
   RawFixtureRecord,
+  Roster,
 } from "./types.ts";
 
 /**
@@ -62,11 +63,15 @@ function fixturesFile(
 
 const MEMBERS = [member(1, "A", 10), member(2, "B", 10), member(3, "C", 20)];
 
+function roster(over: Partial<Roster> = {}): Roster {
+  return { generatedAt: "2026-09-05T14:29:47.634Z", members: MEMBERS, ...over };
+}
+
 function input(
   fixtures: RawFixtureRecord[],
   over: Partial<ScheduleInput> = {},
 ): ScheduleInput {
-  return { members: MEMBERS, fixturesFile: fixturesFile(fixtures), ...over };
+  return { roster: roster(), fixturesFile: fixturesFile(fixtures), ...over };
 }
 
 describe("assembleSchedule", () => {
@@ -145,6 +150,59 @@ describe("assembleSchedule", () => {
 
     assert.equal(schedule.degraded, true);
     assert.deepEqual(schedule.fixtures, []);
+  });
+});
+
+/**
+ * The Roster claims to be neither a standing squad pool nor an announced call-up,
+ * because the upstream source does not say which it is. The gathered-at stamp is
+ * the whole of what lets a fan judge it for themselves — so it has to survive
+ * assembly, and it has to stay its own date. The two files are refreshed by
+ * different scripts on different days: a squad gathered in September can sit
+ * beside fixtures fetched this morning, and reporting one date for both would
+ * make a stale squad look fresh.
+ */
+describe("the Roster's gathered-at stamp", () => {
+  it("carries its own date, independent of the Fixtures' date", () => {
+    const schedule = assembleSchedule(
+      input([], {
+        roster: roster({ generatedAt: "2026-08-28T09:00:00.000Z" }),
+        fixturesFile: fixturesFile([fixture(1, fromNow(1 * DAYS), 10, 99)], {
+          generatedAt: "2026-09-12T06:00:00.000Z",
+        }),
+      }),
+      NOW,
+    );
+
+    assert.equal(schedule.rosterGeneratedAt, "2026-08-28T09:00:00.000Z");
+    assert.equal(schedule.generatedAt, "2026-09-12T06:00:00.000Z");
+  });
+
+  it("keeps the Roster's date when no Fixtures could be stored at all", () => {
+    const schedule = assembleSchedule(
+      input([], { roster: roster({ generatedAt: "2026-08-28T09:00:00.000Z" }) }),
+      NOW,
+    );
+
+    assert.equal(schedule.degraded, true);
+    assert.equal(schedule.rosterGeneratedAt, "2026-08-28T09:00:00.000Z");
+  });
+
+  // Photo and position arrive in the same upstream response at no extra cost and
+  // stay in the data unrendered. Assembly must not tidy them away: dropping them
+  // here would quietly decide a question the page is meant to decide.
+  it("publishes the Roster whole, photo and position included", () => {
+    const withExtras: NationalTeamMember = {
+      ...member(9, "E. Džeko", 10),
+      photo: "https://media.api-sports.io/football/players/9.png",
+      position: "Attacker",
+    };
+    const schedule = assembleSchedule(
+      input([], { roster: roster({ members: [withExtras] }) }),
+      NOW,
+    );
+
+    assert.deepEqual(schedule.members, [withExtras]);
   });
 });
 

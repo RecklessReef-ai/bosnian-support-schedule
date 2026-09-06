@@ -7,7 +7,8 @@ import { ThemeToggle } from "./theme-toggle";
 export const revalidate = 3600;
 
 export default async function Home() {
-  const { fixtures, members, degraded, unavailableClubs } = await getSchedule();
+  const { fixtures, members, rosterGeneratedAt, degraded, unavailableClubs } =
+    await getSchedule();
 
   return (
     // The framed column from Pričaj, widened for a fixture list: soft side
@@ -64,7 +65,7 @@ export default async function Home() {
 
       <ScheduleFeed fixtures={fixtures} members={members} />
 
-      <SquadList members={members} />
+      <SquadList members={members} generatedAt={rosterGeneratedAt} />
 
       <footer className="mt-12 flex flex-col gap-2.5 border-t border-line pt-6 text-[12.5px] leading-[1.6]">
         <p className="max-w-2xl text-muted">

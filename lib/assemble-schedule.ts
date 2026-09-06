@@ -1,9 +1,5 @@
 import { buildMembersByClub, mergeFixtures } from "./merge.ts";
-import type {
-  FixturesFile,
-  NationalTeamMember,
-  ScheduleData,
-} from "./types.ts";
+import type { FixturesFile, Roster, ScheduleData } from "./types.ts";
 
 /**
  * How far ahead the Schedule looks. Bounding by time rather than by a match count
@@ -30,8 +26,8 @@ const SHOW_AFTER_KICKOFF_MINUTES = 130;
  * depend on it.
  */
 export interface ScheduleInput {
-  /** The Roster, with any Manual Overrides already layered on. */
-  members: readonly NationalTeamMember[];
+  /** The Roster, with any Manual Overrides already layered on, and its own stamp. */
+  roster: Roster;
   /** `data/fixtures.json` exactly as `npm run refresh:fixtures` wrote it. */
   fixturesFile: FixturesFile;
 }
@@ -48,6 +44,8 @@ export interface ScheduleInput {
  * - A Fixture appears exactly once, even when reachable through two National Team
  *   Members' Clubs, and lists all of them.
  * - Club Fixtures obey the 21-day horizon.
+ * - The Roster is published whole, carrying its own gathered-at date rather than
+ *   borrowing the Fixtures'.
  * - A match already kicked off stays listed for the grace period above, so a fan
  *   can confirm they have not missed it.
  * - The same input and the same `now` always produce identical output.
@@ -57,7 +55,7 @@ export interface ScheduleInput {
  * measured from a hidden clock cannot be pinned by a test.
  */
 export function assembleSchedule(input: ScheduleInput, now: Date): ScheduleData {
-  const { members } = input;
+  const { members } = input.roster;
   const { fixtures: raw, generatedAt, unavailableClubs } = input.fixturesFile;
 
   const horizonEnd = new Date(now.getTime() + HORIZON_DAYS * 24 * 60 * 60 * 1000);
@@ -80,6 +78,9 @@ export function assembleSchedule(input: ScheduleInput, now: Date): ScheduleData 
     // reach back and edit the Roster it was handed.
     members: [...members],
     generatedAt,
+    // Two dates, never collapsed into one: the squad list and the fixtures are
+    // gathered by separate refreshes, so either can be the stale half.
+    rosterGeneratedAt: input.roster.generatedAt,
     degraded: raw.length === 0,
     unavailableClubs,
   };

@@ -9,6 +9,10 @@ export async function GET() {
     {
       generatedAt: schedule.generatedAt,
       source: "API-Football",
+      // The Roster's own stamp, separate from `generatedAt` above, which is the
+      // fixtures'. The two refreshes are independent, so a consumer must not have
+      // to assume one date covers both.
+      rosterGeneratedAt: schedule.rosterGeneratedAt,
       members: schedule.members,
       fixtures: schedule.fixtures,
       // Non-empty when some clubs' fixtures are missing, so a consumer can tell an
