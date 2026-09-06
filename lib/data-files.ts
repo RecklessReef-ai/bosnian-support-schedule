@@ -1,8 +1,9 @@
 import fixturesFile from "@/data/fixtures.json";
+import internationalsFile from "@/data/internationals.json";
 import overridesFile from "@/data/overrides.json";
 import rosterFile from "@/data/roster.json";
 import { applyOverrides, type OverridesFile, type RosterFile } from "./roster";
-import type { FixturesFile, Roster } from "./types";
+import type { FixturesFile, InternationalsFile, Roster } from "./types";
 
 /**
  * The app's view of the committed data files.
@@ -15,6 +16,7 @@ import type { FixturesFile, Roster } from "./types";
 const roster = rosterFile as RosterFile;
 const overrides = overridesFile as OverridesFile;
 const fixtures = fixturesFile as unknown as FixturesFile;
+const internationals = internationalsFile as unknown as InternationalsFile;
 
 /**
  * The Roster, Manual Overrides applied, still stamped with the date the squad list
@@ -30,4 +32,8 @@ export function getRoster(): Roster {
 
 export function getFixturesFile(): FixturesFile {
   return fixtures;
+}
+
+export function getInternationalsFile(): InternationalsFile {
+  return internationals;
 }

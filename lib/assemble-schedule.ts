@@ -1,10 +1,29 @@
+import { fixtureSource } from "./fixture-record.ts";
+import { nextInternationalWindow } from "./international-window.ts";
 import { buildMembersByClub, mergeFixtures } from "./merge.ts";
-import type { FixturesFile, Roster, ScheduleData } from "./types.ts";
+import type {
+  Fixture,
+  FixturesFile,
+  International,
+  InternationalsFile,
+  NationalTeamMember,
+  RawFixtureRecord,
+  Roster,
+  ScheduleData,
+  Squad,
+  SquadInternationals,
+  SquadInternationalsState,
+} from "./types.ts";
 
 /**
- * How far ahead the Schedule looks. Bounding by time rather than by a match count
- * is what a calendar wants: a fixed per-club limit silently truncated clubs deep
- * in a cup run.
+ * How far ahead the Schedule looks at Club Fixtures. Bounding by time rather than
+ * by a match count is what a calendar wants: a fixed per-club limit silently
+ * truncated clubs deep in a cup run.
+ *
+ * It bounds Club Fixtures only. The horizon exists to stop a dense feed sprawling
+ * — 61 Members across 39 Clubs, most of them playing twice a week — and there are
+ * about ten Internationals a year, which cannot sprawl. Applying it to them would
+ * do nothing but cut the next International Window in half.
  */
 const HORIZON_DAYS = 21;
 
@@ -30,6 +49,8 @@ export interface ScheduleInput {
   roster: Roster;
   /** `data/fixtures.json` exactly as `npm run refresh:fixtures` wrote it. */
   fixturesFile: FixturesFile;
+  /** `data/internationals.json` exactly as the same refresh wrote it. */
+  internationalsFile: InternationalsFile;
 }
 
 /**
@@ -40,17 +61,21 @@ export interface ScheduleInput {
  *
  * The contract, which callers and tests both depend on:
  *
- * - Output is ordered chronologically.
+ * - Output is one chronological feed of both kinds of Fixture, not two lists.
  * - A Fixture appears exactly once, even when reachable through two National Team
  *   Members' Clubs, and lists all of them.
- * - Club Fixtures obey the 21-day horizon.
+ * - Every Fixture declares its kind and the Source that produced it.
+ * - Club Fixtures obey the 21-day horizon; Internationals do not.
+ * - The next International Window is returned whole, never split by a cutoff.
  * - The Roster is published whole, carrying its own gathered-at date rather than
  *   borrowing the Fixtures'.
  * - A match already kicked off stays listed for the grace period above, so a fan
  *   can confirm they have not missed it.
+ * - Both squads are always reported, so a squad with nothing scheduled is named
+ *   rather than absent, and never confused with one we could not reach.
  * - The same input and the same `now` always produce identical output.
  *
- * `now` is injected rather than read, because both bounds are measured from the
+ * `now` is injected rather than read, because every bound here is measured from the
  * moment of rendering — not from whenever the refresh last ran — and a rule
  * measured from a hidden clock cannot be pinned by a test.
  */
@@ -65,11 +90,35 @@ export function assembleSchedule(input: ScheduleInput, now: Date): ScheduleData 
   // the same Fixture arriving from several Clubs' feeds and sorts the result. Its
   // own tests exercise it directly; nothing outside this module needs to know it
   // exists.
-  const fixtures = mergeFixtures(
+  //
+  // It reaches a match through a Member's Club, which is why Internationals cannot
+  // go through it: no Member's Club is Bosnia and Herzegovina, so every one of them
+  // would be dropped as involving nobody. They are gathered separately below and
+  // the two are sorted together at the end.
+  const clubFixtures = mergeFixtures(
     raw,
     buildMembersByClub(members),
     horizonEnd,
     windowStart,
+  );
+
+  const internationals: International[] = [];
+  const squadInternationals: SquadInternationalsState[] = [];
+
+  for (const stored of input.internationalsFile.squads) {
+    // Per squad, because the two sides keep separate calendars: grouping their
+    // matches together would let a men's break swallow a women's friendly.
+    const window = nextInternationalWindow(stored.internationals, windowStart);
+    const squadMembers = members.filter((m) => m.squad === stored.squad);
+
+    for (const record of window) {
+      internationals.push(toInternational(record, stored.squad, squadMembers));
+    }
+    squadInternationals.push(stateOf(stored, window.length));
+  }
+
+  const fixtures: Fixture[] = [...clubFixtures, ...internationals].sort((a, b) =>
+    a.kickoff.localeCompare(b.kickoff),
   );
 
   return {
@@ -83,5 +132,64 @@ export function assembleSchedule(input: ScheduleInput, now: Date): ScheduleData 
     rosterGeneratedAt: input.roster.generatedAt,
     degraded: raw.length === 0,
     unavailableClubs,
+    squadInternationals,
+  };
+}
+
+/**
+ * One stored International as the Schedule publishes it.
+ *
+ * `members` is the whole squad rather than a couple of names, because that is what
+ * involvement means here: a Member is in an International by being in the squad,
+ * not by turning out for one of the two Sides. Copied per Fixture so that no two
+ * entries share a list.
+ */
+function toInternational(
+  raw: RawFixtureRecord,
+  squad: Squad,
+  squadMembers: readonly NationalTeamMember[],
+): International {
+  return {
+    id: raw.fixture.id,
+    kind: "international",
+    kickoff: new Date(raw.fixture.date).toISOString(),
+    competition: raw.league.name,
+    competitionLogo: raw.league.logo,
+    round: raw.league.round,
+    venue: raw.fixture.venue?.name ?? null,
+    home: raw.teams.home,
+    away: raw.teams.away,
+    source: fixtureSource(raw),
+    squad,
+    members: [...squadMembers],
+  };
+}
+
+/**
+ * What to tell a fan about one squad, which is not quite what the refresh stored.
+ *
+ * A successful fetch that found six matches, all since played, leaves a squad with
+ * nothing coming — so "scheduled" beside an empty feed would be the site
+ * contradicting itself. A failed fetch is never rewritten this way: whatever is
+ * still listed, not knowing is its own answer, and folding it into "none
+ * scheduled" would tell a fan the calendar is empty when we could not ask.
+ */
+function stateOf(
+  stored: SquadInternationals,
+  showing: number,
+): SquadInternationalsState {
+  if (stored.status === "unavailable") {
+    return {
+      squad: stored.squad,
+      status: "unavailable",
+      fetchedAt: stored.fetchedAt,
+      unavailableReason: stored.unavailableReason,
+    };
+  }
+
+  return {
+    squad: stored.squad,
+    status: showing > 0 ? "scheduled" : "none-scheduled",
+    fetchedAt: stored.fetchedAt,
   };
 }

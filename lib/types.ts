@@ -1,6 +1,16 @@
 export type Squad = "men" | "women";
 
 /**
+ * Where a published record's information actually came from.
+ *
+ * Recorded on the record rather than claimed once for the whole site. Most
+ * Fixtures come from the upstream API, but a match the federation announced and a
+ * maintainer entered by hand comes from NFSBiH, and a single site-wide credit made
+ * it easy to present the second as the first. See `docs/adr/0004`.
+ */
+export type Source = "API-Football" | "NFSBiH";
+
+/**
  * One of the two teams a Fixture is played between: Clubs in a Club Fixture,
  * National Teams in an International. The shape is the same either way; the
  * glossary is what keeps the two apart.
@@ -53,7 +63,8 @@ export interface OverrideEntry {
   position?: string;
 }
 
-export interface Fixture {
+/** What both kinds of Fixture have in common. */
+interface FixtureBase {
   id: number;
   /** Kickoff as an ISO-8601 UTC instant. All timezone rendering happens client-side. */
   kickoff: string;
@@ -61,11 +72,42 @@ export interface Fixture {
   competitionLogo: string | null;
   round: string | null;
   venue: string | null;
-  home: Club;
-  away: Club;
-  /** The National Team Members playing for one of these clubs. */
+  home: Side;
+  away: Side;
+  /** Where this Fixture came from, per record rather than per site. */
+  source: Source;
+  /** The National Team Members this Fixture involves. */
   members: NationalTeamMember[];
 }
+
+/** A Fixture on a Club's calendar. Its Members are the ones at either Club. */
+export interface ClubFixture extends FixtureBase {
+  kind: "club";
+}
+
+/**
+ * A Fixture on a National Team's own calendar.
+ *
+ * Its Members are that squad in full rather than a couple of names: an
+ * International involves a Member by squad membership, where a Club Fixture
+ * involves them by who they happen to turn out for that weekend.
+ */
+export interface International extends FixtureBase {
+  kind: "international";
+  /** Which of the two senior Bosnian sides is playing. */
+  squad: Squad;
+}
+
+/**
+ * Either kind, as the Schedule publishes them: one chronological array, so nobody
+ * has to merge and re-sort two lists.
+ *
+ * `kind` is carried on every record rather than inferred from the Sides, because
+ * inferring it means knowing which Side ids are National Teams — a fact a consumer
+ * of the JSON API has no way to look up, and one this app would rather not restate
+ * on each surface either.
+ */
+export type Fixture = ClubFixture | International;
 
 /**
  * What `npm run refresh:fixtures` writes to data/fixtures.json.
@@ -94,6 +136,12 @@ export interface RawFixtureRecord {
   fixture: { id: number; date: string; venue: { name: string | null } | null };
   league: { name: string; logo: string | null; round: string | null };
   teams: { home: Side; away: Side };
+  /**
+   * Set only when the record did not come from the upstream API. Absent is the
+   * common case and means API-Football, so hundreds of fetched rows need not each
+   * repeat the same credit; a hand-entered record names its own Source instead.
+   */
+  source?: Source;
 }
 
 /**
@@ -140,7 +188,27 @@ export interface InternationalsFile {
   squads: SquadInternationals[];
 }
 
+/**
+ * What the assembled Schedule says about one squad's Internationals.
+ *
+ * The stored status describes what the last refresh found; this one describes what
+ * a fan is actually being shown, which is not always the same thing — a squad whose
+ * stored Internationals have all been played has none coming, however successful
+ * the fetch was. "Unavailable" is never rewritten that way. Not knowing is its own
+ * answer, and folding it into "none scheduled" would tell a fan the calendar is
+ * empty when we simply could not ask.
+ */
+export interface SquadInternationalsState {
+  squad: Squad;
+  status: SquadInternationalsStatus;
+  /** How old the data behind this is, or null if it was never fetched. */
+  fetchedAt: string | null;
+  /** Why the last attempt failed. Set only when the status is "unavailable". */
+  unavailableReason?: string;
+}
+
 export interface ScheduleData {
+  /** Both kinds of Fixture, in one chronological feed. */
   fixtures: Fixture[];
   members: NationalTeamMember[];
   /** When the Fixtures were fetched. Says nothing about the Roster. */
@@ -159,4 +227,9 @@ export interface ScheduleData {
    * from `fixtures`, so an incomplete Schedule can be told apart from a quiet week.
    */
   unavailableClubs: Club[];
+  /**
+   * One entry per squad, always both, so a squad with nothing scheduled is named
+   * rather than silently absent — and told apart from one we could not reach.
+   */
+  squadInternationals: SquadInternationalsState[];
 }
