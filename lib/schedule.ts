@@ -16,10 +16,8 @@ import type { ScheduleData } from "./types";
  * `docs/adr/0003`.
  */
 export async function getSchedule(): Promise<ScheduleData> {
-  const { members } = getRoster();
-
   return assembleSchedule(
-    { members, fixturesFile: getFixturesFile() },
+    { roster: getRoster(), fixturesFile: getFixturesFile() },
     new Date(),
   );
 }

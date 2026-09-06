@@ -28,6 +28,23 @@ export interface NationalTeamMember {
   clubOverridden?: boolean;
 }
 
+/**
+ * The list of National Team Members as the upstream source last supplied it,
+ * stamped with the date it was gathered.
+ *
+ * The stamp travels with the list rather than beside it, because a Roster whose
+ * date can drift away from its members is precisely the confusion the date exists
+ * to settle. It claims nothing about whether these players are a standing pool or
+ * an announced call-up — the source does not say — so the date is all a fan has to
+ * judge it by. It is also nothing to do with `FixturesFile.generatedAt`: the two
+ * are gathered by different scripts and go stale at different rates.
+ */
+export interface Roster {
+  /** When the squad list was gathered, as an ISO-8601 UTC instant. */
+  generatedAt: string;
+  members: readonly NationalTeamMember[];
+}
+
 /** A row of the Manual Override table (data/overrides.json). */
 export interface OverrideEntry {
   player: string;
@@ -126,7 +143,15 @@ export interface InternationalsFile {
 export interface ScheduleData {
   fixtures: Fixture[];
   members: NationalTeamMember[];
+  /** When the Fixtures were fetched. Says nothing about the Roster. */
   generatedAt: string;
+  /**
+   * When the Roster was gathered — a separate date from `generatedAt`, because the
+   * squad list and the fixtures are refreshed independently and either can be the
+   * stale one. A retired player stays on the Roster until a newer squad is named,
+   * so this is what tells a fan how much to trust the list.
+   */
+  rosterGeneratedAt: string;
   /** True when no upstream API key is configured and the roster came from the seed file. */
   degraded: boolean;
   /**

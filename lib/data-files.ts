@@ -2,7 +2,7 @@ import fixturesFile from "@/data/fixtures.json";
 import overridesFile from "@/data/overrides.json";
 import rosterFile from "@/data/roster.json";
 import { applyOverrides, type OverridesFile, type RosterFile } from "./roster";
-import type { FixturesFile, NationalTeamMember } from "./types";
+import type { FixturesFile, Roster } from "./types";
 
 /**
  * The app's view of the committed data files.
@@ -16,10 +16,15 @@ const roster = rosterFile as RosterFile;
 const overrides = overridesFile as OverridesFile;
 const fixtures = fixturesFile as unknown as FixturesFile;
 
-export function getRoster(): { members: NationalTeamMember[]; generatedAt: string } {
+/**
+ * The Roster, Manual Overrides applied, still stamped with the date the squad list
+ * itself was gathered — the overrides correct a member's Club, not when the list
+ * was taken, so the stamp is the refresh's date and stays untouched.
+ */
+export function getRoster(): Roster {
   return {
-    members: applyOverrides(roster.members, overrides),
     generatedAt: roster.generatedAt,
+    members: applyOverrides(roster.members, overrides),
   };
 }
 

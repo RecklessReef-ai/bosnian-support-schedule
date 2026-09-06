@@ -1,10 +1,18 @@
 import { syntheticMemberId } from "./ids.ts";
-import type { NationalTeamMember, OverrideEntry, Squad } from "./types.ts";
+import type {
+  NationalTeamMember,
+  OverrideEntry,
+  Roster,
+  Squad,
+} from "./types.ts";
 
-export interface RosterFile {
-  generatedAt: string;
-  members: NationalTeamMember[];
-}
+/**
+ * `data/roster.json`: the Roster exactly as `npm run refresh:roster` wrote it,
+ * before Manual Overrides are layered on. Same shape as the Roster the app
+ * publishes — the overrides correct Clubs, they do not change what a Roster is,
+ * and the gathered-at stamp is the file's either way.
+ */
+export type RosterFile = Roster;
 
 export type OverridesFile = Record<Squad, OverrideEntry[]>;
 
