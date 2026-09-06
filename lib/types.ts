@@ -1,10 +1,21 @@
 export type Squad = "men" | "women";
 
-export interface Club {
+/**
+ * One of the two teams a Fixture is played between: Clubs in a Club Fixture,
+ * National Teams in an International. The shape is the same either way; the
+ * glossary is what keeps the two apart.
+ */
+export interface Side {
   id: number;
   name: string;
   logo: string | null;
 }
+
+/**
+ * The team a National Team Member plays for day-to-day, as distinct from the
+ * National Team itself.
+ */
+export type Club = Side;
 
 export interface NationalTeamMember {
   id: number;
@@ -65,7 +76,51 @@ export interface ClubFetchRecord {
 export interface RawFixtureRecord {
   fixture: { id: number; date: string; venue: { name: string | null } | null };
   league: { name: string; logo: string | null; round: string | null };
-  teams: { home: Club; away: Club };
+  teams: { home: Side; away: Side };
+}
+
+/**
+ * Whether a squad has Internationals coming up, has none scheduled, or could not
+ * be asked at all.
+ *
+ * The last two must never collapse into one another. The women's squad genuinely
+ * has nothing scheduled — their qualifying group finished and the federation has
+ * announced no more — so an empty list is a true statement about the world, not a
+ * symptom. Reading it as an outage, or an outage as a quiet calendar, tells a fan
+ * the opposite of the truth.
+ */
+export type SquadInternationalsStatus = "scheduled" | "none-scheduled" | "unavailable";
+
+/** One squad's Internationals, as `npm run refresh:fixtures` last found them. */
+export interface SquadInternationals {
+  squad: Squad;
+  /** The National Team's upstream team id. */
+  teamId: number;
+  status: SquadInternationalsStatus;
+  /** When these were last fetched successfully, or null if they never have been. */
+  fetchedAt: string | null;
+  /** Why the last attempt failed. Set only when the status is "unavailable". */
+  unavailableReason?: string;
+  /**
+   * Stored in the same upstream (trimmed) shape as Club Fixtures, chronologically.
+   * A squad whose fetch failed keeps whatever was last stored rather than blanking.
+   */
+  internationals: RawFixtureRecord[];
+}
+
+/**
+ * What `npm run refresh:fixtures` writes to data/internationals.json.
+ *
+ * Internationals live in their own file rather than in `fixtures.json` because
+ * they obey different rules: no 21-day horizon, both squads always listed even
+ * when empty, and — later — hand-entered records merged over fetched ones. Mixing
+ * them in would entangle the Club Fixture staleness logic, which this feature
+ * otherwise leaves alone.
+ */
+export interface InternationalsFile {
+  generatedAt: string;
+  /** Both squads, always, so a squad is never silently omitted. */
+  squads: SquadInternationals[];
 }
 
 export interface ScheduleData {
