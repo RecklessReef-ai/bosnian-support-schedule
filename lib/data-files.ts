@@ -1,7 +1,9 @@
 import fixturesFile from "@/data/fixtures.json";
+import handEnteredFile from "@/data/hand-entered-internationals.json";
 import internationalsFile from "@/data/internationals.json";
 import overridesFile from "@/data/overrides.json";
 import rosterFile from "@/data/roster.json";
+import type { HandEnteredInternationalsFile } from "./hand-entered-internationals";
 import { applyOverrides, type OverridesFile, type RosterFile } from "./roster";
 import type { FixturesFile, InternationalsFile, Roster } from "./types";
 
@@ -17,6 +19,7 @@ const roster = rosterFile as RosterFile;
 const overrides = overridesFile as OverridesFile;
 const fixtures = fixturesFile as unknown as FixturesFile;
 const internationals = internationalsFile as unknown as InternationalsFile;
+const handEntered = handEnteredFile as unknown as HandEnteredInternationalsFile;
 
 /**
  * The Roster, Manual Overrides applied, still stamped with the date the squad list
@@ -36,4 +39,15 @@ export function getFixturesFile(): FixturesFile {
 
 export function getInternationalsFile(): InternationalsFile {
   return internationals;
+}
+
+/**
+ * The hand-entered Internationals, read straight off disk and layered on during
+ * assembly — never merged into `internationals.json`, which the daily refresh
+ * rewrites. That is what makes a maintainer's entry survive a refresh and take
+ * effect on the next render rather than the next API call, exactly as a Manual
+ * Override does.
+ */
+export function getHandEnteredInternationals(): HandEnteredInternationalsFile {
+  return handEntered;
 }

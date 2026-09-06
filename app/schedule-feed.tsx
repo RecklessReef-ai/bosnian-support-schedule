@@ -118,6 +118,14 @@ export function ScheduleFeed({
                     <p className="text-[12.5px] text-muted">
                       {fixture.competition}
                       {fixture.round ? ` · ${fixture.round}` : ""}
+                      {/* Named only where it differs from the footer's site-wide
+                          credit. Repeating "API-Football" on every one of hundreds
+                          of rows is noise; a match a human took from the
+                          federation's own announcement must never sit under a
+                          credit saying the API supplied it. See docs/adr/0004. */}
+                      {fixture.source !== "API-Football" && (
+                        <span className="text-faint"> · via {fixture.source}</span>
+                      )}
                     </p>
                   </div>
 

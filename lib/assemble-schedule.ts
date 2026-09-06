@@ -1,4 +1,8 @@
 import { fixtureSource } from "./fixture-record.ts";
+import {
+  layerHandEnteredInternationals,
+  type HandEnteredInternationalsFile,
+} from "./hand-entered-internationals.ts";
 import { nextInternationalWindow } from "./international-window.ts";
 import { buildMembersByClub, mergeFixtures } from "./merge.ts";
 import type {
@@ -51,6 +55,13 @@ export interface ScheduleInput {
   fixturesFile: FixturesFile;
   /** `data/internationals.json` exactly as the same refresh wrote it. */
   internationalsFile: InternationalsFile;
+  /**
+   * `data/hand-entered-internationals.json`: Internationals a maintainer typed in
+   * from the federation's announcement. Hand-edited, never written by the refresh,
+   * and layered over the fetched records below rather than into the file — which
+   * is what makes them survive the refresh that rewrites it.
+   */
+  handEnteredInternationals: HandEnteredInternationalsFile;
 }
 
 /**
@@ -65,6 +76,9 @@ export interface ScheduleInput {
  * - A Fixture appears exactly once, even when reachable through two National Team
  *   Members' Clubs, and lists all of them.
  * - Every Fixture declares its kind and the Source that produced it.
+ * - A hand-entered International is layered over the fetched ones and replaces the
+ *   fetched record for the same match, so it survives every refresh and is never
+ *   credited to the upstream API.
  * - Club Fixtures obey the 21-day horizon; Internationals do not.
  * - The next International Window is returned whole, never split by a cutoff.
  * - The Roster is published whole, carrying its own gathered-at date rather than
@@ -106,9 +120,23 @@ export function assembleSchedule(input: ScheduleInput, now: Date): ScheduleData 
   const squadInternationals: SquadInternationalsState[] = [];
 
   for (const stored of input.internationalsFile.squads) {
+    // Hand entries are layered on before anything else looks at the list, so a
+    // match a maintainer typed in is an International like any other from here on:
+    // it belongs to a Window, it is exempt from the horizon, it drops off after
+    // kickoff — and, crucially, it counts towards whether this squad has anything
+    // scheduled. Deriving that status from a list the hand entries had not reached
+    // yet is how the site would end up saying "no matches scheduled" directly above
+    // a match.
+    const records = layerHandEnteredInternationals(
+      stored.internationals,
+      input.handEnteredInternationals[stored.squad] ?? [],
+      stored.squad,
+      stored.teamId,
+    );
+
     // Per squad, because the two sides keep separate calendars: grouping their
     // matches together would let a men's break swallow a women's friendly.
-    const window = nextInternationalWindow(stored.internationals, windowStart);
+    const window = nextInternationalWindow(records, windowStart);
     const squadMembers = members.filter((m) => m.squad === stored.squad);
 
     for (const record of window) {

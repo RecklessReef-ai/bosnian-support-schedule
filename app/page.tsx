@@ -135,7 +135,8 @@ export default async function Home() {
           stop being frightening.
         </p>
         <p className="text-[12px] text-faint">
-          Fixture and squad data via API-Football. Not affiliated with NFSBiH.
+          Fixture and squad data via API-Football, except where a match names its
+          own source. Not affiliated with NFSBiH.
         </p>
       </footer>
     </main>

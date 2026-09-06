@@ -2,6 +2,10 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { assembleSchedule, type ScheduleInput } from "./assemble-schedule.ts";
 import type {
+  HandEnteredInternational,
+  HandEnteredInternationalsFile,
+} from "./hand-entered-internationals.ts";
+import type {
   FixturesFile,
   InternationalsFile,
   NationalTeamMember,
@@ -125,6 +129,9 @@ function input(
     roster: roster(),
     fixturesFile: fixturesFile(fixtures),
     internationalsFile: internationalsFile(),
+    // Empty unless a test says otherwise, which is what the committed file holds:
+    // hand entries are the exception, and every rule above must hold without them.
+    handEnteredInternationals: { men: [], women: [] },
     ...over,
   };
 }
@@ -638,5 +645,297 @@ describe("assembleSchedule against the real International Windows", () => {
       at("2026-10-06T12:00:00.000Z").fixtures.map((f) => f.id),
       [1528978, 1528999],
     );
+  });
+});
+
+/**
+ * The escape hatch at the end of the NFSBiH chain: the federation publishes prose,
+ * the daily RSS watcher raises an issue, a human reads the article — and this is
+ * where the fact lands. It matters most for the women's squad, who have no
+ * Internationals scheduled anywhere: when a friendly is announced, a hand entry is
+ * the only way it reaches a fan before the upstream API catches up.
+ *
+ * These say what a hand entry does that a fetched record does not: it is credited
+ * to the federation and never to the API, it outranks a fetched record for the
+ * same match, and it is enough on its own to make a squad's calendar non-empty.
+ */
+describe("assembleSchedule hand-entered Internationals", () => {
+  const ESTONIA = { name: "Estonia" };
+
+  function handEntry(
+    kickoff: string,
+    over: Partial<HandEnteredInternational> = {},
+  ): HandEnteredInternational {
+    return { kickoff, opponent: ESTONIA, atHome: true, source: "NFSBiH", ...over };
+  }
+
+  /** A Schedule with no Club Fixtures, so only the Internationals are in play. */
+  function scheduleWith(
+    squads: SquadInternationals[],
+    handEntered: Partial<HandEnteredInternationalsFile>,
+    now = NOW,
+  ) {
+    return assembleSchedule(
+      input([], {
+        roster: roster({ members: BOTH_SQUADS }),
+        internationalsFile: internationalsFile(squads),
+        handEnteredInternationals: { men: [], women: [], ...handEntered },
+      }),
+      now,
+    );
+  }
+
+  // The women's squad's real situation: their qualifying group finished in June
+  // 2026 and the API carries nothing at all for them. A friendly the federation
+  // announces reaches a fan only this way.
+  it("publishes an International the upstream fetch does not carry", () => {
+    const schedule = scheduleWith([squadRecord("women", [])], {
+      women: [handEntry(fromNow(20 * DAYS), { venue: "Stadion Grbavica" })],
+    });
+
+    assert.equal(schedule.fixtures.length, 1);
+    const [match] = schedule.fixtures;
+    assert.equal(match.kind, "international");
+    assert.equal(match.venue, "Stadion Grbavica");
+    assert.deepEqual(
+      [match.home.name, match.away.name],
+      ["Bosnia & Herzegovina W", "Estonia"],
+    );
+  });
+
+  // The reason provenance moved onto the record at all. Crediting the API for a
+  // match a human took from the federation's announcement is the exact failure
+  // ADR-0004 exists to prevent.
+  it("credits a hand-entered International to its own Source, never the API", () => {
+    const schedule = scheduleWith([squadRecord("women", [])], {
+      women: [handEntry(fromNow(20 * DAYS))],
+    });
+
+    assert.equal(schedule.fixtures[0].source, "NFSBiH");
+  });
+
+  it("puts the squad on the away side when Bosnia is not at home", () => {
+    const schedule = scheduleWith([squadRecord("men", [])], {
+      men: [handEntry(fromNow(20 * DAYS), { atHome: false })],
+    });
+
+    assert.deepEqual(
+      [schedule.fixtures[0].home.name, schedule.fixtures[0].away.name],
+      ["Estonia", "Bosnia & Herzegovina"],
+    );
+  });
+
+  it("calls a hand-entered match a friendly unless it says otherwise", () => {
+    const schedule = scheduleWith([squadRecord("men", [])], {
+      men: [
+        handEntry(fromNow(20 * DAYS)),
+        handEntry(fromNow(23 * DAYS), { competition: "Kirin Cup", round: "Final" }),
+      ],
+    });
+
+    assert.deepEqual(
+      schedule.fixtures.map((f) => [f.competition, f.round]),
+      [
+        ["Friendly", null],
+        ["Kirin Cup", "Final"],
+      ],
+    );
+  });
+
+  it("keeps each squad's hand entries to that squad", () => {
+    const schedule = scheduleWith([squadRecord("men", []), squadRecord("women", [])], {
+      women: [handEntry(fromNow(20 * DAYS))],
+    });
+
+    assert.equal(schedule.fixtures.length, 1);
+    const [match] = schedule.fixtures;
+    assert.equal(match.kind === "international" && match.squad, "women");
+    assert.deepEqual(
+      match.members.map((m) => m.name),
+      ["D", "E"],
+    );
+  });
+
+  /**
+   * The most likely bug in this feature. The status a fan reads is derived from
+   * what is actually being shown, so a squad with a hand-entered match must never
+   * be told its calendar is empty while that match sits on the page.
+   */
+  it("stops saying none scheduled once a hand-entered International exists", () => {
+    const schedule = scheduleWith([squadRecord("women", [])], {
+      women: [handEntry(fromNow(20 * DAYS))],
+    });
+
+    assert.equal(schedule.squadInternationals[0].status, "scheduled");
+  });
+
+  it("still says none scheduled for the squad without a hand entry", () => {
+    const schedule = scheduleWith([squadRecord("men", []), squadRecord("women", [])], {
+      women: [handEntry(fromNow(20 * DAYS))],
+    });
+
+    assert.deepEqual(
+      schedule.squadInternationals.map((s) => [s.squad, s.status]),
+      [
+        ["men", "none-scheduled"],
+        ["women", "scheduled"],
+      ],
+    );
+  });
+
+  // A hand entry says what the federation announced. It says nothing about the
+  // matches the failed fetch would have found, so "we could not ask" stands.
+  it("does not turn a failed fetch into an answer", () => {
+    const schedule = scheduleWith(
+      [
+        squadRecord("men", [], {
+          status: "unavailable",
+          unavailableReason: "rate limited",
+          fetchedAt: null,
+        }),
+      ],
+      { men: [handEntry(fromNow(20 * DAYS))] },
+    );
+
+    assert.equal(schedule.fixtures.length, 1);
+    assert.deepEqual(schedule.squadInternationals, [
+      {
+        squad: "men",
+        status: "unavailable",
+        fetchedAt: null,
+        unavailableReason: "rate limited",
+      },
+    ]);
+  });
+
+  /**
+   * A squad plays at most one match a day, so the same squad on the same day is
+   * the same match. This is what stops a fan seeing a friendly twice on the
+   * morning the API finally catches up with the federation — days after the
+   * maintainer typed it in, with nobody watching.
+   */
+  it("replaces the fetched record for the same squad on the same day", () => {
+    const kickoff = fromNow(20 * DAYS);
+    const threeHoursLater = new Date(
+      new Date(kickoff).getTime() + 3 * 60 * 60 * 1000,
+    ).toISOString();
+    const schedule = scheduleWith([squadRecord("men", [international(900, kickoff)])], {
+      men: [handEntry(threeHoursLater, { venue: "Bilino Polje" })],
+    });
+
+    assert.equal(schedule.fixtures.length, 1);
+    const [match] = schedule.fixtures;
+    assert.equal(match.source, "NFSBiH");
+    assert.equal(match.venue, "Bilino Polje");
+    assert.equal(match.kickoff, threeHoursLater);
+  });
+
+  it("leaves a fetched record on another day alone", () => {
+    const schedule = scheduleWith(
+      [squadRecord("men", [international(900, fromNow(20 * DAYS))])],
+      { men: [handEntry(fromNow(23 * DAYS))] },
+    );
+
+    assert.deepEqual(
+      schedule.fixtures.map((f) => f.source),
+      ["API-Football", "NFSBiH"],
+    );
+  });
+
+  it("does not let one squad's hand entry replace the other squad's match", () => {
+    const kickoff = fromNow(20 * DAYS);
+    const schedule = scheduleWith(
+      [squadRecord("men", [international(900, kickoff)]), squadRecord("women", [])],
+      { women: [handEntry(kickoff)] },
+    );
+
+    assert.equal(schedule.fixtures.length, 2);
+    assert.deepEqual(
+      schedule.fixtures.map((f) => f.source),
+      ["API-Football", "NFSBiH"],
+    );
+  });
+
+  /**
+   * Layering happens at read time, not in the refresh — so the file the refresh
+   * overwrites never holds a hand entry to lose. This is the arrangement Manual
+   * Overrides already use, and the reason a maintainer's entry takes effect on the
+   * next render rather than the next API call.
+   */
+  it("survives a refresh, whatever the refresh brought back", () => {
+    const entry = handEntry(fromNow(20 * DAYS));
+    const before = scheduleWith([squadRecord("men", [])], { men: [entry] });
+    const after = scheduleWith(
+      [
+        squadRecord("men", [international(900, fromNow(6 * DAYS))], {
+          fetchedAt: "2026-09-13T06:00:00.000Z",
+        }),
+      ],
+      { men: [entry] },
+    );
+
+    assert.deepEqual(
+      before.fixtures.map((f) => f.source),
+      ["NFSBiH"],
+    );
+    assert.deepEqual(
+      after.fixtures.map((f) => f.source),
+      ["API-Football", "NFSBiH"],
+    );
+  });
+
+  // A hand entry is an International like any other: it belongs to a Window, it
+  // ignores the 21-day horizon, and it drops off after the grace period.
+  it("joins the squad's next International Window", () => {
+    const schedule = scheduleWith(
+      [
+        squadRecord("men", [
+          international(900, fromNow(30 * DAYS)),
+          international(901, fromNow(60 * DAYS)),
+        ]),
+      ],
+      { men: [handEntry(fromNow(33 * DAYS))] },
+    );
+
+    assert.deepEqual(
+      schedule.fixtures.map((f) => f.source),
+      ["API-Football", "NFSBiH"],
+    );
+  });
+
+  it("drops a hand-entered match once it has been played", () => {
+    const schedule = scheduleWith([squadRecord("men", [])], {
+      men: [handEntry(fromNow(-140 * MINUTES))],
+    });
+
+    assert.deepEqual(schedule.fixtures, []);
+    assert.equal(schedule.squadInternationals[0].status, "none-scheduled");
+  });
+
+  // A typo in a hand-edited file must not take the whole Schedule down. One match
+  // missing until the file is fixed is visible and recoverable; a blank site is
+  // neither.
+  it("ignores an entry whose kickoff cannot be read", () => {
+    const schedule = scheduleWith([squadRecord("men", [])], {
+      men: [handEntry("28 November"), handEntry(fromNow(20 * DAYS))],
+    });
+
+    assert.equal(schedule.fixtures.length, 1);
+  });
+
+  it("gives a hand-entered match an id that cannot collide with an upstream one", () => {
+    const schedule = scheduleWith([squadRecord("men", [])], {
+      men: [handEntry(fromNow(20 * DAYS))],
+    });
+
+    assert.ok(schedule.fixtures[0].id < 0);
+  });
+
+  it("returns identical output for the same input and timestamp", () => {
+    const entries = { men: [handEntry(fromNow(20 * DAYS))] };
+    const first = scheduleWith([squadRecord("men", [])], entries);
+    const second = scheduleWith([squadRecord("men", [])], entries);
+
+    assert.equal(JSON.stringify(first), JSON.stringify(second));
   });
 });
