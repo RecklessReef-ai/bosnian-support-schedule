@@ -72,7 +72,10 @@ export function SquadList({
   const byName = [...members].sort((a, b) => a.name.localeCompare(b.name));
 
   return (
-    <section className="mt-12 border-t border-line pt-8">
+    // Anchored, because an International shows a squad count instead of
+    // twenty-six names and that count has to lead somewhere. `scroll-mt` keeps the
+    // heading clear of the viewport edge when a fan jumps here.
+    <section id="roster" className="mt-12 scroll-mt-4 border-t border-line pt-8">
       <h2 className="mb-1.5 font-display text-[19px] font-semibold tracking-tight text-fg">
         Who we&apos;re tracking
       </h2>
