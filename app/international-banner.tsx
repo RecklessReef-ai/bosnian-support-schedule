@@ -6,6 +6,10 @@ import { DayHeading } from "./kickoff-time";
 import { useHydrated } from "./use-hydrated";
 import { useViewerTimeZone } from "./use-viewer-timezone";
 import { formatCountdown, formatKickoff } from "@/lib/kickoff";
+import {
+  squadBannerRow,
+  type SquadBannerRow,
+} from "@/lib/squad-banner-row";
 import type {
   International,
   Squad,
@@ -130,32 +134,50 @@ function Countdown({ kickoff, now }: { kickoff: string; now: Date | null }) {
   );
 }
 
+/**
+ * One squad's row. What it says is decided in `lib/squad-banner-row.ts`; all this
+ * does is dress the answer, so the rule that a fan actually depends on lives
+ * somewhere `npm test` can reach.
+ */
 function SquadRow({
   squad,
-  state,
-  matches,
+  row,
   now,
 }: {
   squad: Squad;
-  state: SquadInternationalsState | undefined;
-  matches: International[];
+  row: SquadBannerRow;
   now: Date | null;
 }) {
-  // With no clock yet, the row shows what the server chose. Assembly already
-  // dropped anything past its grace period when the page was rendered, so the
-  // first match is the right one — and picking it the same way on both sides of
-  // hydration is what keeps the markup from mismatching.
-  const next = now
-    ? matches.find((m) => formatCountdown(m.kickoff, now).status !== "finished")
-    : matches[0];
-
   return (
     <li className="flex flex-col gap-1.5 border-t border-line p-4 first:border-t-0">
       <p className="text-[11.5px] font-semibold uppercase tracking-[0.12em] text-faint">
         {SQUAD_LABEL[squad]}
       </p>
 
-      {state === undefined || state.status === "unavailable" ? (
+      {row.show === "next-international" ? (
+        <>
+          <p className="text-[15px] font-semibold leading-snug text-fg">
+            {row.next.home.name}{" "}
+            <span className="font-normal text-faint">v</span>{" "}
+            {row.next.away.name}
+          </p>
+          <Countdown kickoff={row.next.kickoff} now={now} />
+          <p className="text-[12.5px] leading-snug text-muted">
+            {competitionLine(row.next)}
+          </p>
+          {row.couldNotRefresh && (
+            // Underneath the answer rather than instead of it. The match above is
+            // the last thing that was stored and the feed below is listing it, so
+            // a warning in place of the countdown would have this banner
+            // contradicting the page it sits on. Honey, quieter than the row
+            // below, because a stale answer is still an answer.
+            <p className="rounded-[10px] bg-honey-soft px-2.5 py-1.5 text-[12.5px] leading-snug text-honey-text">
+              This couldn&apos;t be refreshed just now, so a newer match may be
+              missing. It usually clears on the next refresh.
+            </p>
+          )}
+        </>
+      ) : row.show === "unavailable" ? (
         // Honey, the colour this site already uses for "something is missing
         // here". An outage and a quiet calendar must not look alike: a fan who
         // reads an outage as an empty calendar stops checking back.
@@ -163,18 +185,7 @@ function SquadRow({
           Their matches couldn&apos;t be loaded, so the next one may be missing
           here. This usually clears on the next refresh.
         </p>
-      ) : next ? (
-        <>
-          <p className="text-[15px] font-semibold leading-snug text-fg">
-            {next.home.name} <span className="font-normal text-faint">v</span>{" "}
-            {next.away.name}
-          </p>
-          <Countdown kickoff={next.kickoff} now={now} />
-          <p className="text-[12.5px] leading-snug text-muted">
-            {competitionLine(next)}
-          </p>
-        </>
-      ) : matches.length > 0 ? (
+      ) : row.show === "all-played" ? (
         // Reached only by a tab left open past the last match of a Window. The
         // page cannot know what follows it without asking again, so it says so
         // rather than inventing an empty calendar.
@@ -233,10 +244,7 @@ export function InternationalBanner({
           <SquadRow
             key={squad}
             squad={squad}
-            state={states.find((state) => state.squad === squad)}
-            matches={internationals.filter(
-              (international) => international.squad === squad,
-            )}
+            row={squadBannerRow({ squad, states, internationals, now })}
             now={now}
           />
         ))}
