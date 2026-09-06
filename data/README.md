@@ -112,4 +112,16 @@ read differently for them: `venue` is always `null`, because the source carries 
 venue for national team matches, and `round` is a bare number ("3") rather than a
 phrase like "Regular Season - 5".
 
+A record may also carry a `source`. It is absent on everything the refresh fetches,
+which means API-Football, so the same credit isn't repeated on hundreds of rows;
+a record that names one is published crediting it instead. That is what stops a
+match a human took from NFSBiH's announcement being presented as the API's — see
+[ADR-0004](../docs/adr/0004-nfsbih-rss-as-second-source-with-per-record-provenance.md).
+
+The app shows the **next International Window** whole rather than the next few
+matches: consecutive Internationals belong to the same window while no more than
+14 days separate them, and none of it is bounded by the 21-day horizon that keeps
+the club feed short. So a break's later matches are visible weeks out, and a break
+already under way keeps showing the part still to be played.
+
 Don't hand-edit this file — a refresh overwrites it.

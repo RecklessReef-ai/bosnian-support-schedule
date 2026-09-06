@@ -1,5 +1,5 @@
 import { repairMojibake } from "./text.ts";
-import type { RawFixtureRecord, Side } from "./types.ts";
+import type { RawFixtureRecord, Side, Source } from "./types.ts";
 
 /**
  * Turns an upstream fixture into the record we commit.
@@ -42,6 +42,19 @@ export function trimFixtureRecord(raw: UpstreamFixture): RawFixtureRecord {
       away: trimSide(raw.teams.away),
     },
   };
+}
+
+/**
+ * The Source to credit a stored record to.
+ *
+ * A record that names one is believed; anything else came from the fetch that
+ * wrote the file, which is API-Football. Storing the field only when it differs
+ * keeps the same credit off hundreds of identical rows, and — more to the point —
+ * means every published Fixture has an answer here, so the site can never fall
+ * back to a site-wide claim that would credit the API for a match a human typed in.
+ */
+export function fixtureSource(record: Pick<RawFixtureRecord, "source">): Source {
+  return record.source ?? "API-Football";
 }
 
 export function trimSide(side: Side): Side {

@@ -33,6 +33,15 @@ is only needed to refresh them.
 Kickoff times render in the viewer's own timezone, with UTC shown underneath in
 muted text.
 
+Both surfaces serve **one chronological feed of both kinds of Fixture** — Club
+Fixtures and Internationals together. Every Fixture in the JSON carries its own
+`kind` (`"club"` or `"international"`) and its own `source`; the top-level
+`source: "API-Football"` the API used to claim is **gone**, because one site-wide
+credit cannot be true of a match a human entered from NFSBiH's announcement — see
+[ADR-0004](./docs/adr/0004-nfsbih-rss-as-second-source-with-per-record-provenance.md).
+`squadInternationals` reports each squad as `scheduled`, `none-scheduled` or
+`unavailable`, so an empty calendar and an outage never read alike.
+
 ## How the data flows
 
 Both the roster and the fixtures are resolved **offline** and committed. Rendering
@@ -60,16 +69,29 @@ see [ADR-0003](./docs/adr/0003-fetch-fixtures-offline-into-a-committed-file.md).
 7. Fetch each squad's own upcoming **Internationals**, one call each, into
    `data/internationals.json`. Both squads are recorded whatever happens, and a
    squad with none scheduled reads differently from one that could not be fetched.
-   Nothing renders these yet.
 
 **At render time — no network:**
 
-8. Merge into one chronological Schedule, keeping everything inside a **21-day
-   horizon**, dropping matches that kicked off more than ~2 hours ago, and
-   deduplicating fixtures that involve more than one National Team Member.
+8. Merge both kinds into one chronological Schedule, dropping matches that kicked
+   off more than ~2 hours ago and deduplicating Club Fixtures that involve more
+   than one National Team Member. Club Fixtures are kept inside a **21-day
+   horizon**; Internationals are not bounded by it, and arrive one **International
+   Window** at a time. All of it happens in `lib/assemble-schedule.ts`, which is
+   pure and takes the current time as an argument.
 
 The horizon is a time bound, not a match count. An earlier fixed "next 5 per
 club" silently dropped cup and continental ties for clubs playing twice a week.
+
+It bounds Club Fixtures only. It exists to stop a dense feed sprawling — 61
+Members across 39 Clubs — and there are about ten Internationals a year, which
+cannot sprawl. Applied to them it would only cut the next break in half: with the
+committed data it would show the 25 September match and hide the 28th's, three
+days later in the same break. So Internationals are selected by **window**
+instead: consecutive matches belong to the same one while no more than 14 days
+separate them, and the whole of the next window is shown however far off its later
+matches fall. Fourteen days sits in a wide gap between matches inside a break
+(three or four days apart) and separate breaks (never closer than about three
+weeks, since club football has to resume in between).
 
 ## Watching the federation
 

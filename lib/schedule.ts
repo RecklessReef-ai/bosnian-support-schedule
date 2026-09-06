@@ -1,5 +1,5 @@
 import { assembleSchedule } from "./assemble-schedule";
-import { getFixturesFile, getRoster } from "./data-files";
+import { getFixturesFile, getInternationalsFile, getRoster } from "./data-files";
 import type { ScheduleData } from "./types";
 
 /**
@@ -19,7 +19,11 @@ export async function getSchedule(): Promise<ScheduleData> {
   const { members } = getRoster();
 
   return assembleSchedule(
-    { members, fixturesFile: getFixturesFile() },
+    {
+      members,
+      fixturesFile: getFixturesFile(),
+      internationalsFile: getInternationalsFile(),
+    },
     new Date(),
   );
 }

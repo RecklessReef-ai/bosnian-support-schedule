@@ -1,5 +1,6 @@
 import type { RawFixture } from "./api-football";
-import type { Fixture, NationalTeamMember } from "./types";
+import { fixtureSource } from "./fixture-record.ts";
+import type { ClubFixture, NationalTeamMember } from "./types";
 
 /**
  * An internal seam of `lib/assemble-schedule.ts`, which is the only caller and the
@@ -8,9 +9,10 @@ import type { Fixture, NationalTeamMember } from "./types";
  * `merge.test.ts` do exactly that. Kept free of I/O, like everything it serves.
  */
 
-function toFixture(raw: RawFixture, members: NationalTeamMember[]): Fixture {
+function toFixture(raw: RawFixture, members: NationalTeamMember[]): ClubFixture {
   return {
     id: raw.fixture.id,
+    kind: "club",
     kickoff: new Date(raw.fixture.date).toISOString(),
     competition: raw.league.name,
     competitionLogo: raw.league.logo,
@@ -18,6 +20,7 @@ function toFixture(raw: RawFixture, members: NationalTeamMember[]): Fixture {
     venue: raw.fixture.venue?.name ?? null,
     home: raw.teams.home,
     away: raw.teams.away,
+    source: fixtureSource(raw),
     members,
   };
 }
@@ -39,6 +42,11 @@ export function buildMembersByClub(
  * Folds every club's fixture list into one chronological Schedule, keeping only
  * matches inside [`windowStart`, `horizonEnd`].
  *
+ * Club Fixtures only. A match reaches the Schedule from here by a National Team
+ * Member's Club being one of the two Sides, which no International ever satisfies —
+ * nobody's Club is Bosnia and Herzegovina — so Internationals take their own path
+ * through `assembleSchedule` rather than being squeezed through this rule.
+ *
  * Two National Team Members at the same club — or facing each other — share a
  * single Fixture, so the same match can arrive from several clubs' feeds and must
  * collapse to one entry listing everyone involved.
@@ -54,8 +62,8 @@ export function mergeFixtures(
   membersByClub: Map<number, NationalTeamMember[]>,
   horizonEnd: Date,
   windowStart: Date = new Date(0),
-): Fixture[] {
-  const merged = new Map<number, Fixture>();
+): ClubFixture[] {
+  const merged = new Map<number, ClubFixture>();
 
   for (const raw of raws) {
     const kickoff = new Date(raw.fixture.date);

@@ -1,4 +1,5 @@
 import { getSchedule } from "@/lib/schedule";
+import type { Squad, SquadInternationalsState } from "@/lib/types";
 import { ScheduleFeed } from "./schedule-feed";
 import { SquadList } from "./squad-list";
 import { TimezoneNote } from "./kickoff-time";
@@ -6,8 +7,53 @@ import { ThemeToggle } from "./theme-toggle";
 
 export const revalidate = 3600;
 
+const SQUAD_LABEL: Record<Squad, string> = { men: "men's", women: "women's" };
+
+/**
+ * What each squad's international calendar is doing, when it is not simply full.
+ *
+ * The two quiet answers must not read alike. The women's side genuinely has
+ * nothing scheduled — their qualifying group finished in June 2026 and the
+ * federation has announced nothing since — and a fan who reads that as a broken
+ * page goes looking for matches that do not exist, while a fan who reads an outage
+ * as an empty calendar stops checking back. So one is a plain statement and the
+ * other is a warning, in the colour the site already uses for "something is
+ * missing here".
+ */
+function InternationalsNotes({ states }: { states: SquadInternationalsState[] }) {
+  const quiet = states.filter((state) => state.status !== "scheduled");
+  if (quiet.length === 0) return null;
+
+  return (
+    <div className="mb-6 flex flex-col gap-2">
+      {quiet.map((state) =>
+        state.status === "unavailable" ? (
+          <p
+            key={state.squad}
+            className="rounded-[16px] bg-honey-soft p-4 text-[13.5px] leading-relaxed text-honey-text"
+          >
+            The {SQUAD_LABEL[state.squad]} national team&apos;s own matches
+            couldn&apos;t be loaded, so any of theirs may be missing from the
+            schedule below. This usually clears on the next refresh.
+          </p>
+        ) : (
+          <p
+            key={state.squad}
+            className="rounded-[16px] border border-line bg-card p-4 text-[13.5px] leading-relaxed text-muted"
+          >
+            The {SQUAD_LABEL[state.squad]} national team has no international
+            matches scheduled. That is the calendar as it stands, not a problem
+            loading it.
+          </p>
+        ),
+      )}
+    </div>
+  );
+}
+
 export default async function Home() {
-  const { fixtures, members, degraded, unavailableClubs } = await getSchedule();
+  const { fixtures, members, degraded, unavailableClubs, squadInternationals } =
+    await getSchedule();
 
   return (
     // The framed column from Pričaj, widened for a fixture list: soft side
@@ -30,9 +76,9 @@ export default async function Home() {
         <div className="wave-rule my-1 w-[120px]" aria-hidden="true" />
 
         <p className="max-w-2xl text-[14.5px] leading-[1.55] text-muted">
-          Every upcoming club match for Bosnia and Herzegovina&apos;s senior
-          men&apos;s and women&apos;s national team players, merged into one
-          schedule.
+          Every upcoming club match and international for Bosnia and
+          Herzegovina&apos;s senior men&apos;s and women&apos;s national team
+          players, merged into one schedule.
         </p>
         <TimezoneNote />
         <div className="mt-1 flex flex-wrap gap-2">
@@ -61,6 +107,8 @@ export default async function Home() {
           missing below. This usually clears on the next refresh.
         </p>
       )}
+
+      <InternationalsNotes states={squadInternationals} />
 
       <ScheduleFeed fixtures={fixtures} members={members} />
 
