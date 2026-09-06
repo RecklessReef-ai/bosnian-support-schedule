@@ -79,13 +79,21 @@ export default async function Home() {
           Internationals ignore the 21-day horizon, so between International
           Windows the next one sits below a hundred-odd Club Fixtures. Only the
           Internationals are handed over — the banner has no use for the rest of
-          the feed, and sending it twice would double the page's payload. */}
-      <InternationalBanner
-        internationals={fixtures.filter(isInternational)}
-        states={squadInternationals}
-      />
+          the feed, and sending it twice would double the page's payload.
 
-      <ScheduleFeed fixtures={fixtures} members={members} />
+          The two share a wrapper because that wrapper is what bounds the banner's
+          stickiness: a sticky element is pinned only while its containing block is
+          on screen, so the banner rides the Schedule and then releases it. Left as
+          siblings under `main` it would have stayed pinned over the Roster and the
+          footer, and covered whatever an anchor jump to `#roster` landed on. */}
+      <div>
+        <InternationalBanner
+          internationals={fixtures.filter(isInternational)}
+          states={squadInternationals}
+        />
+
+        <ScheduleFeed fixtures={fixtures} members={members} />
+      </div>
 
       <SquadList members={members} generatedAt={rosterGeneratedAt} />
 
