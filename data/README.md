@@ -169,11 +169,12 @@ while showing one.
 
 Only four fields are required, and all four come straight out of the article:
 
-- `kickoff` — the kickoff instant. Easiest and safest is the local time with its
-  offset, as above: Sarajevo is `+01:00` in winter and `+02:00` from late March to
-  late October. A `Z` time is fine too. An entry whose kickoff cannot be read is
-  skipped rather than taken down the whole page, so if a match you added never
-  appears, check this field first.
+- `kickoff` — the kickoff instant, as ISO-8601 **with a zone**. Easiest and safest
+  is the local time with its offset, as above: Sarajevo is `+01:00` in winter and
+  `+02:00` from late March to late October. A `Z` time is fine too. Nothing looser
+  is accepted — `"28 November"` and `"2026-11-28 18:00"` are both refused, because
+  the first means the year 2001 and the second means a different moment depending
+  on where the site happens to render.
 - `opponent` — `{ "name": "Estonia" }`. The name is what a fan reads, so write it
   in English as the API would. You may add `"id"`, the opponent's API-Football team
   id, if you happen to have it — nothing keys on it, it just lines the record up
@@ -181,9 +182,9 @@ Only four fields are required, and all four come straight out of the article:
   `curl -H "x-apisports-key: $API_FOOTBALL_KEY" "https://v3.football.api-sports.io/teams?search=Estonia"`
 - `atHome` — `true` when Bosnia is the home side. It decides which way round the
   two names are printed, and nothing else.
-- `source` — where you got it, which is `"NFSBiH"`. The type will not let you write
-  `"API-Football"` here: the whole point of this file is that a match a human took
-  from the federation is never credited to the API.
+- `source` — where you got it, which is `"NFSBiH"`. You cannot write
+  `"API-Football"` here, in the file or in code: the whole point of this file is
+  that a match a human took from the federation is never credited to the API.
 
 The rest are optional:
 
@@ -198,6 +199,36 @@ The rest are optional:
 You do not give the match an id. It gets a stable negative one derived from the
 squad and the date, so it can never collide with an upstream fixture id, and
 correcting the kickoff time or the venue later does not change it.
+
+### What this file will and will not accept
+
+Nothing else here checks itself, because nothing else here is written by hand. This
+one is, so it is read rather than trusted, and **an entry that does not pass is
+skipped** — it is never published, and the rest of the Schedule is assembled around
+it. A typo costs you the one match it names; it does not cost a fan the page.
+Skipped entries are complained about by name in the build and render logs, so if a
+match you added never showed up, that is where it says why.
+
+An entry is refused when:
+
+- `kickoff` is missing, or is not ISO-8601 with an offset or a trailing `Z`.
+- `opponent` does not name the other Side, or carries an `id` that is not a number.
+- `atHome` is missing or is not `true`/`false` — `"true"` in quotes is not.
+- `source` is missing, is not a Source this file accepts, or is `"API-Football"`.
+  That last one is the reason this check exists: an entry crediting the API for a
+  match you read in a federation article would be the site claiming something it
+  was never told. Write `"NFSBiH"`.
+- `competition`, `round`, `venue` or `note` is present but is not text.
+- It is the **second entry for the same squad on the same day**. The squad and the
+  day are what identify a match here, so two of them are one match written down
+  twice — delete whichever is out of date.
+
+The file as a whole is refused, and no hand entries are published at all, when it
+is not a JSON object; one squad's list is refused when it is not an array. A key
+that is neither `"men"` nor `"women"` is complained about rather than quietly
+ignored, because a `"womens"` typo would otherwise leave you staring at a match
+that is nowhere on the page. A squad you leave out entirely is simply one with
+nothing to add.
 
 ### When the API catches up
 

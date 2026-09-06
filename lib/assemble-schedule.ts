@@ -1,7 +1,8 @@
 import { fixtureSource } from "./fixture-record.ts";
 import {
   layerHandEnteredInternationals,
-  type HandEnteredInternationalsFile,
+  readHandEnteredInternationals,
+  type UncheckedHandEnteredInternationalsFile,
 } from "./hand-entered-internationals.ts";
 import { nextInternationalWindow } from "./international-window.ts";
 import { buildMembersByClub, mergeFixtures } from "./merge.ts";
@@ -64,8 +65,12 @@ export interface ScheduleInput {
    * from the federation's announcement. Hand-edited, never written by the refresh,
    * and layered over the fetched records below rather than into the file — which
    * is what makes them survive the refresh that rewrites it.
+   *
+   * Unchecked, and typed as such: it is the one input here no script produced, so
+   * assembly reads it rather than trusting it. A record naming API-Football is
+   * refused on the way in — see `readHandEnteredInternationals`.
    */
-  handEnteredInternationals: HandEnteredInternationalsFile;
+  handEnteredInternationals: UncheckedHandEnteredInternationalsFile;
 }
 
 /**
@@ -83,6 +88,9 @@ export interface ScheduleInput {
  * - A hand-entered International is layered over the fetched ones and replaces the
  *   fetched record for the same match, so it survives every refresh and is never
  *   credited to the upstream API.
+ * - A hand entry that does not survive that check is dropped and complained about,
+ *   never published and never fatal: the rest of the Schedule is assembled around
+ *   it.
  * - Club Fixtures obey the 21-day horizon; Internationals do not.
  * - The next International Window is returned whole, never split by a cutoff.
  * - The Roster is published whole, carrying its own gathered-at date rather than
@@ -120,6 +128,10 @@ export function assembleSchedule(input: ScheduleInput, now: Date): ScheduleData 
     windowStart,
   );
 
+  // Read once, before either squad is looked at, because the file is one document
+  // and a maintainer wants every complaint about it in one place.
+  const handEntered = readHandEnteredInternationals(input.handEnteredInternationals);
+
   const internationals: International[] = [];
   const squadInternationals: SquadInternationalsState[] = [];
 
@@ -133,7 +145,7 @@ export function assembleSchedule(input: ScheduleInput, now: Date): ScheduleData 
     // a match.
     const records = layerHandEnteredInternationals(
       stored.internationals,
-      input.handEnteredInternationals[stored.squad] ?? [],
+      handEntered.entries[stored.squad],
       stored.squad,
       stored.teamId,
     );
@@ -165,6 +177,9 @@ export function assembleSchedule(input: ScheduleInput, now: Date): ScheduleData 
     degraded: raw.length === 0,
     unavailableClubs,
     squadInternationals,
+    // Handed back rather than logged from in here, which would cost this function
+    // the purity every rule above is tested through. `lib/schedule.ts` logs them.
+    handEntryRejections: handEntered.rejections,
   };
 }
 

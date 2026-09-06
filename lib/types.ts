@@ -232,4 +232,14 @@ export interface ScheduleData {
    * rather than silently absent — and told apart from one we could not reach.
    */
   squadInternationals: SquadInternationalsState[];
+  /**
+   * Complaints about `data/hand-entered-internationals.json`: one line per entry
+   * assembly refused to publish, naming the entry and what is wrong with it.
+   *
+   * For the maintainer who edited that file, not for a fan, and so never published
+   * on any surface — a typo is not news. It rides along on the Schedule because
+   * assembly is where the refusing happens and assembly is pure; `lib/schedule.ts`
+   * is what writes these to the log. Empty in every healthy render.
+   */
+  handEntryRejections: string[];
 }

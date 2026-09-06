@@ -21,7 +21,7 @@ import type { ScheduleData } from "./types";
  * `docs/adr/0003`.
  */
 export async function getSchedule(): Promise<ScheduleData> {
-  return assembleSchedule(
+  const schedule = assembleSchedule(
     {
       roster: getRoster(),
       fixturesFile: getFixturesFile(),
@@ -30,4 +30,15 @@ export async function getSchedule(): Promise<ScheduleData> {
     },
     new Date(),
   );
+
+  // The loud half of dropping a bad hand entry. Assembly refuses the entry and
+  // says why; this is the only place with somewhere to say it, and it is where a
+  // maintainer who added a match that never appeared will look — the build and
+  // render logs. Written on every render rather than once, because the file is
+  // read on every render and a complaint nobody has fixed is still true.
+  for (const rejection of schedule.handEntryRejections) {
+    console.error(rejection);
+  }
+
+  return schedule;
 }

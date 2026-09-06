@@ -3,7 +3,7 @@ import handEnteredFile from "@/data/hand-entered-internationals.json";
 import internationalsFile from "@/data/internationals.json";
 import overridesFile from "@/data/overrides.json";
 import rosterFile from "@/data/roster.json";
-import type { HandEnteredInternationalsFile } from "./hand-entered-internationals";
+import type { UncheckedHandEnteredInternationalsFile } from "./hand-entered-internationals";
 import { applyOverrides, type OverridesFile, type RosterFile } from "./roster";
 import type { FixturesFile, InternationalsFile, Roster } from "./types";
 
@@ -19,7 +19,12 @@ const roster = rosterFile as RosterFile;
 const overrides = overridesFile as OverridesFile;
 const fixtures = fixturesFile as unknown as FixturesFile;
 const internationals = internationalsFile as unknown as InternationalsFile;
-const handEntered = handEnteredFile as unknown as HandEnteredInternationalsFile;
+// The one file here nothing generated. The others are written by
+// `refresh:fixtures` in a shape their types describe, so a cast restates what the
+// script guarantees; this one a human types, and a cast would only be the app
+// promising itself that they never slip. It crosses into a checked shape in
+// `readHandEnteredInternationals`, during assembly, and not before.
+const handEntered: UncheckedHandEnteredInternationalsFile = handEnteredFile;
 
 /**
  * The Roster, Manual Overrides applied, still stamped with the date the squad list
@@ -47,7 +52,10 @@ export function getInternationalsFile(): InternationalsFile {
  * rewrites. That is what makes a maintainer's entry survive a refresh and take
  * effect on the next render rather than the next API call, exactly as a Manual
  * Override does.
+ *
+ * Handed over unchecked, on purpose: assembly does the checking, so the rules
+ * about what a hand entry may say are testable without a filesystem.
  */
-export function getHandEnteredInternationals(): HandEnteredInternationalsFile {
+export function getHandEnteredInternationals(): UncheckedHandEnteredInternationalsFile {
   return handEntered;
 }
