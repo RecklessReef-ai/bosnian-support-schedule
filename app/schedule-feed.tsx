@@ -17,6 +17,13 @@ type SquadFilter = Squad | "all";
 
 const SQUAD_LABEL: Record<Squad, string> = { men: "men's", women: "women's" };
 
+/** The one-letter marker after a Member's name, and what it stands for. */
+const SQUAD_MARK: Record<Squad, string> = { men: "M", women: "W" };
+const SQUAD_IN_WORDS: Record<Squad, string> = {
+  men: "Men's national team",
+  women: "Women's national team",
+};
+
 /** Where the squad count on an International sends a fan. See `SquadList`. */
 const ROSTER_HREF = "#roster";
 
@@ -48,6 +55,30 @@ function MatchLine({ fixture }: { fixture: Fixture }) {
 }
 
 /**
+ * Which squad a named Member belongs to, as one letter after their name.
+ *
+ * Both squads are marked, and in the same neutral colour. Marking only the
+ * women's — as this once did — makes the men's squad the unmarked default and the
+ * women's the annotated exception, which is not what a site covering both equally
+ * should say; colouring one and not the other rebuilds that asymmetry in hue. It
+ * also leaves `coral` its one job: further down the page it marks a manually
+ * overridden club in the Roster.
+ *
+ * The letter is hidden from screen readers, which would announce it as a stray
+ * character, and the squad is spelled out for them instead.
+ */
+function SquadMark({ squad }: { squad: Squad }) {
+  return (
+    <>
+      <span aria-hidden className="ml-1 font-semibold text-muted">
+        {SQUAD_MARK[squad]}
+      </span>
+      <span className="sr-only"> — {SQUAD_IN_WORDS[squad]}</span>
+    </>
+  );
+}
+
+/**
  * A Club Fixture: the ordinary row. It involves one or two National Team Members,
  * so naming them costs a pill or two and answers "why is this match here at all".
  */
@@ -62,12 +93,12 @@ function ClubFixtureRow({ fixture }: { fixture: ClubFixture }) {
           <li
             key={member.id}
             className="rounded-full border border-line bg-bg px-2.5 py-1 text-[12px] text-fg"
-            title={`${member.name} — ${member.squad === "women" ? "Women's" : "Men's"} national team`}
+            /* Unchanged: the hover tooltip is what tells a sighted fan what the
+               letter means. */
+            title={`${member.name} — ${SQUAD_IN_WORDS[member.squad]}`}
           >
             {member.name}
-            {member.squad === "women" && (
-              <span className="ml-1 font-semibold text-coral-text">W</span>
-            )}
+            <SquadMark squad={member.squad} />
           </li>
         ))}
       </ul>
@@ -85,8 +116,8 @@ function ClubFixtureRow({ fixture }: { fixture: ClubFixture }) {
  * twenty-six pills bury the match they are meant to explain while making every
  * International look like every other one. And the tint is `sage`, the one accent
  * the site had spare: honey already means "something is missing here", coral marks
- * the women's squad, teal marks an active filter, so any of those would have said
- * something untrue.
+ * a manually overridden club in the Roster, teal marks an active filter, so any of
+ * those would have said something untrue.
  *
  * The count is a link rather than a note, because "26 players" invites exactly one
  * question and the Roster further down the same page is the answer.
