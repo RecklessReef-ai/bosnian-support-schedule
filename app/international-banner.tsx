@@ -6,6 +6,10 @@ import { DayHeading } from "./kickoff-time";
 import { useHydrated } from "./use-hydrated";
 import { useViewerTimeZone } from "./use-viewer-timezone";
 import { formatCountdown, formatKickoff } from "@/lib/kickoff";
+import {
+  squadBannerRow,
+  type SquadBannerRow,
+} from "@/lib/squad-banner-row";
 import type {
   International,
   Squad,
@@ -99,8 +103,9 @@ function Countdown({ kickoff, now }: { kickoff: string; now: Date | null }) {
   return (
     <>
       {/* Height is reserved so the row does not jump when the count appears at
-          hydration. */}
-      <div className="flex min-h-[30px] items-center">
+          hydration — which matters more now the banner is pinned: a strip that
+          grew a few pixels at hydration would shove the whole Schedule down. */}
+      <div className="flex min-h-[26px] items-center sm:min-h-[30px]">
         {countdown?.status === "counting" && (
           <span
             aria-live="off"
@@ -109,7 +114,7 @@ function Countdown({ kickoff, now }: { kickoff: string; now: Date | null }) {
             // `KickoffTime` already leans on Karla's figures being even. Fraunces
             // is a variable serif whose figures are not guaranteed to be, and a
             // headline that shivers once a second is worse than a plainer one.
-            className="text-[26px] font-bold leading-none tracking-tight text-fg tabular-nums sm:text-[30px]"
+            className="text-[22px] font-bold leading-none tracking-tight text-fg tabular-nums sm:text-[26px] md:text-[30px]"
           >
             {countdown.display}
           </span>
@@ -130,32 +135,59 @@ function Countdown({ kickoff, now }: { kickoff: string; now: Date | null }) {
   );
 }
 
+/**
+ * One squad's row. What it says is decided in `lib/squad-banner-row.ts`; all this
+ * does is dress the answer, so the rule that a fan actually depends on lives
+ * somewhere `npm test` can reach.
+ */
 function SquadRow({
   squad,
-  state,
-  matches,
+  row,
   now,
 }: {
   squad: Squad;
-  state: SquadInternationalsState | undefined;
-  matches: International[];
+  row: SquadBannerRow;
   now: Date | null;
 }) {
-  // With no clock yet, the row shows what the server chose. Assembly already
-  // dropped anything past its grace period when the page was rendered, so the
-  // first match is the right one — and picking it the same way on both sides of
-  // hydration is what keeps the markup from mismatching.
-  const next = now
-    ? matches.find((m) => formatCountdown(m.kickoff, now).status !== "finished")
-    : matches[0];
-
   return (
-    <li className="flex flex-col gap-1.5 border-t border-line p-4 first:border-t-0">
+    // Stacked on a narrow screen and side by side from `sm` up. Two stacked rows
+    // cost twice the height of one, and height is what a pinned strip spends: a
+    // wide screen has room to show both squads in the space of a single row, so it
+    // does.
+    <li className="flex flex-1 flex-col gap-1 border-t border-line p-3.5 first:border-t-0 sm:gap-1.5 sm:border-l sm:border-t-0 sm:p-4 sm:first:border-l-0">
       <p className="text-[11.5px] font-semibold uppercase tracking-[0.12em] text-faint">
         {SQUAD_LABEL[squad]}
       </p>
 
-      {state === undefined || state.status === "unavailable" ? (
+      {row.show === "next-international" ? (
+        <>
+          <p className="text-[15px] font-semibold leading-snug text-fg">
+            {row.next.home.name}{" "}
+            <span className="font-normal text-faint">v</span>{" "}
+            {row.next.away.name}
+          </p>
+          <Countdown kickoff={row.next.kickoff} now={now} />
+          {/* The one line the pinned strip gives up on a narrow screen, where
+              every pixel it keeps is a pixel of Schedule the fan cannot see.
+              Which competition it is survives verbatim on the International's own
+              card in the feed below; when it kicks off does not survive anywhere
+              above the fold, which is the whole reason this banner exists. */}
+          <p className="hidden text-[12.5px] leading-snug text-muted sm:block">
+            {competitionLine(row.next)}
+          </p>
+          {row.couldNotRefresh && (
+            // Underneath the answer rather than instead of it. The match above is
+            // the last thing that was stored and the feed below is listing it, so
+            // a warning in place of the countdown would have this banner
+            // contradicting the page it sits on. Honey, quieter than the row
+            // below, because a stale answer is still an answer.
+            <p className="rounded-[10px] bg-honey-soft px-2.5 py-1.5 text-[12.5px] leading-snug text-honey-text">
+              This couldn&apos;t be refreshed just now, so a newer match may be
+              missing. It usually clears on the next refresh.
+            </p>
+          )}
+        </>
+      ) : row.show === "unavailable" ? (
         // Honey, the colour this site already uses for "something is missing
         // here". An outage and a quiet calendar must not look alike: a fan who
         // reads an outage as an empty calendar stops checking back.
@@ -163,18 +195,7 @@ function SquadRow({
           Their matches couldn&apos;t be loaded, so the next one may be missing
           here. This usually clears on the next refresh.
         </p>
-      ) : next ? (
-        <>
-          <p className="text-[15px] font-semibold leading-snug text-fg">
-            {next.home.name} <span className="font-normal text-faint">v</span>{" "}
-            {next.away.name}
-          </p>
-          <Countdown kickoff={next.kickoff} now={now} />
-          <p className="text-[12.5px] leading-snug text-muted">
-            {competitionLine(next)}
-          </p>
-        </>
-      ) : matches.length > 0 ? (
+      ) : row.show === "all-played" ? (
         // Reached only by a tab left open past the last match of a Window. The
         // page cannot know what follows it without asking again, so it says so
         // rather than inventing an empty calendar.
@@ -207,6 +228,19 @@ function SquadRow({
  *
  * One row per squad, always both. Hiding the squad with nothing scheduled would
  * silently erase a side the rest of the site gives equal billing.
+ *
+ * Pinned with `position: sticky`, not `fixed`. Sticky keeps the banner in the
+ * flow, so it occupies its own space at rest: nothing below has to be padded away
+ * from it, there is no height to keep in sync with a padding rule, and the page
+ * lands exactly where it renders rather than shifting once the styles apply.
+ * Fixed would have taken the banner out of the flow and made every one of those a
+ * separate thing to get right.
+ *
+ * It sticks for as long as the Schedule is on screen and no longer — `page.tsx`
+ * wraps the banner and the feed together, and that wrapper is what bounds it. Past
+ * the feed the banner has nothing to be above: the Roster and the footer are not
+ * things a fan is scrolling through to find a kickoff, and an anchor jump to
+ * `#roster` should not land underneath it.
  */
 export function InternationalBanner({
   internationals,
@@ -218,29 +252,41 @@ export function InternationalBanner({
   const now = useTickingClock(internationals.length > 0);
 
   return (
-    <section
-      aria-labelledby="next-internationals"
-      className="mb-6 overflow-hidden rounded-[20px] border border-line bg-card"
-    >
-      <h2
-        id="next-internationals"
-        className="border-b border-line px-4 py-2.5 text-[11.5px] font-semibold uppercase tracking-[0.12em] text-muted"
+    // The strip that does the sticking is a plain opaque band, not the card
+    // itself: it bleeds out to the column's own padding (`-mx-5 px-5`, exactly
+    // cancelling `main`'s) so a Fixture sliding underneath goes behind an edge
+    // rather than up the side of a rounded card and out through its corners.
+    <div className="sticky top-0 z-10 -mx-5 bg-app px-5 pb-4 pt-3 sm:-mx-8 sm:px-8">
+      <section
+        aria-labelledby="next-internationals"
+        className="overflow-hidden rounded-[20px] border border-line bg-card"
       >
-        Next internationals
-      </h2>
-      <ul className="flex flex-col">
-        {SQUADS.map((squad) => (
-          <SquadRow
-            key={squad}
-            squad={squad}
-            state={states.find((state) => state.squad === squad)}
-            matches={internationals.filter(
-              (international) => international.squad === squad,
-            )}
-            now={now}
-          />
-        ))}
-      </ul>
-    </section>
+        {/* Named for a screen reader on every screen, drawn only where there is
+            height to spare. On a phone the rows label themselves — "Men's
+            national team", a fixture and a countdown — and a title bar reading
+            "Next internationals" above them would cost a twelfth of the viewport
+            to repeat what they already say. */}
+        <h2
+          id="next-internationals"
+          className="sr-only sm:not-sr-only sm:block sm:border-b sm:border-line sm:px-4 sm:py-2.5 sm:text-[11.5px] sm:font-semibold sm:uppercase sm:tracking-[0.12em] sm:text-muted"
+        >
+          Next internationals
+        </h2>
+        {/* A ceiling, for the short viewport this cannot otherwise plan for — a
+            phone held sideways, a desktop window dragged down to a sliver. The
+            rows are well under it at any ordinary size, so nothing scrolls in
+            here in practice; it exists so the banner can never take the screen. */}
+        <ul className="flex max-h-[46svh] flex-col overflow-y-auto sm:flex-row">
+          {SQUADS.map((squad) => (
+            <SquadRow
+              key={squad}
+              squad={squad}
+              row={squadBannerRow({ squad, states, internationals, now })}
+              now={now}
+            />
+          ))}
+        </ul>
+      </section>
+    </div>
   );
 }
