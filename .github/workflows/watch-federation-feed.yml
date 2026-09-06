@@ -1,0 +1,39 @@
+name: Watch the federation feed
+
+# The upstream API does not carry everything NFSBiH announces — a retirement, a
+# call-up, or an International the federation has fixed and the API has not. This
+# reads the federation's own RSS feed daily and opens an issue when senior National
+# Team news appears, so a maintainer hears about it rather than finding out later.
+#
+# It sits alongside the fixtures refresh rather than inside it: it needs no API key
+# and no commit, it wants `issues: write` where that job wants `contents: write`, and
+# the federation's server being down must never fail the run that keeps the Schedule
+# current.
+on:
+  schedule:
+    # 05:10 UTC daily — an hour after the fixtures refresh, so a maintainer reading
+    # the morning's issue is looking at a Schedule that has already been updated.
+    - cron: "10 5 * * *"
+  workflow_dispatch: {}
+
+# Two overlapping runs would both see the same item as unannounced and open it twice.
+concurrency:
+  group: watch-federation-feed
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Open an issue for new National Team news
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node --experimental-strip-types scripts/watch-federation-feed.mts

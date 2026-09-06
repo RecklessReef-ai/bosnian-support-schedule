@@ -10,6 +10,7 @@
     "refresh:roster": "node --env-file=.env.local --experimental-strip-types scripts/refresh-roster.mts",
     "refresh:fixtures": "node --env-file=.env.local --experimental-strip-types scripts/refresh-fixtures.mts",
     "resolve:clubs": "node --env-file=.env.local --experimental-strip-types scripts/resolve-clubs.mts",
+    "watch:feed": "node --experimental-strip-types scripts/watch-federation-feed.mts",
     "test": "node --test --experimental-strip-types \"lib/*.test.ts\""
   },
   "dependencies": {

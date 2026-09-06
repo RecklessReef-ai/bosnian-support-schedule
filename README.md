@@ -66,6 +66,31 @@ see [ADR-0003](./docs/adr/0003-fetch-fixtures-offline-into-a-committed-file.md).
 The horizon is a time bound, not a match count. An earlier fixed "next 5 per
 club" silently dropped cup and continental ties for clubs playing twice a week.
 
+## Watching the federation
+
+API-Football does not carry everything NFSBiH announces — a retirement, a call-up,
+or a match the federation has fixed and the API has not. So a second daily job
+(`npm run watch:feed`, and `.github/workflows/watch-federation-feed.yml`) reads the
+federation's public RSS feed, keeps only senior national team items, and opens a
+GitHub issue for each new one, labelled `federation-news`.
+
+The feed is a **trigger for a human, never a fixture source**. It yields prose — a
+headline, a paragraph of Bosnian, a photo — so nothing is parsed out of it and no
+match details are ever inferred from it. The issue links to the article and waits.
+
+Items are classified by the category slug in their URL: `a-reprezentacija-m` and
+`a-reprezentacija-z` are kept, youth (`omladinske-selekcije-*`), the domestic
+leagues and futsal are rejected. A handful of items are published with no category
+at all; those are kept when the headline names the national team and doesn't name an
+age group, because one such item turned out to be about ticketing for upcoming
+national team matches. That errs towards a spurious issue rather than a missed one.
+
+Deduplication reads the issues themselves — each carries an HTML comment naming the
+article — rather than a committed state file, so re-running the workflow never opens
+a duplicate and a closed issue never comes back. The run needs no API key and makes
+no metered calls. Without a `GITHUB_TOKEN` it is a dry run that prints what it would
+open.
+
 ## Testing
 
 ```bash
@@ -76,7 +101,9 @@ The pure logic is covered: Schedule merging and the horizon (`lib/merge.ts`),
 kickoff formatting and day grouping (`lib/kickoff.ts`), ICS generation
 (`lib/ics.ts`), mojibake repair (`lib/text.ts`), bounded concurrency
 (`lib/concurrency.ts`), retry/throttle policy (`lib/pacing.ts`), synthetic member
-ids (`lib/ids.ts`), and rate-limit classification (`lib/api-football.ts`).
+ids (`lib/ids.ts`), rate-limit classification (`lib/api-football.ts`), and the
+federation feed's parsing and filtering (`lib/nfsbih-feed.ts`, against a captured
+sample of the live feed in `lib/nfsbih-feed.sample.xml`).
 
 `lib/cache-policy.test.ts` is a guard rather than a unit test: Next.js needs
 `export const revalidate` to be a literal, so the routes can't import
