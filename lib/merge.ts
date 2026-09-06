@@ -2,8 +2,10 @@ import type { RawFixture } from "./api-football";
 import type { Fixture, NationalTeamMember } from "./types";
 
 /**
- * Pure Schedule assembly, kept free of I/O so it can be tested directly.
- * `lib/schedule.ts` owns the fetching and calls in here.
+ * An internal seam of `lib/assemble-schedule.ts`, which is the only caller and the
+ * only interface anything outside needs: folding Clubs' fixture lists into one
+ * chronological Schedule is a job small enough to test on its own, and the tests in
+ * `merge.test.ts` do exactly that. Kept free of I/O, like everything it serves.
  */
 
 function toFixture(raw: RawFixture, members: NationalTeamMember[]): Fixture {
