@@ -15,9 +15,28 @@ import type { Squad } from "./types.ts";
  * but only because no override had ever added a player rather than corrected one.
  */
 export function syntheticMemberId(squad: Squad, name: string): number {
-  let hash = 0;
-  for (const char of `${squad}:${name}`) {
-    hash = (hash * 31 + char.charCodeAt(0)) % 1_000_000_007;
+  return -hash(`${squad}:${name}`);
+}
+
+/**
+ * Derives a stable id for a Fixture the upstream feed has no id for: an
+ * International a maintainer entered by hand from the federation's announcement,
+ * which upstream does not carry at all.
+ *
+ * Negative for the same reason a Member's synthetic id is — upstream ids are
+ * positive, so the two spaces cannot meet, and a match the API later starts
+ * carrying cannot end up sharing an id with a different fixture. Derived from the
+ * squad and the calendar day, which is what identifies the match, so correcting a
+ * kickoff time or a venue leaves the id where it was.
+ */
+export function syntheticFixtureId(squad: Squad, day: string): number {
+  return -hash(`${squad}:${day}`);
+}
+
+function hash(key: string): number {
+  let value = 0;
+  for (const char of key) {
+    value = (value * 31 + char.charCodeAt(0)) % 1_000_000_007;
   }
-  return -hash;
+  return value;
 }

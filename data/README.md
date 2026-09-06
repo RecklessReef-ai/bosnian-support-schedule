@@ -74,9 +74,10 @@ squad's upcoming Internationals — the National Team's own matches — one call
 squad.
 
 They live here rather than in `fixtures.json` because they obey different rules:
-no 21-day horizon, both squads listed even when empty, and eventually hand-entered
-records merged over fetched ones. Mixing them in would entangle the Club Fixture
-staleness logic, which this file leaves alone.
+no 21-day horizon, both squads listed even when empty, and hand-entered records
+(see `hand-entered-internationals.json` below) layered over fetched ones. Mixing
+them in would entangle the Club Fixture staleness logic, which this file leaves
+alone.
 
 ```json
 {
@@ -125,3 +126,104 @@ the club feed short. So a break's later matches are visible weeks out, and a bre
 already under way keeps showing the part still to be played.
 
 Don't hand-edit this file — a refresh overwrites it.
+
+## `hand-entered-internationals.json`
+
+Internationals the federation has announced but API-Football does not carry yet.
+Hand-edit this, like `overrides.json`, and like `overrides.json` it is layered on
+at read time — the refresh never writes here, so nothing you add is overwritten and
+an edit shows up on the next render without waiting for another API call.
+
+This is the human end of the RSS chain (ADR-0004). NFSBiH publishes prose, not a
+fixture list; the daily watcher opens a GitHub issue when there is national team
+news; you read the article; this file is where the match lands. It matters most for
+the women's squad, who have **no** Internationals scheduled anywhere — their 2027
+World Cup qualifying group finished in June 2026 — so a friendly reaches the site
+this way or not at all.
+
+The committed file is deliberately empty. Nothing has been announced that the API
+is missing, and the site must not show a match that does not exist.
+
+```json
+{
+  "men": [],
+  "women": [
+    {
+      "kickoff": "2026-11-28T18:00:00+01:00",
+      "opponent": { "name": "Estonia" },
+      "atHome": true,
+      "source": "NFSBiH",
+      "competition": "Friendly",
+      "venue": "Stadion Grbavica, Sarajevo",
+      "note": "https://nfsbih.ba/vijesti/prijateljska-utakmica-protiv-estonije"
+    }
+  ]
+}
+```
+
+That one entry publishes **Bosnia & Herzegovina W v Estonia**, Saturday 28 November,
+17:00 UTC, in the schedule and in `/api/schedule`, credited `"source": "NFSBiH"`
+and shown on the page as *Friendly · via NFSBiH*. It also flips the women's squad
+from `none-scheduled` to `scheduled`, so the site stops saying they have no matches
+while showing one.
+
+Only four fields are required, and all four come straight out of the article:
+
+- `kickoff` — the kickoff instant. Easiest and safest is the local time with its
+  offset, as above: Sarajevo is `+01:00` in winter and `+02:00` from late March to
+  late October. A `Z` time is fine too. An entry whose kickoff cannot be read is
+  skipped rather than taken down the whole page, so if a match you added never
+  appears, check this field first.
+- `opponent` — `{ "name": "Estonia" }`. The name is what a fan reads, so write it
+  in English as the API would. You may add `"id"`, the opponent's API-Football team
+  id, if you happen to have it — nothing keys on it, it just lines the record up
+  with the upstream one. Find it the same way as a `clubId`:
+  `curl -H "x-apisports-key: $API_FOOTBALL_KEY" "https://v3.football.api-sports.io/teams?search=Estonia"`
+- `atHome` — `true` when Bosnia is the home side. It decides which way round the
+  two names are printed, and nothing else.
+- `source` — where you got it, which is `"NFSBiH"`. The type will not let you write
+  `"API-Football"` here: the whole point of this file is that a match a human took
+  from the federation is never credited to the API.
+
+The rest are optional:
+
+- `competition` — defaults to `"Friendly"`, which out of a qualifying campaign is
+  nearly always right.
+- `round` — free text, only worth filling in for a competitive match.
+- `venue` — worth filling in. The API carries **no** venue for Internationals at
+  all, so this is the one field a hand entry beats it on.
+- `note` — for whoever reads this file next, usually the link to the article. The
+  site never shows it.
+
+You do not give the match an id. It gets a stable negative one derived from the
+squad and the date, so it can never collide with an upstream fixture id, and
+correcting the kickoff time or the venue later does not change it.
+
+### When the API catches up
+
+**A hand entry replaces the fetched record for the same squad on the same calendar
+day (UTC).** A national team plays at most once a day, so the squad and the date
+identify the match on their own — which is what matters here, because the
+replacement has to happen weeks later, unattended, on the morning API-Football
+finally lists the friendly you typed in. Without it a fan would see the match
+twice. The opponent is deliberately not part of the comparison: the federation
+writes *Estonija* where the API writes *Estonia*, and a name is not something to
+key on.
+
+Replacement is wholesale. The published match is your entry, every field of it,
+credited to your `source` — never a blend of the two, which would carry your credit
+over the API's details.
+
+So there is nothing to do when the API catches up: your entry keeps winning, and
+the two never both appear. Once the fetched record is right, delete your entry and
+the fetched one takes over. **Do** delete it if the match is rescheduled to a
+different day and the API has the new date — different days are different matches
+as far as this file is concerned, and both would show.
+
+A hand-entered match is otherwise an International like any other: it belongs to
+an International Window, it ignores the 21-day club horizon, and it drops off the
+schedule about two hours after kickoff.
+
+One thing it does not do is answer for a fetch that failed. If a squad's status is
+`unavailable`, it stays `unavailable` even with a hand entry showing — the entry
+says what the federation announced, not what the API would have said.
