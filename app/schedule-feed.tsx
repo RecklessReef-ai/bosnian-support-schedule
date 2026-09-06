@@ -5,6 +5,7 @@ import { DayHeading, KickoffTime } from "./kickoff-time";
 import { useViewerTimeZone } from "./use-viewer-timezone";
 import { competitionLine } from "@/lib/competition-line";
 import { kickoffDayKey } from "@/lib/kickoff";
+import { visibleFixtures, type SquadFilter } from "@/lib/schedule-filter";
 import type {
   ClubFixture,
   Fixture,
@@ -12,8 +13,6 @@ import type {
   NationalTeamMember,
   Squad,
 } from "@/lib/types";
-
-type SquadFilter = Squad | "all";
 
 const SQUAD_LABEL: Record<Squad, string> = { men: "men's", women: "women's" };
 
@@ -171,31 +170,18 @@ export function ScheduleFeed({
     [members, squad],
   );
 
-  const visible = useMemo(() => {
-    return fixtures.filter((fixture) => {
-      // Deliberate, and it will look like a bug to whoever reads it next: the
-      // player filter is ignored for an International. A National Team Member is
-      // in one by being in the squad, not by which Side they turn out for that
-      // weekend — so narrowing to a single name would hide the very match a fan
-      // filtering to their favourite is most likely after. Filter to Džeko and his
-      // last international is still his.
-      //
-      // The squad filter does still apply: a men's break is not a women's one.
-      //
-      // Matched on the Fixture's own `squad` rather than on its members, so the
-      // rule holds even for a squad whose Roster came back empty — an
-      // International with nobody attached is still that squad's match.
-      if (fixture.kind === "international") {
-        return squad === "all" || fixture.squad === squad;
-      }
+  // The `<select>` deals in strings; the rule deals in a Member. Resolving the one
+  // to the other is this component's job, because the filtering itself is not — it
+  // lives in `lib/schedule-filter.ts`, where a test can reach it.
+  const selectedMember = useMemo(
+    () => members.find((m) => String(m.id) === playerId) ?? null,
+    [members, playerId],
+  );
 
-      return fixture.members.some(
-        (m) =>
-          (squad === "all" || m.squad === squad) &&
-          (playerId === "all" || String(m.id) === playerId),
-      );
-    });
-  }, [fixtures, squad, playerId]);
+  const visible = useMemo(
+    () => visibleFixtures(fixtures, { squad, member: selectedMember }),
+    [fixtures, squad, selectedMember],
+  );
 
   const groups = useMemo(() => {
     const map = new Map<string, Fixture[]>();
