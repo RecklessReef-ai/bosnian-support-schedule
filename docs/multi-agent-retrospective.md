@@ -146,27 +146,34 @@ at 1.25× input, cache reads at 0.1×).
 | `cd26dfbf` | $132.63 | 6 Sep 01:48 → 17:06 |
 | `0dd56490` | $95.41 | 5 Sep 14:50 → 16:21 |
 | `6fcfd8d4` | $51.70 | 6 Sep 18:02 → 18:27 |
-| `d380dc06` | $24.44 | 7 Sep 01:08 → 12:44 |
+| `d380dc06` | $33.42 | 7 Sep 01:08 → 14:10 |
 | `94914584` | $16.59 | 7 Sep 00:06 → 01:01 |
 | `54a1e625` | $14.38 | 7 Sep 01:14 → 01:31 |
 | `d3b1dae2` | $9.67 | 5 Sep 16:27 → 6 Sep 00:15 |
 | `78274bb0` | $6.38 | 6 Sep 17:10 → 17:15 |
 | `b1995d05` | $1.16 | 5 Sep 16:22 → 16:26 |
-| **Total** | **$352.36** | 5–7 Sep 2026 |
+| **Total** | **$364.03** | 5–7 Sep 2026 |
 
 Aggregate across all sessions: **2.5M output tokens, 14.1M cache writes, 424M cache
 reads.** Cache reads dominate the bill — 424 million of them at $0.50/M is about
 $212, roughly 60% of the total. Long sessions re-read their own context on every
 turn, and that, not generation, is where the money goes.
 
-Two caveats. These are **API list-price equivalents**: a Claude subscription does
+Three caveats. These are **API list-price equivalents**: a Claude subscription does
 not bill per token, so on a subscription this is a measure of consumption, not a
-charge. And the cache figures assume the 5-minute TTL multiplier; 1-hour cache
-writes cost 2× input rather than 1.25×.
+charge. The cache figures assume the 5-minute TTL multiplier; 1-hour cache writes
+cost 2× input rather than 1.25×.
+
+And the table is a **snapshot, not a total** — measured at 7 Sep 14:10. It was
+already wrong when it was first written: `d380dc06` was $24.44 at the moment the
+figure was typed and $33.42 an hour later, because the session writing this
+retrospective is one of the sessions it is measuring. That is not a flaw in the
+method so much as the point of §2 arriving again — a number that was true when you
+read it is not the same as a number that is true.
 
 The relevant comparison for parallelism is `94914584` ($16.59), `54a1e625` ($14.38)
-and `d380dc06` ($24.44) — three sessions overlapping across roughly two hours on 7
-September. Running them concurrently cost about $55. The collisions documented
+and `d380dc06` ($33.42) — three sessions overlapping across roughly two hours on 7
+September. Running them concurrently cost about $64. The collisions documented
 above are what that bought alongside the work.
 
 ## The short version
