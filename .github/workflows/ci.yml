@@ -1,0 +1,44 @@
+name: CI
+
+# Every change to the Schedule arrives through a pull request, and this is what a
+# reviewer reads before merging one. It runs the same three commands a maintainer
+# would run by hand, so a red check means "do not merge" without anyone having to
+# check out the branch.
+#
+# It needs no secrets: the app renders from the committed files and makes no upstream
+# calls at build time, so a fork's pull request can be checked as safely as our own.
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+# A second push to the same branch makes the first run's answer stale.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Read-only: this job reports on a change, it never makes one.
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
