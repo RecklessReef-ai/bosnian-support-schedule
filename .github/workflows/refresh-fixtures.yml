@@ -4,6 +4,10 @@ name: Refresh fixtures
 # committed files and makes no upstream calls when rendering. That is what keeps it
 # inside the free tier, but it means the files have to be refreshed on a schedule or
 # the Schedule quietly goes stale.
+#
+# The refresh proposes, a maintainer merges. It opens a pull request rather than
+# committing to master, so nothing reaches the site that nobody looked at, and so
+# master can stay protected against direct pushes.
 on:
   schedule:
     # 04:10 UTC daily — early enough that a new day's fixtures are listed before
@@ -11,7 +15,7 @@ on:
     - cron: "10 4 * * *"
   workflow_dispatch: {}
 
-# Only one refresh at a time: two overlapping runs would both push to the same file.
+# Only one refresh at a time: two overlapping runs would both push the same branch.
 concurrency:
   group: refresh-fixtures
   cancel-in-progress: false
@@ -21,6 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
 
@@ -50,15 +55,32 @@ jobs:
           BIH_WOMEN_TEAM_ID: "14455"
         run: node --experimental-strip-types scripts/refresh-fixtures.mts
 
-      - name: Commit if changed
+      - name: Propose the refresh as a pull request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           FILES="data/fixtures.json data/internationals.json data/roster.json"
           if git diff --quiet -- $FILES; then
             echo "No fixture, international or roster changes."
             exit 0
           fi
+
+          BRANCH=bot/refresh-fixtures
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$BRANCH"
           git add $FILES
           git commit -m "Refresh fixtures"
-          git push
+
+          # The branch is a rolling proposal, not history: if yesterday's pull request
+          # is still unmerged, today's run replaces its contents wholesale rather than
+          # stacking a second day's refresh on top of it.
+          git push --force origin "$BRANCH"
+
+          if [ -n "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[].number')" ]; then
+            echo "Updated the pull request that was already open."
+          else
+            gh pr create --base master --head "$BRANCH" \
+              --title "Refresh fixtures" \
+              --body "Today's fixtures, Internationals and roster as API-Football reports them. Merging updates the Schedule. Left unmerged, tomorrow's run replaces this branch with a fresher one."
+          fi

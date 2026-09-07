@@ -1,0 +1,14 @@
+# Who has to look at a change before it merges.
+#
+# Everything in this repository is owned by the maintainer, but these paths are
+# called out because a change to any of them is a change to what runs
+# automatically, with credentials, or to what the site publishes about real people:
+#
+#   .github/  — the workflows themselves, and the secret they are trusted with
+#   scripts/  — what those workflows execute
+#   data/     — the squads and Internationals the public site serves
+
+*                   @RecklessReef-ai
+/.github/           @RecklessReef-ai
+/scripts/           @RecklessReef-ai
+/data/              @RecklessReef-ai
