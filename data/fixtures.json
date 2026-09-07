@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-07T09:23:07.583Z",
+  "generatedAt": "2026-09-07T22:08:13.553Z",
   "fixtures": [
     {
       "fixture": {
@@ -50,32 +50,6 @@
           "id": 549,
           "name": "Beşiktaş",
           "logo": "https://media.api-sports.io/football/teams/549.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1552156,
-        "date": "2026-09-05T18:00:00+00:00",
-        "venue": {
-          "name": "Johan Cruijff Arena"
-        }
-      },
-      "league": {
-        "name": "Eredivisie",
-        "logo": "https://media.api-sports.io/football/leagues/88.png",
-        "round": "Regular Season - 5"
-      },
-      "teams": {
-        "home": {
-          "id": 194,
-          "name": "Ajax",
-          "logo": "https://media.api-sports.io/football/teams/194.png"
-        },
-        "away": {
-          "id": 197,
-          "name": "PSV Eindhoven",
-          "logo": "https://media.api-sports.io/football/teams/197.png"
         }
       }
     },
@@ -12561,6 +12535,32 @@
     },
     {
       "fixture": {
+        "id": 1552285,
+        "date": "2027-01-17T16:00:00+00:00",
+        "venue": {
+          "name": "Fortuna Sittard Stadion"
+        }
+      },
+      "league": {
+        "name": "Eredivisie",
+        "logo": "https://media.api-sports.io/football/leagues/88.png",
+        "round": "Regular Season - 19"
+      },
+      "teams": {
+        "home": {
+          "id": 205,
+          "name": "Fortuna Sittard",
+          "logo": "https://media.api-sports.io/football/teams/205.png"
+        },
+        "away": {
+          "id": 197,
+          "name": "PSV Eindhoven",
+          "logo": "https://media.api-sports.io/football/teams/197.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1636342,
         "date": "2027-01-21T17:45:00+00:00",
         "venue": {
@@ -14568,7 +14568,7 @@
     {
       "id": 197,
       "name": "PSV Eindhoven",
-      "fetchedAt": "2026-09-05T16:09:04.514Z"
+      "fetchedAt": "2026-09-07T22:08:13.464Z"
     },
     {
       "id": 211,
