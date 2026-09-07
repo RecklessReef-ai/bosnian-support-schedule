@@ -1,146 +1,58 @@
 @import "tailwindcss";
 
-/* "Jadran" — the Pričaj design tokens, shared verbatim so the two sites read as
-   one family: Adriatic limestone and harbour ink (OKLCH). Light is whitewashed
-   stone in the sun; dark is the same harbour after it. Accent roles hold across
-   both: teal = sea, honey = sand (the schedule's own accent, and the flag's
-   yellow), coral = terracotta roof, sage = olive.
-   `--faint` is this site's one addition: a third text level the dense fixture
-   rows need, sitting a step below --muted. */
+/* The flag palette, one theme only.
+   Navy is the ground rather than an accent, and gold is spent on exactly one
+   thing per screen — the next match. Cream carries every piece of primary text,
+   with two dimmer blues under it for meta lines, so a row can say three things
+   at three volumes without reaching for another hue.
+
+   There is no light variant and no toggle. A second palette is a second set of
+   contrast pairs to keep honest, and the design this implements asks for one
+   ground colour so that gold means "this is the thing" everywhere it appears. */
 :root {
-  --page-bg: oklch(92% 0.012 85);
-  --bg: oklch(96.5% 0.008 85);
-  --app: oklch(95% 0.010 85);
-  --card: oklch(99.5% 0.003 85);
-  --fg: oklch(24% 0.030 225);
-  --muted: oklch(48% 0.022 220);
-  --faint: oklch(62% 0.018 220);
-  --line: oklch(89% 0.018 85);
-  --on-accent: oklch(97% 0.008 85);
-  --teal: oklch(42% 0.075 225);
-  --teal-soft: oklch(93% 0.028 220);
-  --honey: oklch(62% 0.095 80);
-  --honey-soft: oklch(94% 0.038 80);
-  --honey-text: oklch(42% 0.075 65);
-  --coral: oklch(60% 0.120 45);
-  --coral-soft: oklch(93% 0.042 45);
-  --coral-text: oklch(45% 0.105 42);
-  --sage: oklch(48% 0.070 145);
-  --sage-soft: oklch(93% 0.030 145);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --page-bg: oklch(15% 0.022 235);
-    --bg: oklch(20% 0.026 233);
-    --app: oklch(17.5% 0.024 234);
-    --card: oklch(24% 0.028 232);
-    --fg: oklch(94% 0.010 85);
-    --muted: oklch(70% 0.020 220);
-    --faint: oklch(58% 0.020 220);
-    --line: oklch(31% 0.026 232);
-    --on-accent: oklch(15% 0.022 235);
-    --teal: oklch(76% 0.085 215);
-    --teal-soft: oklch(30% 0.045 220);
-    --honey: oklch(80% 0.095 80);
-    --honey-soft: oklch(31% 0.050 75);
-    --honey-text: oklch(88% 0.070 80);
-    --coral: oklch(73% 0.115 45);
-    --coral-soft: oklch(31% 0.055 42);
-    --coral-text: oklch(86% 0.080 45);
-    --sage: oklch(74% 0.070 145);
-    --sage-soft: oklch(28% 0.045 145);
-  }
-}
-
-/* Explicit theme toggle wins over the OS preference, both directions. */
-:root[data-theme="light"] {
-  --page-bg: oklch(92% 0.012 85);
-  --bg: oklch(96.5% 0.008 85);
-  --app: oklch(95% 0.010 85);
-  --card: oklch(99.5% 0.003 85);
-  --fg: oklch(24% 0.030 225);
-  --muted: oklch(48% 0.022 220);
-  --faint: oklch(62% 0.018 220);
-  --line: oklch(89% 0.018 85);
-  --on-accent: oklch(97% 0.008 85);
-  --teal: oklch(42% 0.075 225);
-  --teal-soft: oklch(93% 0.028 220);
-  --honey: oklch(62% 0.095 80);
-  --honey-soft: oklch(94% 0.038 80);
-  --honey-text: oklch(42% 0.075 65);
-  --coral: oklch(60% 0.120 45);
-  --coral-soft: oklch(93% 0.042 45);
-  --coral-text: oklch(45% 0.105 42);
-  --sage: oklch(48% 0.070 145);
-  --sage-soft: oklch(93% 0.030 145);
-}
-:root[data-theme="dark"] {
-  --page-bg: oklch(15% 0.022 235);
-  --bg: oklch(20% 0.026 233);
-  --app: oklch(17.5% 0.024 234);
-  --card: oklch(24% 0.028 232);
-  --fg: oklch(94% 0.010 85);
-  --muted: oklch(70% 0.020 220);
-  --faint: oklch(58% 0.020 220);
-  --line: oklch(31% 0.026 232);
-  --on-accent: oklch(15% 0.022 235);
-  --teal: oklch(76% 0.085 215);
-  --teal-soft: oklch(30% 0.045 220);
-  --honey: oklch(80% 0.095 80);
-  --honey-soft: oklch(31% 0.050 75);
-  --honey-text: oklch(88% 0.070 80);
-  --coral: oklch(73% 0.115 45);
-  --coral-soft: oklch(31% 0.055 42);
-  --coral-text: oklch(86% 0.080 45);
-  --sage: oklch(74% 0.070 145);
-  --sage-soft: oklch(28% 0.045 145);
+  --app: #0d2551; /* page ground — the flag navy */
+  --surface: #15305f; /* fixture rows, the squad toggle: one step off the ground */
+  --line: #24457f; /* hairlines and dividers */
+  --edge: #3b5c94; /* the border on an unselected filter pill */
+  --gold: #e8b93c; /* accent fill. The next-match card, and nothing else */
+  --gold-ink: #f6d477; /* gold as text on navy, where --gold would fail contrast */
+  --on-gold: #0d2551; /* text on the gold card */
+  --fg: #f5f1e6; /* primary text, on navy and on gold alike */
+  --muted: #8fa8cc; /* competition names, day headings, club names */
+  --subtle: #c9d6ec; /* a step brighter than muted: subtext, player names */
 }
 
 @theme inline {
-  --color-page: var(--page-bg);
   --color-app: var(--app);
-  --color-bg: var(--bg);
-  --color-card: var(--card);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-edge: var(--edge);
+  --color-gold: var(--gold);
+  --color-gold-ink: var(--gold-ink);
+  --color-on-gold: var(--on-gold);
   --color-fg: var(--fg);
   --color-muted: var(--muted);
-  --color-faint: var(--faint);
-  --color-line: var(--line);
-  --color-on-accent: var(--on-accent);
-  --color-teal: var(--teal);
-  --color-teal-soft: var(--teal-soft);
-  --color-honey: var(--honey);
-  --color-honey-soft: var(--honey-soft);
-  --color-honey-text: var(--honey-text);
-  --color-coral: var(--coral);
-  --color-coral-soft: var(--coral-soft);
-  --color-coral-text: var(--coral-text);
-  --color-sage: var(--sage);
-  --color-sage-soft: var(--sage-soft);
-  --font-display: var(--font-fraunces);
-  --font-sans: var(--font-karla);
+  --color-subtle: var(--subtle);
+  /* System faces only, no web font request. This site is read on a phone on a
+     Bosnian or diaspora connection, and two font files are two round trips
+     before the next kickoff can be read. */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 body {
-  background: var(--page-bg);
+  background: var(--app);
   color: var(--fg);
-  font-family: var(--font-karla), system-ui, sans-serif;
-  transition: background 0.3s ease;
+  font-family: var(--font-sans);
 }
 
-.wave-rule {
-  height: 14px;
-  background: radial-gradient(
-      circle at 7px 14px,
-      transparent 6.5px,
-      var(--line) 7px 7.6px,
-      transparent 8px
-    )
-    0 0 / 14px 14px repeat-x;
+a {
+  color: var(--gold-ink);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

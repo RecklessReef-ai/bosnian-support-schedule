@@ -10,11 +10,17 @@ import type {
   ClubFixture,
   Fixture,
   International,
-  NationalTeamMember,
   Squad,
 } from "@/lib/types";
 
 const SQUAD_LABEL: Record<Squad, string> = { men: "men's", women: "women's" };
+
+/** The three filter pills, in order. */
+const FILTERS: readonly { value: SquadFilter; label: string }[] = [
+  { value: "all", label: "All" },
+  { value: "men", label: "Men’s" },
+  { value: "women", label: "Women’s" },
+];
 
 /** The one-letter marker after a Member's name, and what it stands for. */
 const SQUAD_MARK: Record<Squad, string> = { men: "M", women: "W" };
@@ -27,41 +33,12 @@ const SQUAD_IN_WORDS: Record<Squad, string> = {
 const ROSTER_HREF = "#roster";
 
 /**
- * The match itself — the two Sides and what they are playing in — which reads the
- * same whichever kind of Fixture it belongs to. Only the framing around it differs.
- */
-function MatchLine({ fixture }: { fixture: Fixture }) {
-  return (
-    <div className="min-w-[14rem] flex-1">
-      <p className="text-[15px] font-semibold text-fg">
-        {fixture.home.name} <span className="font-normal text-faint">v</span>{" "}
-        {fixture.away.name}
-      </p>
-      <p className="text-[12.5px] text-muted">
-        {competitionLine(fixture)}
-        {/* Named only where it differs from the footer's site-wide credit.
-            Repeating "API-Football" on every one of hundreds of rows is noise; a
-            match a human took from the federation's own announcement must never
-            sit under a credit saying the API supplied it. See `docs/adr/0004`.
-            Lives here rather than in each kind's framing, so a hand-entered
-            International and a hand-entered Club Fixture are credited alike. */}
-        {fixture.source !== "API-Football" && (
-          <span className="text-faint"> · via {fixture.source}</span>
-        )}
-      </p>
-    </div>
-  );
-}
-
-/**
  * Which squad a named Member belongs to, as one letter after their name.
  *
  * Both squads are marked, and in the same neutral colour. Marking only the
  * women's — as this once did — makes the men's squad the unmarked default and the
  * women's the annotated exception, which is not what a site covering both equally
- * should say; colouring one and not the other rebuilds that asymmetry in hue. It
- * also leaves `coral` its one job: further down the page it marks a manually
- * overridden club in the Roster.
+ * should say; colouring one and not the other rebuilds that asymmetry in hue.
  *
  * The letter is hidden from screen readers, which would announce it as a stray
  * character, and the squad is spelled out for them instead.
@@ -69,7 +46,7 @@ function MatchLine({ fixture }: { fixture: Fixture }) {
 function SquadMark({ squad }: { squad: Squad }) {
   return (
     <>
-      <span aria-hidden className="ml-1 font-semibold text-muted">
+      <span aria-hidden className="ml-0.5 font-semibold text-muted">
         {SQUAD_MARK[squad]}
       </span>
       <span className="sr-only"> — {SQUAD_IN_WORDS[squad]}</span>
@@ -78,109 +55,114 @@ function SquadMark({ squad }: { squad: Squad }) {
 }
 
 /**
- * A Club Fixture: the ordinary row. It involves one or two National Team Members,
- * so naming them costs a pill or two and answers "why is this match here at all".
+ * One row of the feed, and there is deliberately only one shape of it.
+ *
+ * A Club Fixture and an International are drawn identically — same surface, same
+ * radius, same three columns — because a list where every row looks the same is a
+ * list you can scan without deciding what each variation means. What tells them
+ * apart is content, not styling: an International's competition line names the
+ * tournament and it carries a squad count on the right where a Club Fixture
+ * carries the players it involves.
  */
-function ClubFixtureRow({ fixture }: { fixture: ClubFixture }) {
+function FixtureRow({
+  fixture,
+  children,
+}: {
+  fixture: Fixture;
+  children?: React.ReactNode;
+}) {
   return (
-    <li className="flex flex-wrap items-center gap-x-5 gap-y-3 rounded-[20px] border border-line bg-card p-4">
+    <li className="flex min-h-[56px] items-center gap-3.5 rounded-[12px] bg-surface px-3.5 py-3">
       <KickoffTime kickoff={fixture.kickoff} />
-      <MatchLine fixture={fixture} />
 
-      <ul className="flex flex-wrap gap-1.5">
-        {fixture.members.map((member) => (
-          <li
-            key={member.id}
-            className="rounded-full border border-line bg-bg px-2.5 py-1 text-[12px] text-fg"
-            /* Unchanged: the hover tooltip is what tells a sighted fan what the
-               letter means. */
-            title={`${member.name} — ${SQUAD_IN_WORDS[member.squad]}`}
-          >
-            {member.name}
-            <SquadMark squad={member.squad} />
-          </li>
-        ))}
-      </ul>
+      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+        <p className="text-[14.5px] font-semibold text-fg [overflow-wrap:anywhere]">
+          {fixture.home.name} <span className="font-normal text-muted">v</span>{" "}
+          {fixture.away.name}
+        </p>
+        <p className="text-[12px] leading-snug text-muted">
+          {competitionLine(fixture)}
+          {/* Named only where it differs from the footer's site-wide credit.
+              Repeating "API-Football" on every one of hundreds of rows is noise; a
+              match a human took from the federation's own announcement must never
+              sit under a credit saying the API supplied it. See `docs/adr/0004`. */}
+          {fixture.source !== "API-Football" && <> · via {fixture.source}</>}
+        </p>
+        {children}
+      </div>
     </li>
   );
 }
 
 /**
- * An International: the same row, given emphasis rather than an alarm.
+ * A Club Fixture: the ordinary row. It involves one or two National Team Members,
+ * and naming them costs a line and answers "why is this match here at all".
  *
- * Three things set it apart and only one of them is colour. It is labelled
- * "Men's international" in words, so a fan who cannot see the sage tint or the
- * rail down its edge is still told outright. It carries a squad count where a Club
- * Fixture carries names — an International involves the whole squad, and
- * twenty-six pills bury the match they are meant to explain while making every
- * International look like every other one. And the tint is `sage`, the one accent
- * the site had spare: honey already means "something is missing here", coral marks
- * a manually overridden club in the Roster, teal marks an active filter, so any of
- * those would have said something untrue.
- *
- * The count is a link rather than a note, because "26 players" invites exactly one
- * question and the Roster further down the same page is the answer.
+ * A plain line rather than the pills this once used. Pills read as controls you can
+ * press, and these are not; at two or three names a row they also stacked into a
+ * second block of visual noise under every fixture, which is the opposite of what a
+ * scannable list needs.
  */
-function InternationalCard({ fixture }: { fixture: International }) {
-  const squadSize = fixture.members.length;
-  const squadLabel = SQUAD_LABEL[fixture.squad];
+function ClubFixtureRow({ fixture }: { fixture: ClubFixture }) {
+  if (fixture.members.length === 0) return <FixtureRow fixture={fixture} />;
 
   return (
-    <li className="relative flex flex-wrap items-center gap-x-5 gap-y-3 overflow-hidden rounded-[20px] border border-sage/40 bg-sage-soft p-4 pl-5">
-      {/* Decorative: the label below says the same thing in words. */}
-      <span aria-hidden className="absolute inset-y-0 left-0 w-[3px] bg-sage" />
-
-      <p className="basis-full text-[11.5px] font-semibold uppercase tracking-[0.12em] text-sage">
-        {squadLabel} international
+    <FixtureRow fixture={fixture}>
+      <p className="text-[12px] leading-snug text-subtle">
+        {fixture.members.map((member, index) => (
+          <span key={member.id}>
+            {index > 0 && ", "}
+            {member.name}
+            <SquadMark squad={member.squad} />
+          </span>
+        ))}
       </p>
-
-      <KickoffTime kickoff={fixture.kickoff} />
-      <MatchLine fixture={fixture} />
-
-      {squadSize > 0 && (
-        <a
-          href={ROSTER_HREF}
-          aria-label={`${squadSize} players in the ${squadLabel} squad — see the full squad list`}
-          className="whitespace-nowrap rounded-full border border-sage/40 bg-card px-3 py-1.5 text-[12px] font-semibold text-sage transition-colors hover:bg-sage hover:text-on-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sage"
-        >
-          {squadSize} players
-          <span aria-hidden> →</span>
-        </a>
-      )}
-    </li>
+    </FixtureRow>
   );
 }
 
-export function ScheduleFeed({
-  fixtures,
-  members,
-}: {
-  fixtures: Fixture[];
-  members: NationalTeamMember[];
-}) {
+/**
+ * An International: the same row, with a squad count instead of names.
+ *
+ * An International involves the whole squad, and twenty-six names bury the match
+ * they are meant to explain while making every International look like every other
+ * one. The count is a link rather than a note, because "26 players" invites exactly
+ * one question and the Squad list further down the same page is the answer.
+ *
+ * Which squad is playing is carried on that link's label rather than in a coloured
+ * badge on the row. Colour cannot say "men's" to a fan who cannot see it, the
+ * filter pills above are how a fan narrows to one squad, and a tint per kind would
+ * break the one thing this list has going for it — that every row looks alike.
+ */
+function InternationalRow({ fixture }: { fixture: International }) {
+  const squadSize = fixture.members.length;
+
+  if (squadSize === 0) return <FixtureRow fixture={fixture} />;
+
+  return (
+    <FixtureRow fixture={fixture}>
+      <a
+        href={ROSTER_HREF}
+        aria-label={`${squadSize} players in the ${SQUAD_LABEL[fixture.squad]} squad — see the full squad list`}
+        className="mt-0.5 text-[12px] font-bold text-gold-ink"
+      >
+        {squadSize} players
+        <span aria-hidden> →</span>
+      </a>
+    </FixtureRow>
+  );
+}
+
+export function ScheduleFeed({ fixtures }: { fixtures: Fixture[] }) {
   const timeZone = useViewerTimeZone();
   const [squad, setSquad] = useState<SquadFilter>("all");
-  const [playerId, setPlayerId] = useState<string>("all");
 
-  const selectablePlayers = useMemo(
-    () =>
-      members
-        .filter((m) => squad === "all" || m.squad === squad)
-        .sort((a, b) => a.name.localeCompare(b.name)),
-    [members, squad],
-  );
-
-  // The `<select>` deals in strings; the rule deals in a Member. Resolving the one
-  // to the other is this component's job, because the filtering itself is not — it
-  // lives in `lib/schedule-filter.ts`, where a test can reach it.
-  const selectedMember = useMemo(
-    () => members.find((m) => String(m.id) === playerId) ?? null,
-    [members, playerId],
-  );
-
+  // `member` is left open: the per-player picker this page used to carry is gone,
+  // but the rule in `lib/schedule-filter.ts` still takes one, so a future surface
+  // can narrow by player without that logic moving.
   const visible = useMemo(
-    () => visibleFixtures(fixtures, { squad, member: selectedMember }),
-    [fixtures, squad, selectedMember],
+    () => visibleFixtures(fixtures, { squad, member: null }),
+    [fixtures, squad],
   );
 
   const groups = useMemo(() => {
@@ -195,70 +177,59 @@ export function ScheduleFeed({
   }, [visible, timeZone]);
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-wrap items-center gap-2.5">
-        <div className="flex gap-1 rounded-full border border-line bg-card p-1">
-          {(["all", "men", "women"] as const).map((option) => (
+    // This wrapper is what bounds the pills' stickiness: a sticky element is pinned
+    // only while its containing block is on screen, so the pills ride the feed and
+    // then release it. Left as a sibling of the Squad list they would have stayed
+    // pinned over it, filtering nothing.
+    <div>
+      {/* Pinned directly under the 64px header, so the squad toggle is still in
+          reach after a swipe or two — it is the one control on the page, and a
+          filter you have to scroll back up to find is a filter nobody uses. */}
+      <div className="sticky top-16 z-[4] flex gap-2 bg-app px-5 pb-3 pt-[18px]">
+        {FILTERS.map((filter) => {
+          const active = squad === filter.value;
+          return (
             <button
-              key={option}
+              key={filter.value}
               type="button"
-              onClick={() => {
-                setSquad(option);
-                setPlayerId("all");
-              }}
-              className={`rounded-full px-3.5 py-1.5 text-[13px] font-semibold capitalize transition-colors ${
-                squad === option
-                  ? "bg-teal-soft text-teal"
-                  : "text-muted hover:text-fg"
+              aria-pressed={active}
+              onClick={() => setSquad(filter.value)}
+              className={`min-h-[44px] flex-1 rounded-[22px] text-[14px] ${
+                active
+                  ? "bg-fg font-bold text-app"
+                  : "border border-edge font-semibold text-fg"
               }`}
             >
-              {option === "all" ? "Both squads" : option}
+              {filter.label}
             </button>
-          ))}
-        </div>
-
-        <select
-          value={playerId}
-          onChange={(e) => setPlayerId(e.target.value)}
-          className="rounded-full border border-line bg-card px-4 py-2 text-[13px] text-fg outline-none focus:border-teal"
-          aria-label="Filter by player"
-        >
-          <option value="all">All players</option>
-          {selectablePlayers.map((member) => (
-            <option key={member.id} value={String(member.id)}>
-              {member.name}
-              {member.club ? ` — ${member.club.name}` : ""}
-            </option>
-          ))}
-        </select>
-
-        <span className="text-[13px] text-muted">
-          {visible.length} upcoming {visible.length === 1 ? "match" : "matches"}
-        </span>
+          );
+        })}
       </div>
 
-      {groups.length === 0 ? (
-        <p className="rounded-[20px] border border-line bg-card p-7 text-center text-[14px] text-muted">
-          No upcoming matches for this filter.
-        </p>
-      ) : (
-        groups.map(([key, dayFixtures]) => (
-          <section key={key} className="flex flex-col gap-2">
-            <h2 className="text-[11.5px] font-semibold uppercase tracking-[0.12em] text-honey-text">
-              <DayHeading kickoff={dayFixtures[0].kickoff} />
-            </h2>
-            <ul className="flex flex-col gap-2">
-              {dayFixtures.map((fixture) =>
-                fixture.kind === "international" ? (
-                  <InternationalCard key={fixture.id} fixture={fixture} />
-                ) : (
-                  <ClubFixtureRow key={fixture.id} fixture={fixture} />
-                ),
-              )}
-            </ul>
-          </section>
-        ))
-      )}
+      <div className="px-5 pb-2">
+        {groups.length === 0 ? (
+          <p className="rounded-[12px] bg-surface p-6 text-center text-[14px] text-muted">
+            No upcoming matches for this filter.
+          </p>
+        ) : (
+          groups.map(([key, dayFixtures]) => (
+            <section key={key} className="mt-5">
+              <h2 className="mb-2 text-[12px] font-bold uppercase tracking-[0.04em] text-muted">
+                <DayHeading kickoff={dayFixtures[0].kickoff} />
+              </h2>
+              <ul className="flex flex-col gap-2">
+                {dayFixtures.map((fixture) =>
+                  fixture.kind === "international" ? (
+                    <InternationalRow key={fixture.id} fixture={fixture} />
+                  ) : (
+                    <ClubFixtureRow key={fixture.id} fixture={fixture} />
+                  ),
+                )}
+              </ul>
+            </section>
+          ))
+        )}
+      </div>
     </div>
   );
 }

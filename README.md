@@ -5,8 +5,13 @@ Herzegovina's senior men's and women's national team players into one calendar,
 so fans know when and where to watch each of them next.
 
 Built by [Pričaj](https://pricaj.vercel.app) — speaking practice for Bosnian, Croatian,
-English, and Serbian — and it shares Pričaj's "Jadran" design system: the same
-OKLCH tokens, Fraunces/Karla type, and light/dark toggle.
+English, and Serbian.
+
+The front end is a single 640px column on the flag navy (`#0D2551`), with gold
+(`#E8B93C`) spent on exactly one thing per screen: the next match. One theme, no
+toggle, and system faces only — no web font request stands between a cold load on
+a phone and the next kickoff. Tokens live at the top of
+[`app/globals.css`](./app/globals.css).
 
 See [`CONTEXT.md`](./CONTEXT.md) for the domain vocabulary and
 [`docs/adr/`](./docs/adr) for the data-source decisions.
