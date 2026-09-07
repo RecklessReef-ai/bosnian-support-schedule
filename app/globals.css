@@ -14,7 +14,9 @@
   --surface: #15305f; /* fixture rows, the squad toggle: one step off the ground */
   --line: #24457f; /* hairlines and dividers */
   --edge: #3b5c94; /* the border on an unselected filter pill */
-  --gold: #e8b93c; /* accent fill. The next-match card, and nothing else */
+  --gold: #e8b93c; /* solid fill: the next-match card, and nothing else. The two
+     notices above the feed outline in it at 35%, which is deliberately not a fill —
+     a notice has to be findable without outshouting the answer. */
   --gold-ink: #f6d477; /* gold as text on navy, where --gold would fail contrast */
   --on-gold: #0d2551; /* text on the gold card */
   --fg: #f5f1e6; /* primary text, on navy and on gold alike */

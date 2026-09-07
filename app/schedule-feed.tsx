@@ -129,24 +129,38 @@ function ClubFixtureRow({ fixture }: { fixture: ClubFixture }) {
  * one. The count is a link rather than a note, because "26 players" invites exactly
  * one question and the Squad list further down the same page is the answer.
  *
- * Which squad is playing is carried on that link's label rather than in a coloured
- * badge on the row. Colour cannot say "men's" to a fan who cannot see it, the
- * filter pills above are how a fan narrows to one squad, and a tint per kind would
- * break the one thing this list has going for it — that every row looks alike.
+ * Which squad is playing is carried in the link's own words rather than in a
+ * coloured badge on the row. Colour cannot say "men's" to a fan who cannot see it,
+ * the filter pills above are how a fan narrows to one squad, and a tint per kind
+ * would break the one thing this list has going for it — that every row looks
+ * alike. It is said in the visible text and not only in `aria-label`, because a
+ * fan who cannot tell a tint apart is very often not running a screen reader
+ * either; a label only assistive tech can reach answers for one of them and leaves
+ * the other looking at an unattributed row.
+ *
+ * A squad that came back empty still gets the link. The count is the part that
+ * depends on having the Roster; which squad is playing does not, and the Squad
+ * list is exactly where a fan should be sent when this page cannot name anybody.
+ * Dropping the whole line there — as this once did — took away the one thing on
+ * the row that marked it as an International at all.
  */
 function InternationalRow({ fixture }: { fixture: International }) {
   const squadSize = fixture.members.length;
-
-  if (squadSize === 0) return <FixtureRow fixture={fixture} />;
+  const squad = SQUAD_LABEL[fixture.squad];
 
   return (
     <FixtureRow fixture={fixture}>
       <a
         href={ROSTER_HREF}
-        aria-label={`${squadSize} players in the ${SQUAD_LABEL[fixture.squad]} squad — see the full squad list`}
+        aria-label={
+          squadSize > 0
+            ? `The ${squad} squad, ${squadSize} players — see the full squad list`
+            : `The ${squad} squad — see the full squad list`
+        }
         className="mt-0.5 text-[12px] font-bold text-gold-ink"
       >
-        {squadSize} players
+        <span className="capitalize">{squad}</span> squad
+        {squadSize > 0 ? ` · ${squadSize} players` : ""}
         <span aria-hidden> →</span>
       </a>
     </FixtureRow>
