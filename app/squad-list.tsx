@@ -95,9 +95,28 @@ export function SquadList({
       setOpen(true);
     };
 
+    // `hashchange` covers arriving on the anchor and the back button, but not the
+    // tap that matters most. A fan who opened the list from one International's
+    // count, read it and closed it, then tapped another count is already on
+    // `#roster` — so the browser fires nothing, and the link leads to a section
+    // that is collapsed again. That is the same broken promise the realign below
+    // exists to fix, arriving by a different route. The click is caught on the
+    // document rather than wired through the feed so the count stays an ordinary
+    // anchor, which is what makes it work before hydration and without JS.
+    const openOnRosterLink = (event: MouseEvent) => {
+      const link = (event.target as Element | null)?.closest?.("a");
+      if (link?.getAttribute("href") !== ROSTER_HASH) return;
+      realign.current = true;
+      setOpen(true);
+    };
+
     openOnRoster();
     window.addEventListener("hashchange", openOnRoster);
-    return () => window.removeEventListener("hashchange", openOnRoster);
+    document.addEventListener("click", openOnRosterLink);
+    return () => {
+      window.removeEventListener("hashchange", openOnRoster);
+      document.removeEventListener("click", openOnRosterLink);
+    };
   }, []);
 
   // The panel is what makes room for itself. Closed, this section sits a couple of

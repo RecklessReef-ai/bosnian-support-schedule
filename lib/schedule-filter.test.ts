@@ -72,6 +72,14 @@ const all: Fixture[] = [
 
 const ids = (fixtures: Fixture[]) => fixtures.map((f) => f.id);
 
+// A note on the `member` cases below, so they are not read as coverage of
+// something a fan can currently do. The per-player picker was removed when the
+// Schedule page was rebuilt, and `ScheduleFeed` now passes `member: null` always —
+// so every assertion that passes a Member exercises a seam rather than a shipped
+// surface. They are kept deliberately: `ScheduleFilter` still takes a Member, the
+// squad-fallback rule they pin is subtle enough to get wrong twice, and pinning it
+// here is what lets a future surface narrow by player without the rule moving. If
+// that seam is ever dropped for good, drop these with it.
 describe("visibleFixtures", () => {
   it("shows everything when nothing is filtered", () => {
     assert.deepEqual(

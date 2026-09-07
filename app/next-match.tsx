@@ -151,6 +151,13 @@ function AsideFixture({ next }: { next: International }) {
  * one stops checking back because the calendar looked empty, the other keeps
  * checking a calendar that genuinely is. Compressing them into a single line loses
  * none of that; it only stops them competing with the gold card for attention.
+ *
+ * Staleness included. `couldNotRefresh` is the fifth thing this line has to carry,
+ * and it is not a fifth situation — it rides along with a match that is still
+ * ahead, exactly as it does on the headline. Dropping it here would tell a fan the
+ * quiet squad's fixture is current when the headline's identical case says it may
+ * not be, which is the same "we could not ask" told as "here is the answer" that
+ * the four situations exist to prevent.
  */
 function SquadAside({ squad, row }: SquadRow) {
   return (
@@ -158,7 +165,12 @@ function SquadAside({ squad, row }: SquadRow) {
       <span className="font-semibold">{SQUAD_LABEL[squad]}</span>
       {" · "}
       {row.show === "next-international" ? (
-        <AsideFixture next={row.next} />
+        <>
+          <AsideFixture next={row.next} />
+          {row.couldNotRefresh && (
+            <> (couldn&apos;t be refreshed, so a newer match may be missing)</>
+          )}
+        </>
       ) : row.show === "unavailable" ? (
         <>their matches couldn&apos;t be loaded, so the next one may be missing</>
       ) : row.show === "all-played" ? (
