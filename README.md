@@ -32,7 +32,7 @@ is only needed to refresh them.
 
 | Surface | Path | Notes |
 | --- | --- | --- |
-| Website | `/` | Flat chronological feed, filterable by squad and player |
+| Website | `/` | Flat chronological feed, filterable by squad |
 | JSON API | `/api/schedule` | Read-only, CORS-open |
 
 Kickoff times render in the viewer's own timezone, with UTC shown underneath in
