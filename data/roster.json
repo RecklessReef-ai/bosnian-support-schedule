@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-06T01:54:43.210Z",
+  "generatedAt": "2026-09-07T09:21:55.900Z",
   "members": [
     {
       "id": 446130,
@@ -7,7 +7,8 @@
       "photo": "https://media.api-sports.io/football/players/446130.png",
       "position": "Goalkeeper",
       "squad": "men",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 9026,
@@ -315,7 +316,8 @@
       "photo": "https://media.api-sports.io/football/players/213752.png",
       "position": "Goalkeeper",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 299724,
@@ -323,7 +325,8 @@
       "photo": "https://media.api-sports.io/football/players/299724.png",
       "position": "Goalkeeper",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 523189,
@@ -331,7 +334,8 @@
       "photo": "https://media.api-sports.io/football/players/523189.png",
       "position": "Goalkeeper",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 446806,
@@ -339,7 +343,8 @@
       "photo": "https://media.api-sports.io/football/players/446806.png",
       "position": "Goalkeeper",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 517216,
@@ -347,7 +352,8 @@
       "photo": "https://media.api-sports.io/football/players/517216.png",
       "position": "Goalkeeper",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 213456,
@@ -355,7 +361,8 @@
       "photo": "https://media.api-sports.io/football/players/213456.png",
       "position": "Goalkeeper",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 213806,
@@ -363,7 +370,8 @@
       "photo": "https://media.api-sports.io/football/players/213806.png",
       "position": "Defender",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 283215,
@@ -395,7 +403,8 @@
       "photo": "https://media.api-sports.io/football/players/458491.png",
       "position": "Defender",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 422462,
@@ -427,7 +436,8 @@
       "photo": "https://media.api-sports.io/football/players/446805.png",
       "position": "Defender",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 363443,
@@ -435,7 +445,8 @@
       "photo": "https://media.api-sports.io/football/players/363443.png",
       "position": "Defender",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 299272,
@@ -443,7 +454,8 @@
       "photo": "https://media.api-sports.io/football/players/299272.png",
       "position": "Defender",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 299196,
@@ -451,7 +463,8 @@
       "photo": "https://media.api-sports.io/football/players/299196.png",
       "position": "Defender",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 510921,
@@ -459,7 +472,8 @@
       "photo": "https://media.api-sports.io/football/players/510921.png",
       "position": "Defender",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 290007,
@@ -467,7 +481,8 @@
       "photo": "https://media.api-sports.io/football/players/290007.png",
       "position": "Midfielder",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 213398,
@@ -475,7 +490,8 @@
       "photo": "https://media.api-sports.io/football/players/213398.png",
       "position": "Midfielder",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 299479,
@@ -495,7 +511,8 @@
       "photo": "https://media.api-sports.io/football/players/213292.png",
       "position": "Midfielder",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 290374,
@@ -503,7 +520,8 @@
       "photo": "https://media.api-sports.io/football/players/290374.png",
       "position": "Midfielder",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 290373,
@@ -511,7 +529,8 @@
       "photo": "https://media.api-sports.io/football/players/290373.png",
       "position": "Midfielder",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 299194,
@@ -519,7 +538,8 @@
       "photo": "https://media.api-sports.io/football/players/299194.png",
       "position": "Midfielder",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 213746,
@@ -527,7 +547,8 @@
       "photo": "https://media.api-sports.io/football/players/213746.png",
       "position": "Midfielder",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 441889,
@@ -535,7 +556,8 @@
       "photo": "https://media.api-sports.io/football/players/441889.png",
       "position": "Midfielder",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 441861,
@@ -543,7 +565,8 @@
       "photo": "https://media.api-sports.io/football/players/441861.png",
       "position": "Midfielder",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 310541,
@@ -575,7 +598,8 @@
       "photo": "https://media.api-sports.io/football/players/299478.png",
       "position": "Attacker",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 299557,
@@ -583,7 +607,8 @@
       "photo": "https://media.api-sports.io/football/players/299557.png",
       "position": "Attacker",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": -744035497,
@@ -599,7 +624,8 @@
       "photo": "https://media.api-sports.io/football/players/524239.png",
       "position": "Attacker",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 213243,
@@ -607,7 +633,8 @@
       "photo": "https://media.api-sports.io/football/players/213243.png",
       "position": "Attacker",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     },
     {
       "id": 299273,
@@ -615,7 +642,8 @@
       "photo": "https://media.api-sports.io/football/players/299273.png",
       "position": "Attacker",
       "squad": "women",
-      "club": null
+      "club": null,
+      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
     }
   ]
 }

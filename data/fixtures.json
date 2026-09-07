@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-06T08:38:59.015Z",
+  "generatedAt": "2026-09-07T09:23:07.583Z",
   "fixtures": [
     {
       "fixture": {
@@ -24,30 +24,6 @@
           "id": 157,
           "name": "Bayern München",
           "logo": "https://media.api-sports.io/football/teams/157.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1575487,
-        "date": "2026-09-05T17:00:00+00:00",
-        "venue": null
-      },
-      "league": {
-        "name": "Primeira Liga",
-        "logo": "https://media.api-sports.io/football/leagues/94.png",
-        "round": "Regular Season - 5"
-      },
-      "teams": {
-        "home": {
-          "id": 214,
-          "name": "Maritimo",
-          "logo": "https://media.api-sports.io/football/teams/214.png"
-        },
-        "away": {
-          "id": 211,
-          "name": "Benfica",
-          "logo": "https://media.api-sports.io/football/teams/211.png"
         }
       }
     },
@@ -280,32 +256,6 @@
           "id": 571,
           "name": "Red Bull Salzburg",
           "logo": "https://media.api-sports.io/football/teams/571.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1548524,
-        "date": "2026-09-06T16:00:00+00:00",
-        "venue": {
-          "name": "SC Rudes"
-        }
-      },
-      "league": {
-        "name": "HNL",
-        "logo": "https://media.api-sports.io/football/leagues/210.png",
-        "round": "Regular Season - 6"
-      },
-      "teams": {
-        "home": {
-          "id": 1019,
-          "name": "Rudes",
-          "logo": "https://media.api-sports.io/football/teams/1019.png"
-        },
-        "away": {
-          "id": 608,
-          "name": "HNK Hajduk Split",
-          "logo": "https://media.api-sports.io/football/teams/608.png"
         }
       }
     },
@@ -1767,6 +1717,32 @@
     },
     {
       "fixture": {
+        "id": 1603570,
+        "date": "2026-09-18T17:00:00+00:00",
+        "venue": {
+          "name": "Stelios Kyriakides Stadium"
+        }
+      },
+      "league": {
+        "name": "1. Division",
+        "logo": "https://media.api-sports.io/football/leagues/318.png",
+        "round": "Regular Season - 4"
+      },
+      "teams": {
+        "home": {
+          "id": 3403,
+          "name": "Pafos",
+          "logo": "https://media.api-sports.io/football/teams/3403.png"
+        },
+        "away": {
+          "id": 3396,
+          "name": "AEL",
+          "logo": "https://media.api-sports.io/football/teams/3396.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1530005,
         "date": "2026-09-19T10:00:00+00:00",
         "venue": {
@@ -1970,32 +1946,6 @@
           "id": 2184,
           "name": "Servette FC",
           "logo": "https://media.api-sports.io/football/teams/2184.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1603570,
-        "date": "2026-09-19T16:00:00+00:00",
-        "venue": {
-          "name": "Stelios Kyriakides Stadium"
-        }
-      },
-      "league": {
-        "name": "1. Division",
-        "logo": "https://media.api-sports.io/football/leagues/318.png",
-        "round": "Regular Season - 4"
-      },
-      "teams": {
-        "home": {
-          "id": 3403,
-          "name": "Pafos",
-          "logo": "https://media.api-sports.io/football/teams/3403.png"
-        },
-        "away": {
-          "id": 3396,
-          "name": "AEL",
-          "logo": "https://media.api-sports.io/football/teams/3396.png"
         }
       }
     },
@@ -3341,32 +3291,6 @@
     },
     {
       "fixture": {
-        "id": 1603573,
-        "date": "2026-10-10T16:00:00+00:00",
-        "venue": {
-          "name": "Antonis Papadopoulos Stadium"
-        }
-      },
-      "league": {
-        "name": "1. Division",
-        "logo": "https://media.api-sports.io/football/leagues/318.png",
-        "round": "Regular Season - 5"
-      },
-      "teams": {
-        "home": {
-          "id": 2269,
-          "name": "Anorthosis",
-          "logo": "https://media.api-sports.io/football/teams/2269.png"
-        },
-        "away": {
-          "id": 3403,
-          "name": "Pafos",
-          "logo": "https://media.api-sports.io/football/teams/3403.png"
-        }
-      }
-    },
-    {
-      "fixture": {
         "id": 1565270,
         "date": "2026-10-10T17:00:00+00:00",
         "venue": {
@@ -3566,6 +3490,32 @@
           "id": 625,
           "name": "Lyngby",
           "logo": "https://media.api-sports.io/football/teams/625.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1603573,
+        "date": "2026-10-11T15:00:00+00:00",
+        "venue": {
+          "name": "Antonis Papadopoulos Stadium"
+        }
+      },
+      "league": {
+        "name": "1. Division",
+        "logo": "https://media.api-sports.io/football/leagues/318.png",
+        "round": "Regular Season - 5"
+      },
+      "teams": {
+        "home": {
+          "id": 2269,
+          "name": "Anorthosis",
+          "logo": "https://media.api-sports.io/football/teams/2269.png"
+        },
+        "away": {
+          "id": 3403,
+          "name": "Pafos",
+          "logo": "https://media.api-sports.io/football/teams/3403.png"
         }
       }
     },
@@ -5974,6 +5924,32 @@
           "id": 211,
           "name": "Benfica",
           "logo": "https://media.api-sports.io/football/teams/211.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1638570,
+        "date": "2026-10-27T19:00:00+00:00",
+        "venue": {
+          "name": "Home Deluxe Arena"
+        }
+      },
+      "league": {
+        "name": "DFB Pokal",
+        "logo": "https://media.api-sports.io/football/leagues/81.png",
+        "round": "Round of 32"
+      },
+      "teams": {
+        "home": {
+          "id": 185,
+          "name": "SC Paderborn 07",
+          "logo": "https://media.api-sports.io/football/teams/185.png"
+        },
+        "away": {
+          "id": 172,
+          "name": "VfB Stuttgart",
+          "logo": "https://media.api-sports.io/football/teams/172.png"
         }
       }
     },
@@ -12253,6 +12229,30 @@
     },
     {
       "fixture": {
+        "id": 1575592,
+        "date": "2027-01-10T16:00:00+00:00",
+        "venue": null
+      },
+      "league": {
+        "name": "Primeira Liga",
+        "logo": "https://media.api-sports.io/football/leagues/94.png",
+        "round": "Regular Season - 17"
+      },
+      "teams": {
+        "home": {
+          "id": 240,
+          "name": "Arouca",
+          "logo": "https://media.api-sports.io/football/teams/240.png"
+        },
+        "away": {
+          "id": 211,
+          "name": "Benfica",
+          "logo": "https://media.api-sports.io/football/teams/211.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1575282,
         "date": "2027-01-12T19:30:00+00:00",
         "venue": {
@@ -12274,32 +12274,6 @@
           "id": 162,
           "name": "Werder Bremen",
           "logo": "https://media.api-sports.io/football/teams/162.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1575276,
-        "date": "2027-01-12T19:30:00+00:00",
-        "venue": {
-          "name": "Red Bull Arena"
-        }
-      },
-      "league": {
-        "name": "Bundesliga",
-        "logo": "https://media.api-sports.io/football/leagues/78.png",
-        "round": "Regular Season - 16"
-      },
-      "teams": {
-        "home": {
-          "id": 173,
-          "name": "RB Leipzig",
-          "logo": "https://media.api-sports.io/football/teams/173.png"
-        },
-        "away": {
-          "id": 172,
-          "name": "VfB Stuttgart",
-          "logo": "https://media.api-sports.io/football/teams/172.png"
         }
       }
     },
@@ -12840,6 +12814,32 @@
           "id": 1025,
           "name": "Wolfsberger AC",
           "logo": "https://media.api-sports.io/football/teams/1025.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1548591,
+        "date": "2027-01-23T16:00:00+00:00",
+        "venue": {
+          "name": "Gradski stadion Varazdin"
+        }
+      },
+      "league": {
+        "name": "HNL",
+        "logo": "https://media.api-sports.io/football/leagues/210.png",
+        "round": "Regular Season - 19"
+      },
+      "teams": {
+        "home": {
+          "id": 1483,
+          "name": "NK Varazdin",
+          "logo": "https://media.api-sports.io/football/teams/1483.png"
+        },
+        "away": {
+          "id": 608,
+          "name": "HNK Hajduk Split",
+          "logo": "https://media.api-sports.io/football/teams/608.png"
         }
       }
     },
@@ -14553,12 +14553,12 @@
     {
       "id": 63,
       "name": "Leeds",
-      "fetchedAt": "2026-09-05T16:09:01.442Z"
+      "fetchedAt": "2026-09-07T09:22:21.907Z"
     },
     {
       "id": 172,
       "name": "VfB Stuttgart",
-      "fetchedAt": "2026-09-05T16:09:05.025Z"
+      "fetchedAt": "2026-09-07T09:22:47.918Z"
     },
     {
       "id": 174,
@@ -14573,7 +14573,7 @@
     {
       "id": 211,
       "name": "Benfica",
-      "fetchedAt": "2026-09-05T16:09:00.422Z"
+      "fetchedAt": "2026-09-07T09:22:08.899Z"
     },
     {
       "id": 407,
@@ -14613,7 +14613,7 @@
     {
       "id": 567,
       "name": "Plzen",
-      "fetchedAt": "2026-09-05T16:09:03.741Z"
+      "fetchedAt": "2026-09-07T09:22:41.402Z"
     },
     {
       "id": 571,
@@ -14623,12 +14623,12 @@
     {
       "id": 608,
       "name": "HNK Hajduk Split",
-      "fetchedAt": "2026-09-05T16:09:00.730Z"
+      "fetchedAt": "2026-09-07T09:22:15.404Z"
     },
     {
       "id": 620,
       "name": "Dinamo Zagreb",
-      "fetchedAt": "2026-09-05T16:09:01.956Z"
+      "fetchedAt": "2026-09-07T09:22:28.399Z"
     },
     {
       "id": 637,
@@ -14658,7 +14658,7 @@
     {
       "id": 2599,
       "name": "Universitatea Cluj",
-      "fetchedAt": "2026-09-05T16:09:05.333Z"
+      "fetchedAt": "2026-09-07T09:22:54.414Z"
     },
     {
       "id": 2998,
@@ -14668,7 +14668,7 @@
     {
       "id": 3403,
       "name": "Pafos",
-      "fetchedAt": "2026-09-05T16:09:03.285Z"
+      "fetchedAt": "2026-09-07T09:22:34.908Z"
     },
     {
       "id": 6343,
@@ -14708,7 +14708,7 @@
     {
       "id": 13981,
       "name": "KoldingQ W",
-      "fetchedAt": "2026-09-05T16:09:05.740Z"
+      "fetchedAt": "2026-09-07T09:23:00.919Z"
     },
     {
       "id": 14131,
@@ -14728,7 +14728,7 @@
     {
       "id": 16038,
       "name": "Basel W",
-      "fetchedAt": "2026-09-05T16:09:08.610Z"
+      "fetchedAt": "2026-09-07T09:23:07.416Z"
     },
     {
       "id": 20498,
@@ -14738,7 +14738,7 @@
     {
       "id": 26738,
       "name": "Al Diriyah",
-      "fetchedAt": "2026-09-05T16:08:59.724Z"
+      "fetchedAt": "2026-09-07T09:22:02.408Z"
     },
     {
       "id": 27869,
