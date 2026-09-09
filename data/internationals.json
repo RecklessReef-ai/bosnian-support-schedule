@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-08T08:52:14.868Z",
+  "generatedAt": "2026-09-09T08:59:06.729Z",
   "squads": [
     {
       "squad": "men",
       "teamId": 1113,
       "status": "scheduled",
-      "fetchedAt": "2026-09-08T08:52:14.868Z",
+      "fetchedAt": "2026-09-09T08:59:06.729Z",
       "internationals": [
         {
           "fixture": {
@@ -157,7 +157,7 @@
       "squad": "women",
       "teamId": 14455,
       "status": "none-scheduled",
-      "fetchedAt": "2026-09-08T08:52:14.868Z",
+      "fetchedAt": "2026-09-09T08:59:06.729Z",
       "internationals": []
     }
   ]
