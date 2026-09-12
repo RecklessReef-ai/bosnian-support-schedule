@@ -1,58 +1,6 @@
 {
-  "generatedAt": "2026-09-11T08:57:27.201Z",
+  "generatedAt": "2026-09-12T08:40:22.043Z",
   "fixtures": [
-    {
-      "fixture": {
-        "id": 1565245,
-        "date": "2026-09-07T17:30:00+00:00",
-        "venue": {
-          "name": "Stadionul Ion Oblemenco"
-        }
-      },
-      "league": {
-        "name": "Liga I",
-        "logo": "https://media.api-sports.io/football/leagues/283.png",
-        "round": "Regular Season - 8"
-      },
-      "teams": {
-        "home": {
-          "id": 632,
-          "name": "Universitatea Craiova",
-          "logo": "https://media.api-sports.io/football/teams/632.png"
-        },
-        "away": {
-          "id": 2599,
-          "name": "Universitatea Cluj",
-          "logo": "https://media.api-sports.io/football/teams/2599.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1636205,
-        "date": "2026-09-09T19:00:00+00:00",
-        "venue": {
-          "name": "Stamford Bridge"
-        }
-      },
-      "league": {
-        "name": "League Cup",
-        "logo": "https://media.api-sports.io/football/leagues/48.png",
-        "round": "Round of 32"
-      },
-      "teams": {
-        "home": {
-          "id": 49,
-          "name": "Chelsea",
-          "logo": "https://media.api-sports.io/football/teams/49.png"
-        },
-        "away": {
-          "id": 63,
-          "name": "Leeds",
-          "logo": "https://media.api-sports.io/football/teams/63.png"
-        }
-      }
-    },
     {
       "fixture": {
         "id": 1529998,
@@ -2047,30 +1995,6 @@
     },
     {
       "fixture": {
-        "id": 1629379,
-        "date": "2026-09-26T12:00:00+00:00",
-        "venue": null
-      },
-      "league": {
-        "name": "DFB Pokal - Women",
-        "logo": "https://media.api-sports.io/football/leagues/947.png",
-        "round": "Round of 32"
-      },
-      "teams": {
-        "home": {
-          "id": 1869,
-          "name": "Turbine Potsdam W",
-          "logo": "https://media.api-sports.io/football/teams/1869.png"
-        },
-        "away": {
-          "id": 24130,
-          "name": "Stuttgart W",
-          "logo": "https://media.api-sports.io/football/teams/24130.png"
-        }
-      }
-    },
-    {
-      "fixture": {
         "id": 1601249,
         "date": "2026-09-26T13:00:00+00:00",
         "venue": {
@@ -2092,6 +2016,30 @@
           "id": 1880,
           "name": "Fiorentina W",
           "logo": "https://media.api-sports.io/football/teams/1880.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1629379,
+        "date": "2026-09-26T13:00:00+00:00",
+        "venue": null
+      },
+      "league": {
+        "name": "DFB Pokal - Women",
+        "logo": "https://media.api-sports.io/football/leagues/947.png",
+        "round": "Round of 32"
+      },
+      "teams": {
+        "home": {
+          "id": 1869,
+          "name": "Turbine Potsdam W",
+          "logo": "https://media.api-sports.io/football/teams/1869.png"
+        },
+        "away": {
+          "id": 24130,
+          "name": "Stuttgart W",
+          "logo": "https://media.api-sports.io/football/teams/24130.png"
         }
       }
     },
@@ -5516,6 +5464,56 @@
           "id": 2599,
           "name": "Universitatea Cluj",
           "logo": "https://media.api-sports.io/football/teams/2599.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1639314,
+        "date": "2026-10-28T15:30:00+00:00",
+        "venue": null
+      },
+      "league": {
+        "name": "Cup",
+        "logo": "https://media.api-sports.io/football/leagues/212.png",
+        "round": "Round of 16"
+      },
+      "teams": {
+        "home": {
+          "id": 6250,
+          "name": "Slavonija Požega",
+          "logo": "https://media.api-sports.io/football/teams/6250.png"
+        },
+        "away": {
+          "id": 608,
+          "name": "HNK Hajduk Split",
+          "logo": "https://media.api-sports.io/football/teams/608.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1639316,
+        "date": "2026-10-28T15:30:00+00:00",
+        "venue": {
+          "name": "Stadion Gradski vrt"
+        }
+      },
+      "league": {
+        "name": "Cup",
+        "logo": "https://media.api-sports.io/football/leagues/212.png",
+        "round": "Round of 16"
+      },
+      "teams": {
+        "home": {
+          "id": 5730,
+          "name": "Vukovar",
+          "logo": "https://media.api-sports.io/football/teams/5730.png"
+        },
+        "away": {
+          "id": 620,
+          "name": "Dinamo Zagreb",
+          "logo": "https://media.api-sports.io/football/teams/620.png"
         }
       }
     },
@@ -12595,32 +12593,6 @@
     },
     {
       "fixture": {
-        "id": 1548587,
-        "date": "2027-01-23T16:00:00+00:00",
-        "venue": {
-          "name": "Stadion Maksimir"
-        }
-      },
-      "league": {
-        "name": "HNL",
-        "logo": "https://media.api-sports.io/football/leagues/210.png",
-        "round": "Regular Season - 19"
-      },
-      "teams": {
-        "home": {
-          "id": 620,
-          "name": "Dinamo Zagreb",
-          "logo": "https://media.api-sports.io/football/teams/620.png"
-        },
-        "away": {
-          "id": 1018,
-          "name": "NK Slaven Belupo",
-          "logo": "https://media.api-sports.io/football/teams/1018.png"
-        }
-      }
-    },
-    {
-      "fixture": {
         "id": 1555464,
         "date": "2027-01-23T16:00:00+00:00",
         "venue": {
@@ -12903,6 +12875,32 @@
     },
     {
       "fixture": {
+        "id": 1557591,
+        "date": "2027-01-30T15:00:00+00:00",
+        "venue": {
+          "name": "Coventry Building Society Arena"
+        }
+      },
+      "league": {
+        "name": "Premier League",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "round": "Regular Season - 23"
+      },
+      "teams": {
+        "home": {
+          "id": 1346,
+          "name": "Coventry",
+          "logo": "https://media.api-sports.io/football/teams/1346.png"
+        },
+        "away": {
+          "id": 63,
+          "name": "Leeds",
+          "logo": "https://media.api-sports.io/football/teams/63.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1601971,
         "date": "2027-01-30T16:00:00+00:00",
         "venue": {
@@ -12924,32 +12922,6 @@
           "id": 556,
           "name": "Qarabag",
           "logo": "https://media.api-sports.io/football/teams/556.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1548592,
-        "date": "2027-01-30T16:00:00+00:00",
-        "venue": {
-          "name": "Stadion Poljud"
-        }
-      },
-      "league": {
-        "name": "HNL",
-        "logo": "https://media.api-sports.io/football/leagues/210.png",
-        "round": "Regular Season - 20"
-      },
-      "teams": {
-        "home": {
-          "id": 608,
-          "name": "HNK Hajduk Split",
-          "logo": "https://media.api-sports.io/football/teams/608.png"
-        },
-        "away": {
-          "id": 1016,
-          "name": "Istra 1961",
-          "logo": "https://media.api-sports.io/football/teams/1016.png"
         }
       }
     },
@@ -13384,6 +13356,32 @@
           "id": 16849,
           "name": "Carl Zeiss Jena  W",
           "logo": "https://media.api-sports.io/football/teams/16849.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1565382,
+        "date": "2027-02-10T18:00:00+00:00",
+        "venue": {
+          "name": "Cluj Arena"
+        }
+      },
+      "league": {
+        "name": "Liga I",
+        "logo": "https://media.api-sports.io/football/leagues/283.png",
+        "round": "Regular Season - 25"
+      },
+      "teams": {
+        "home": {
+          "id": 2599,
+          "name": "Universitatea Cluj",
+          "logo": "https://media.api-sports.io/football/teams/2599.png"
+        },
+        "away": {
+          "id": 2578,
+          "name": "FC Voluntari",
+          "logo": "https://media.api-sports.io/football/teams/2578.png"
         }
       }
     },
@@ -14457,12 +14455,12 @@
     {
       "id": 63,
       "name": "Leeds",
-      "fetchedAt": "2026-09-09T08:58:01.553Z"
+      "fetchedAt": "2026-09-12T08:38:11.912Z"
     },
     {
       "id": 172,
       "name": "VfB Stuttgart",
-      "fetchedAt": "2026-09-11T08:56:22.160Z"
+      "fetchedAt": "2026-09-12T08:39:29.939Z"
     },
     {
       "id": 174,
@@ -14472,27 +14470,27 @@
     {
       "id": 197,
       "name": "PSV Eindhoven",
-      "fetchedAt": "2026-09-11T08:56:09.144Z"
+      "fetchedAt": "2026-09-12T08:39:16.933Z"
     },
     {
       "id": 211,
       "name": "Benfica",
-      "fetchedAt": "2026-09-11T08:54:38.117Z"
+      "fetchedAt": "2026-09-12T08:37:52.404Z"
     },
     {
       "id": 407,
       "name": "Brondby",
-      "fetchedAt": "2026-09-10T08:57:43.411Z"
+      "fetchedAt": "2026-09-12T08:38:50.920Z"
     },
     {
       "id": 496,
       "name": "Juventus",
-      "fetchedAt": "2026-09-11T08:56:02.663Z"
+      "fetchedAt": "2026-09-12T08:39:10.452Z"
     },
     {
       "id": 499,
       "name": "Atalanta",
-      "fetchedAt": "2026-09-11T08:54:57.624Z"
+      "fetchedAt": "2026-09-12T08:38:05.419Z"
     },
     {
       "id": 549,
@@ -14502,22 +14500,22 @@
     {
       "id": 556,
       "name": "Qarabag",
-      "fetchedAt": "2026-09-11T08:54:25.116Z"
+      "fetchedAt": "2026-09-12T08:37:39.401Z"
     },
     {
       "id": 562,
       "name": "FC Astana",
-      "fetchedAt": "2026-09-11T08:55:17.123Z"
+      "fetchedAt": "2026-09-12T08:38:24.912Z"
     },
     {
       "id": 565,
       "name": "BSC Young Boys",
-      "fetchedAt": "2026-09-11T08:55:23.627Z"
+      "fetchedAt": "2026-09-12T08:38:31.418Z"
     },
     {
       "id": 567,
       "name": "Plzen",
-      "fetchedAt": "2026-09-11T08:55:49.642Z"
+      "fetchedAt": "2026-09-12T08:38:57.439Z"
     },
     {
       "id": 571,
@@ -14527,27 +14525,27 @@
     {
       "id": 608,
       "name": "HNK Hajduk Split",
-      "fetchedAt": "2026-09-11T08:54:44.617Z"
+      "fetchedAt": "2026-09-12T08:37:58.919Z"
     },
     {
       "id": 620,
       "name": "Dinamo Zagreb",
-      "fetchedAt": "2026-09-11T08:55:10.638Z"
+      "fetchedAt": "2026-09-12T08:38:18.409Z"
     },
     {
       "id": 637,
       "name": "Sturm Graz",
-      "fetchedAt": "2026-09-11T08:54:31.632Z"
+      "fetchedAt": "2026-09-12T08:37:45.896Z"
     },
     {
       "id": 735,
       "name": "St. Truiden",
-      "fetchedAt": "2026-09-11T08:56:15.661Z"
+      "fetchedAt": "2026-09-12T08:39:23.440Z"
     },
     {
       "id": 785,
       "name": "Karlsruher SC",
-      "fetchedAt": "2026-09-11T08:55:56.140Z"
+      "fetchedAt": "2026-09-12T08:39:03.930Z"
     },
     {
       "id": 1009,
@@ -14557,32 +14555,32 @@
     {
       "id": 1869,
       "name": "Turbine Potsdam W",
-      "fetchedAt": "2026-09-11T08:57:01.164Z"
+      "fetchedAt": "2026-09-12T08:40:02.786Z"
     },
     {
       "id": 2599,
       "name": "Universitatea Cluj",
-      "fetchedAt": "2026-09-07T09:22:54.414Z"
+      "fetchedAt": "2026-09-12T08:39:36.441Z"
     },
     {
       "id": 2998,
       "name": "Houston Dash W",
-      "fetchedAt": "2026-09-11T08:57:27.188Z"
+      "fetchedAt": "2026-09-12T08:40:22.024Z"
     },
     {
       "id": 3403,
       "name": "Pafos",
-      "fetchedAt": "2026-09-11T08:55:43.150Z"
+      "fetchedAt": "2026-09-12T08:38:44.419Z"
     },
     {
       "id": 6343,
       "name": "Çorum FK",
-      "fetchedAt": "2026-09-11T08:55:36.669Z"
+      "fetchedAt": "2026-09-12T08:38:37.913Z"
     },
     {
       "id": 7533,
       "name": "Inter Milano W",
-      "fetchedAt": "2026-09-11T08:56:54.670Z"
+      "fetchedAt": "2026-09-12T08:39:55.944Z"
     },
     {
       "id": 10902,
@@ -14612,7 +14610,7 @@
     {
       "id": 13981,
       "name": "KoldingQ W",
-      "fetchedAt": "2026-09-11T08:56:35.152Z"
+      "fetchedAt": "2026-09-12T08:39:42.935Z"
     },
     {
       "id": 14131,
@@ -14622,17 +14620,17 @@
     {
       "id": 14132,
       "name": "Lokomotiv Moskva W",
-      "fetchedAt": "2026-09-11T08:57:07.670Z"
+      "fetchedAt": "2026-09-12T08:40:08.950Z"
     },
     {
       "id": 15954,
       "name": "Arna-Bjørnar W",
-      "fetchedAt": "2026-09-11T08:56:48.159Z"
+      "fetchedAt": "2026-09-12T08:39:49.438Z"
     },
     {
       "id": 16038,
       "name": "Basel W",
-      "fetchedAt": "2026-09-11T08:57:20.674Z"
+      "fetchedAt": "2026-09-12T08:40:15.448Z"
     },
     {
       "id": 20498,
@@ -14642,7 +14640,7 @@
     {
       "id": 26738,
       "name": "Al Diriyah",
-      "fetchedAt": "2026-09-11T08:54:18.621Z"
+      "fetchedAt": "2026-09-12T08:37:32.892Z"
     },
     {
       "id": 27869,
