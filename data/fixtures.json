@@ -1,32 +1,6 @@
 {
-  "generatedAt": "2026-09-10T08:59:46.978Z",
+  "generatedAt": "2026-09-11T08:57:27.201Z",
   "fixtures": [
-    {
-      "fixture": {
-        "id": 1603556,
-        "date": "2026-09-07T16:00:00+00:00",
-        "venue": {
-          "name": "Stelios Kyriakides Stadium"
-        }
-      },
-      "league": {
-        "name": "1. Division",
-        "logo": "https://media.api-sports.io/football/leagues/318.png",
-        "round": "Regular Season - 2"
-      },
-      "teams": {
-        "home": {
-          "id": 3403,
-          "name": "Pafos",
-          "logo": "https://media.api-sports.io/football/teams/3403.png"
-        },
-        "away": {
-          "id": 3415,
-          "name": "Olympiakos",
-          "logo": "https://media.api-sports.io/football/teams/3415.png"
-        }
-      }
-    },
     {
       "fixture": {
         "id": 1565245,
@@ -55,108 +29,6 @@
     },
     {
       "fixture": {
-        "id": 1582117,
-        "date": "2026-09-08T17:00:00+00:00",
-        "venue": null
-      },
-      "league": {
-        "name": "Kvindeliga",
-        "logo": "https://media.api-sports.io/football/leagues/638.png",
-        "round": "Regular Season - 6"
-      },
-      "teams": {
-        "home": {
-          "id": 13981,
-          "name": "KoldingQ W",
-          "logo": "https://media.api-sports.io/football/teams/13981.png"
-        },
-        "away": {
-          "id": 10883,
-          "name": "Brøndby W",
-          "logo": "https://media.api-sports.io/football/teams/10883.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1559993,
-        "date": "2026-09-09T17:00:00+00:00",
-        "venue": {
-          "name": "FINEP Arena"
-        }
-      },
-      "league": {
-        "name": "Czech Liga",
-        "logo": "https://media.api-sports.io/football/leagues/345.png",
-        "round": "Regular Season - 5"
-      },
-      "teams": {
-        "home": {
-          "id": 3723,
-          "name": "Hradec Králové",
-          "logo": "https://media.api-sports.io/football/teams/3723.png"
-        },
-        "away": {
-          "id": 567,
-          "name": "Plzen",
-          "logo": "https://media.api-sports.io/football/teams/567.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1581769,
-        "date": "2026-09-09T17:00:00+00:00",
-        "venue": {
-          "name": "Leichtathletik Stadion St. jakob"
-        }
-      },
-      "league": {
-        "name": "AXA Women’s Super League",
-        "logo": "https://media.api-sports.io/football/leagues/739.png",
-        "round": "Regular Season - 5"
-      },
-      "teams": {
-        "home": {
-          "id": 16038,
-          "name": "Basel W",
-          "logo": "https://media.api-sports.io/football/teams/16038.png"
-        },
-        "away": {
-          "id": 16039,
-          "name": "Grasshopper W",
-          "logo": "https://media.api-sports.io/football/teams/16039.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1603024,
-        "date": "2026-09-09T18:00:00+00:00",
-        "venue": {
-          "name": "Al Fateh club stadium"
-        }
-      },
-      "league": {
-        "name": "Pro League",
-        "logo": "https://media.api-sports.io/football/leagues/307.png",
-        "round": "Regular Season - 6"
-      },
-      "teams": {
-        "home": {
-          "id": 2931,
-          "name": "Al-Fateh",
-          "logo": "https://media.api-sports.io/football/teams/2931.png"
-        },
-        "away": {
-          "id": 26738,
-          "name": "Al Diriyah",
-          "logo": "https://media.api-sports.io/football/teams/26738.png"
-        }
-      }
-    },
-    {
-      "fixture": {
         "id": 1636205,
         "date": "2026-09-09T19:00:00+00:00",
         "venue": {
@@ -178,58 +50,6 @@
           "id": 63,
           "name": "Leeds",
           "logo": "https://media.api-sports.io/football/teams/63.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1575469,
-        "date": "2026-09-09T19:45:00+00:00",
-        "venue": {
-          "name": "Parque Joaquim de Almeida Freitas"
-        }
-      },
-      "league": {
-        "name": "Primeira Liga",
-        "logo": "https://media.api-sports.io/football/leagues/94.png",
-        "round": "Regular Season - 3"
-      },
-      "teams": {
-        "home": {
-          "id": 215,
-          "name": "Moreirense",
-          "logo": "https://media.api-sports.io/football/teams/215.png"
-        },
-        "away": {
-          "id": 211,
-          "name": "Benfica",
-          "logo": "https://media.api-sports.io/football/teams/211.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1635708,
-        "date": "2026-09-10T16:45:00+00:00",
-        "venue": {
-          "name": "Philips Stadion"
-        }
-      },
-      "league": {
-        "name": "UEFA Champions League",
-        "logo": "https://media.api-sports.io/football/leagues/2.png",
-        "round": "League Stage - 1"
-      },
-      "teams": {
-        "home": {
-          "id": 197,
-          "name": "PSV Eindhoven",
-          "logo": "https://media.api-sports.io/football/teams/197.png"
-        },
-        "away": {
-          "id": 550,
-          "name": "Shakhtar Donetsk",
-          "logo": "https://media.api-sports.io/football/teams/550.png"
         }
       }
     },
@@ -488,32 +308,6 @@
           "id": 735,
           "name": "St. Truiden",
           "logo": "https://media.api-sports.io/football/teams/735.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1548528,
-        "date": "2026-09-12T15:00:00+00:00",
-        "venue": {
-          "name": "Stadion Poljud"
-        }
-      },
-      "league": {
-        "name": "HNL",
-        "logo": "https://media.api-sports.io/football/leagues/210.png",
-        "round": "Regular Season - 7"
-      },
-      "teams": {
-        "home": {
-          "id": 608,
-          "name": "HNK Hajduk Split",
-          "logo": "https://media.api-sports.io/football/teams/608.png"
-        },
-        "away": {
-          "id": 1018,
-          "name": "NK Slaven Belupo",
-          "logo": "https://media.api-sports.io/football/teams/1018.png"
         }
       }
     },
@@ -920,6 +714,32 @@
           "id": 2951,
           "name": "Abha",
           "logo": "https://media.api-sports.io/football/teams/2951.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1548528,
+        "date": "2026-09-13T18:00:00+00:00",
+        "venue": {
+          "name": "Stadion Poljud"
+        }
+      },
+      "league": {
+        "name": "HNL",
+        "logo": "https://media.api-sports.io/football/leagues/210.png",
+        "round": "Regular Season - 7"
+      },
+      "teams": {
+        "home": {
+          "id": 608,
+          "name": "HNK Hajduk Split",
+          "logo": "https://media.api-sports.io/football/teams/608.png"
+        },
+        "away": {
+          "id": 1018,
+          "name": "NK Slaven Belupo",
+          "logo": "https://media.api-sports.io/football/teams/1018.png"
         }
       }
     },
@@ -1719,6 +1539,32 @@
     },
     {
       "fixture": {
+        "id": 1552179,
+        "date": "2026-09-20T12:30:00+00:00",
+        "venue": {
+          "name": "De Grolsch Veste"
+        }
+      },
+      "league": {
+        "name": "Eredivisie",
+        "logo": "https://media.api-sports.io/football/leagues/88.png",
+        "round": "Regular Season - 7"
+      },
+      "teams": {
+        "home": {
+          "id": 415,
+          "name": "Twente",
+          "logo": "https://media.api-sports.io/football/teams/415.png"
+        },
+        "away": {
+          "id": 197,
+          "name": "PSV Eindhoven",
+          "logo": "https://media.api-sports.io/football/teams/197.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1557412,
         "date": "2026-09-20T13:00:00+00:00",
         "venue": {
@@ -1790,32 +1636,6 @@
           "id": 261,
           "name": "KVC Westerlo",
           "logo": "https://media.api-sports.io/football/teams/261.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1552179,
-        "date": "2026-09-20T14:45:00+00:00",
-        "venue": {
-          "name": "De Grolsch Veste"
-        }
-      },
-      "league": {
-        "name": "Eredivisie",
-        "logo": "https://media.api-sports.io/football/leagues/88.png",
-        "round": "Regular Season - 7"
-      },
-      "teams": {
-        "home": {
-          "id": 415,
-          "name": "Twente",
-          "logo": "https://media.api-sports.io/football/teams/415.png"
-        },
-        "away": {
-          "id": 197,
-          "name": "PSV Eindhoven",
-          "logo": "https://media.api-sports.io/football/teams/197.png"
         }
       }
     },
@@ -2651,6 +2471,32 @@
     },
     {
       "fixture": {
+        "id": 1552180,
+        "date": "2026-10-09T18:00:00+00:00",
+        "venue": {
+          "name": "Philips Stadion"
+        }
+      },
+      "league": {
+        "name": "Eredivisie",
+        "logo": "https://media.api-sports.io/football/leagues/88.png",
+        "round": "Regular Season - 8"
+      },
+      "teams": {
+        "home": {
+          "id": 197,
+          "name": "PSV Eindhoven",
+          "logo": "https://media.api-sports.io/football/teams/197.png"
+        },
+        "away": {
+          "id": 210,
+          "name": "Heerenveen",
+          "logo": "https://media.api-sports.io/football/teams/210.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1557417,
         "date": "2026-10-10T11:30:00+00:00",
         "venue": {
@@ -2802,32 +2648,6 @@
           "id": 172,
           "name": "VfB Stuttgart",
           "logo": "https://media.api-sports.io/football/teams/172.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1552180,
-        "date": "2026-10-10T14:30:00+00:00",
-        "venue": {
-          "name": "Philips Stadion"
-        }
-      },
-      "league": {
-        "name": "Eredivisie",
-        "logo": "https://media.api-sports.io/football/leagues/88.png",
-        "round": "Regular Season - 8"
-      },
-      "teams": {
-        "home": {
-          "id": 197,
-          "name": "PSV Eindhoven",
-          "logo": "https://media.api-sports.io/football/teams/197.png"
-        },
-        "away": {
-          "id": 210,
-          "name": "Heerenveen",
-          "logo": "https://media.api-sports.io/football/teams/210.png"
         }
       }
     },
@@ -7365,32 +7185,6 @@
     },
     {
       "fixture": {
-        "id": 1552219,
-        "date": "2026-11-07T19:00:00+00:00",
-        "venue": {
-          "name": "Kooi Stadion"
-        }
-      },
-      "league": {
-        "name": "Eredivisie",
-        "logo": "https://media.api-sports.io/football/leagues/88.png",
-        "round": "Regular Season - 12"
-      },
-      "teams": {
-        "home": {
-          "id": 420,
-          "name": "Cambuur",
-          "logo": "https://media.api-sports.io/football/teams/420.png"
-        },
-        "away": {
-          "id": 197,
-          "name": "PSV Eindhoven",
-          "logo": "https://media.api-sports.io/football/teams/197.png"
-        }
-      }
-    },
-    {
-      "fixture": {
         "id": 1549053,
         "date": "2026-11-08T11:00:00+00:00",
         "venue": {
@@ -7586,6 +7380,32 @@
           "id": 499,
           "name": "Atalanta",
           "logo": "https://media.api-sports.io/football/teams/499.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1552219,
+        "date": "2026-11-08T15:45:00+00:00",
+        "venue": {
+          "name": "Kooi Stadion"
+        }
+      },
+      "league": {
+        "name": "Eredivisie",
+        "logo": "https://media.api-sports.io/football/leagues/88.png",
+        "round": "Regular Season - 12"
+      },
+      "teams": {
+        "home": {
+          "id": 420,
+          "name": "Cambuur",
+          "logo": "https://media.api-sports.io/football/teams/420.png"
+        },
+        "away": {
+          "id": 197,
+          "name": "PSV Eindhoven",
+          "logo": "https://media.api-sports.io/football/teams/197.png"
         }
       }
     },
@@ -8101,6 +7921,32 @@
     },
     {
       "fixture": {
+        "id": 1552229,
+        "date": "2026-11-21T15:30:00+00:00",
+        "venue": {
+          "name": "Goffertstadion"
+        }
+      },
+      "league": {
+        "name": "Eredivisie",
+        "logo": "https://media.api-sports.io/football/leagues/88.png",
+        "round": "Regular Season - 13"
+      },
+      "teams": {
+        "home": {
+          "id": 413,
+          "name": "NEC Nijmegen",
+          "logo": "https://media.api-sports.io/football/teams/413.png"
+        },
+        "away": {
+          "id": 197,
+          "name": "PSV Eindhoven",
+          "logo": "https://media.api-sports.io/football/teams/197.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1601935,
         "date": "2026-11-21T16:00:00+00:00",
         "venue": null
@@ -8426,32 +8272,6 @@
           "id": 637,
           "name": "Sturm Graz",
           "logo": "https://media.api-sports.io/football/teams/637.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1552229,
-        "date": "2026-11-22T16:00:00+00:00",
-        "venue": {
-          "name": "Goffertstadion"
-        }
-      },
-      "league": {
-        "name": "Eredivisie",
-        "logo": "https://media.api-sports.io/football/leagues/88.png",
-        "round": "Regular Season - 13"
-      },
-      "teams": {
-        "home": {
-          "id": 413,
-          "name": "NEC Nijmegen",
-          "logo": "https://media.api-sports.io/football/teams/413.png"
-        },
-        "away": {
-          "id": 197,
-          "name": "PSV Eindhoven",
-          "logo": "https://media.api-sports.io/football/teams/197.png"
         }
       }
     },
@@ -9125,6 +8945,32 @@
     },
     {
       "fixture": {
+        "id": 1552240,
+        "date": "2026-11-28T17:45:00+00:00",
+        "venue": {
+          "name": "Philips Stadion"
+        }
+      },
+      "league": {
+        "name": "Eredivisie",
+        "logo": "https://media.api-sports.io/football/leagues/88.png",
+        "round": "Regular Season - 14"
+      },
+      "teams": {
+        "home": {
+          "id": 197,
+          "name": "PSV Eindhoven",
+          "logo": "https://media.api-sports.io/football/teams/197.png"
+        },
+        "away": {
+          "id": 410,
+          "name": "GO Ahead Eagles",
+          "logo": "https://media.api-sports.io/football/teams/410.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1565317,
         "date": "2026-11-28T18:00:00+00:00",
         "venue": {
@@ -9276,32 +9122,6 @@
           "id": 1398,
           "name": "WSG Wattens",
           "logo": "https://media.api-sports.io/football/teams/1398.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1552240,
-        "date": "2026-11-29T16:00:00+00:00",
-        "venue": {
-          "name": "Philips Stadion"
-        }
-      },
-      "league": {
-        "name": "Eredivisie",
-        "logo": "https://media.api-sports.io/football/leagues/88.png",
-        "round": "Regular Season - 14"
-      },
-      "teams": {
-        "home": {
-          "id": 197,
-          "name": "PSV Eindhoven",
-          "logo": "https://media.api-sports.io/football/teams/197.png"
-        },
-        "away": {
-          "id": 410,
-          "name": "GO Ahead Eagles",
-          "logo": "https://media.api-sports.io/football/teams/410.png"
         }
       }
     },
@@ -9899,6 +9719,32 @@
     },
     {
       "fixture": {
+        "id": 1552244,
+        "date": "2026-12-05T19:00:00+00:00",
+        "venue": {
+          "name": "AFAS Stadion"
+        }
+      },
+      "league": {
+        "name": "Eredivisie",
+        "logo": "https://media.api-sports.io/football/leagues/88.png",
+        "round": "Regular Season - 15"
+      },
+      "teams": {
+        "home": {
+          "id": 201,
+          "name": "AZ Alkmaar",
+          "logo": "https://media.api-sports.io/football/teams/201.png"
+        },
+        "away": {
+          "id": 197,
+          "name": "PSV Eindhoven",
+          "logo": "https://media.api-sports.io/football/teams/197.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1584487,
         "date": "2026-12-06T12:00:00+00:00",
         "venue": null
@@ -10020,32 +9866,6 @@
           "id": 211,
           "name": "Benfica",
           "logo": "https://media.api-sports.io/football/teams/211.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1552244,
-        "date": "2026-12-06T16:00:00+00:00",
-        "venue": {
-          "name": "AFAS Stadion"
-        }
-      },
-      "league": {
-        "name": "Eredivisie",
-        "logo": "https://media.api-sports.io/football/leagues/88.png",
-        "round": "Regular Season - 15"
-      },
-      "teams": {
-        "home": {
-          "id": 201,
-          "name": "AZ Alkmaar",
-          "logo": "https://media.api-sports.io/football/teams/201.png"
-        },
-        "away": {
-          "id": 197,
-          "name": "PSV Eindhoven",
-          "logo": "https://media.api-sports.io/football/teams/197.png"
         }
       }
     },
@@ -10799,6 +10619,32 @@
     },
     {
       "fixture": {
+        "id": 1552256,
+        "date": "2026-12-13T11:15:00+00:00",
+        "venue": {
+          "name": "Philips Stadion"
+        }
+      },
+      "league": {
+        "name": "Eredivisie",
+        "logo": "https://media.api-sports.io/football/leagues/88.png",
+        "round": "Regular Season - 16"
+      },
+      "teams": {
+        "home": {
+          "id": 197,
+          "name": "PSV Eindhoven",
+          "logo": "https://media.api-sports.io/football/teams/197.png"
+        },
+        "away": {
+          "id": 427,
+          "name": "Telstar",
+          "logo": "https://media.api-sports.io/football/teams/427.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1584495,
         "date": "2026-12-13T12:00:00+00:00",
         "venue": null
@@ -11046,32 +10892,6 @@
           "id": 217,
           "name": "SC Braga",
           "logo": "https://media.api-sports.io/football/teams/217.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1552256,
-        "date": "2026-12-13T16:00:00+00:00",
-        "venue": {
-          "name": "Philips Stadion"
-        }
-      },
-      "league": {
-        "name": "Eredivisie",
-        "logo": "https://media.api-sports.io/football/leagues/88.png",
-        "round": "Regular Season - 16"
-      },
-      "teams": {
-        "home": {
-          "id": 197,
-          "name": "PSV Eindhoven",
-          "logo": "https://media.api-sports.io/football/teams/197.png"
-        },
-        "away": {
-          "id": 427,
-          "name": "Telstar",
-          "logo": "https://media.api-sports.io/football/teams/427.png"
         }
       }
     },
@@ -11695,32 +11515,6 @@
     },
     {
       "fixture": {
-        "id": 1552266,
-        "date": "2026-12-20T16:00:00+00:00",
-        "venue": {
-          "name": "Philips Stadion"
-        }
-      },
-      "league": {
-        "name": "Eredivisie",
-        "logo": "https://media.api-sports.io/football/leagues/88.png",
-        "round": "Regular Season - 17"
-      },
-      "teams": {
-        "home": {
-          "id": 197,
-          "name": "PSV Eindhoven",
-          "logo": "https://media.api-sports.io/football/teams/197.png"
-        },
-        "away": {
-          "id": 193,
-          "name": "PEC Zwolle",
-          "logo": "https://media.api-sports.io/football/teams/193.png"
-        }
-      }
-    },
-    {
-      "fixture": {
         "id": 1550239,
         "date": "2026-12-20T17:30:00+00:00",
         "venue": {
@@ -11768,6 +11562,32 @@
           "id": 496,
           "name": "Juventus",
           "logo": "https://media.api-sports.io/football/teams/496.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1552266,
+        "date": "2026-12-20T19:00:00+00:00",
+        "venue": {
+          "name": "Philips Stadion"
+        }
+      },
+      "league": {
+        "name": "Eredivisie",
+        "logo": "https://media.api-sports.io/football/leagues/88.png",
+        "round": "Regular Season - 17"
+      },
+      "teams": {
+        "home": {
+          "id": 197,
+          "name": "PSV Eindhoven",
+          "logo": "https://media.api-sports.io/football/teams/197.png"
+        },
+        "away": {
+          "id": 193,
+          "name": "PEC Zwolle",
+          "logo": "https://media.api-sports.io/football/teams/193.png"
         }
       }
     },
@@ -11896,6 +11716,32 @@
           "id": 45,
           "name": "Everton",
           "logo": "https://media.api-sports.io/football/teams/45.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1603654,
+        "date": "2027-01-02T17:00:00+00:00",
+        "venue": {
+          "name": "Stelios Kyriakides Stadium"
+        }
+      },
+      "league": {
+        "name": "1. Division",
+        "logo": "https://media.api-sports.io/football/leagues/318.png",
+        "round": "Regular Season - 16"
+      },
+      "teams": {
+        "home": {
+          "id": 3403,
+          "name": "Pafos",
+          "logo": "https://media.api-sports.io/football/teams/3403.png"
+        },
+        "away": {
+          "id": 614,
+          "name": "AEK Larnaca",
+          "logo": "https://media.api-sports.io/football/teams/614.png"
         }
       }
     },
@@ -12237,6 +12083,32 @@
     },
     {
       "fixture": {
+        "id": 1552285,
+        "date": "2027-01-16T20:00:00+00:00",
+        "venue": {
+          "name": "Fortuna Sittard Stadion"
+        }
+      },
+      "league": {
+        "name": "Eredivisie",
+        "logo": "https://media.api-sports.io/football/leagues/88.png",
+        "round": "Regular Season - 19"
+      },
+      "teams": {
+        "home": {
+          "id": 205,
+          "name": "Fortuna Sittard",
+          "logo": "https://media.api-sports.io/football/teams/205.png"
+        },
+        "away": {
+          "id": 197,
+          "name": "PSV Eindhoven",
+          "logo": "https://media.api-sports.io/football/teams/197.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1584513,
         "date": "2027-01-17T12:00:00+00:00",
         "venue": null
@@ -12363,22 +12235,46 @@
     },
     {
       "fixture": {
-        "id": 1552285,
+        "id": 1575599,
         "date": "2027-01-17T16:00:00+00:00",
-        "venue": {
-          "name": "Fortuna Sittard Stadion"
-        }
+        "venue": null
       },
       "league": {
-        "name": "Eredivisie",
-        "logo": "https://media.api-sports.io/football/leagues/88.png",
-        "round": "Regular Season - 19"
+        "name": "Primeira Liga",
+        "logo": "https://media.api-sports.io/football/leagues/94.png",
+        "round": "Regular Season - 18"
       },
       "teams": {
         "home": {
-          "id": 205,
-          "name": "Fortuna Sittard",
-          "logo": "https://media.api-sports.io/football/teams/205.png"
+          "id": 238,
+          "name": "Academico Viseu",
+          "logo": "https://media.api-sports.io/football/teams/238.png"
+        },
+        "away": {
+          "id": 211,
+          "name": "Benfica",
+          "logo": "https://media.api-sports.io/football/teams/211.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1635743,
+        "date": "2027-01-20T20:00:00+00:00",
+        "venue": {
+          "name": "MHPArena"
+        }
+      },
+      "league": {
+        "name": "UEFA Champions League",
+        "logo": "https://media.api-sports.io/football/leagues/2.png",
+        "round": "League Stage - 7"
+      },
+      "teams": {
+        "home": {
+          "id": 759,
+          "name": "Viking",
+          "logo": "https://media.api-sports.io/football/teams/759.png"
         },
         "away": {
           "id": 197,
@@ -12898,6 +12794,32 @@
           "id": 24130,
           "name": "Stuttgart W",
           "logo": "https://media.api-sports.io/football/teams/24130.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1636317,
+        "date": "2027-01-28T20:00:00+00:00",
+        "venue": {
+          "name": "Doosan Arena"
+        }
+      },
+      "league": {
+        "name": "UEFA Europa League",
+        "logo": "https://media.api-sports.io/football/leagues/3.png",
+        "round": "League Stage - 8"
+      },
+      "teams": {
+        "home": {
+          "id": 567,
+          "name": "Plzen",
+          "logo": "https://media.api-sports.io/football/teams/567.png"
+        },
+        "away": {
+          "id": 336,
+          "name": "Jagiellonia",
+          "logo": "https://media.api-sports.io/football/teams/336.png"
         }
       }
     },
@@ -14502,6 +14424,32 @@
           "logo": "https://media.api-sports.io/football/teams/20495.png"
         }
       }
+    },
+    {
+      "fixture": {
+        "id": 1603205,
+        "date": "2027-04-15T18:00:00+00:00",
+        "venue": {
+          "name": "Al Taawon Arena"
+        }
+      },
+      "league": {
+        "name": "Pro League",
+        "logo": "https://media.api-sports.io/football/leagues/307.png",
+        "round": "Regular Season - 26"
+      },
+      "teams": {
+        "home": {
+          "id": 2936,
+          "name": "Al Taawon",
+          "logo": "https://media.api-sports.io/football/teams/2936.png"
+        },
+        "away": {
+          "id": 26738,
+          "name": "Al Diriyah",
+          "logo": "https://media.api-sports.io/football/teams/26738.png"
+        }
+      }
     }
   ],
   "unavailableClubs": [],
@@ -14514,22 +14462,22 @@
     {
       "id": 172,
       "name": "VfB Stuttgart",
-      "fetchedAt": "2026-09-10T08:58:15.922Z"
+      "fetchedAt": "2026-09-11T08:56:22.160Z"
     },
     {
       "id": 174,
       "name": "FC Schalke 04",
-      "fetchedAt": "2026-09-10T08:56:51.382Z"
+      "fetchedAt": "2026-09-11T08:54:51.131Z"
     },
     {
       "id": 197,
       "name": "PSV Eindhoven",
-      "fetchedAt": "2026-09-10T08:58:02.902Z"
+      "fetchedAt": "2026-09-11T08:56:09.144Z"
     },
     {
       "id": 211,
       "name": "Benfica",
-      "fetchedAt": "2026-09-09T08:57:48.562Z"
+      "fetchedAt": "2026-09-11T08:54:38.117Z"
     },
     {
       "id": 407,
@@ -14539,77 +14487,77 @@
     {
       "id": 496,
       "name": "Juventus",
-      "fetchedAt": "2026-09-10T08:57:56.395Z"
+      "fetchedAt": "2026-09-11T08:56:02.663Z"
     },
     {
       "id": 499,
       "name": "Atalanta",
-      "fetchedAt": "2026-09-10T08:56:57.883Z"
+      "fetchedAt": "2026-09-11T08:54:57.624Z"
     },
     {
       "id": 549,
       "name": "Beşiktaş",
-      "fetchedAt": "2026-09-10T08:57:30.400Z"
+      "fetchedAt": "2026-09-11T08:55:30.146Z"
     },
     {
       "id": 556,
       "name": "Qarabag",
-      "fetchedAt": "2026-09-10T08:56:32.196Z"
+      "fetchedAt": "2026-09-11T08:54:25.116Z"
     },
     {
       "id": 562,
       "name": "FC Astana",
-      "fetchedAt": "2026-09-10T08:57:17.398Z"
+      "fetchedAt": "2026-09-11T08:55:17.123Z"
     },
     {
       "id": 565,
       "name": "BSC Young Boys",
-      "fetchedAt": "2026-09-10T08:57:23.908Z"
+      "fetchedAt": "2026-09-11T08:55:23.627Z"
     },
     {
       "id": 567,
       "name": "Plzen",
-      "fetchedAt": "2026-09-09T08:58:27.563Z"
+      "fetchedAt": "2026-09-11T08:55:49.642Z"
     },
     {
       "id": 571,
       "name": "Red Bull Salzburg",
-      "fetchedAt": "2026-09-10T08:58:22.426Z"
+      "fetchedAt": "2026-09-11T08:56:28.667Z"
     },
     {
       "id": 608,
       "name": "HNK Hajduk Split",
-      "fetchedAt": "2026-09-10T08:56:44.904Z"
+      "fetchedAt": "2026-09-11T08:54:44.617Z"
     },
     {
       "id": 620,
       "name": "Dinamo Zagreb",
-      "fetchedAt": "2026-09-10T08:57:10.888Z"
+      "fetchedAt": "2026-09-11T08:55:10.638Z"
     },
     {
       "id": 637,
       "name": "Sturm Graz",
-      "fetchedAt": "2026-09-10T08:56:38.385Z"
+      "fetchedAt": "2026-09-11T08:54:31.632Z"
     },
     {
       "id": 735,
       "name": "St. Truiden",
-      "fetchedAt": "2026-09-10T08:58:09.404Z"
+      "fetchedAt": "2026-09-11T08:56:15.661Z"
     },
     {
       "id": 785,
       "name": "Karlsruher SC",
-      "fetchedAt": "2026-09-10T08:57:49.908Z"
+      "fetchedAt": "2026-09-11T08:55:56.140Z"
     },
     {
       "id": 1009,
       "name": "Erzurumspor FK",
-      "fetchedAt": "2026-09-10T08:57:04.388Z"
+      "fetchedAt": "2026-09-11T08:55:04.141Z"
     },
     {
       "id": 1869,
       "name": "Turbine Potsdam W",
-      "fetchedAt": "2026-09-10T08:59:07.923Z"
+      "fetchedAt": "2026-09-11T08:57:01.164Z"
     },
     {
       "id": 2599,
@@ -14619,22 +14567,22 @@
     {
       "id": 2998,
       "name": "Houston Dash W",
-      "fetchedAt": "2026-09-10T08:59:33.934Z"
+      "fetchedAt": "2026-09-11T08:57:27.188Z"
     },
     {
       "id": 3403,
       "name": "Pafos",
-      "fetchedAt": "2026-09-07T09:22:34.908Z"
+      "fetchedAt": "2026-09-11T08:55:43.150Z"
     },
     {
       "id": 6343,
       "name": "Çorum FK",
-      "fetchedAt": "2026-09-10T08:57:36.908Z"
+      "fetchedAt": "2026-09-11T08:55:36.669Z"
     },
     {
       "id": 7533,
       "name": "Inter Milano W",
-      "fetchedAt": "2026-09-10T08:58:48.417Z"
+      "fetchedAt": "2026-09-11T08:56:54.670Z"
     },
     {
       "id": 10902,
@@ -14664,37 +14612,37 @@
     {
       "id": 13981,
       "name": "KoldingQ W",
-      "fetchedAt": "2026-09-08T08:52:08.217Z"
+      "fetchedAt": "2026-09-11T08:56:35.152Z"
     },
     {
       "id": 14131,
       "name": "CSKA Moskva W",
-      "fetchedAt": "2026-09-10T08:59:27.430Z"
+      "fetchedAt": "2026-09-11T08:57:14.170Z"
     },
     {
       "id": 14132,
       "name": "Lokomotiv Moskva W",
-      "fetchedAt": "2026-09-10T08:59:20.929Z"
+      "fetchedAt": "2026-09-11T08:57:07.670Z"
     },
     {
       "id": 15954,
       "name": "Arna-Bjørnar W",
-      "fetchedAt": "2026-09-10T08:58:41.915Z"
+      "fetchedAt": "2026-09-11T08:56:48.159Z"
     },
     {
       "id": 16038,
       "name": "Basel W",
-      "fetchedAt": "2026-09-09T08:59:06.591Z"
+      "fetchedAt": "2026-09-11T08:57:20.674Z"
     },
     {
       "id": 20498,
       "name": "Hamburger SV W",
-      "fetchedAt": "2026-09-10T08:58:28.912Z"
+      "fetchedAt": "2026-09-11T08:56:41.670Z"
     },
     {
       "id": 26738,
       "name": "Al Diriyah",
-      "fetchedAt": "2026-09-09T08:57:42.048Z"
+      "fetchedAt": "2026-09-11T08:54:18.621Z"
     },
     {
       "id": 27869,
