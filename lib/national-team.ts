@@ -105,16 +105,27 @@ async function currentClubFor(
 
   let best: Club | null = null;
   let bestSeason = -Infinity;
+  // Upstream sometimes names a Club but carries no seasons for it at all. For some
+  // Members that undated row is the *only* Club upstream offers, so dropping it
+  // threw away a Club we had been given and left the Member needing a Manual
+  // Override for data we already held. It is kept as a fallback rather than ranked,
+  // because a row with no seasons is no evidence of being the *current* Club — any
+  // dated row still wins. Upstream returns history most-recent-first, so where there
+  // is more than one undated row the first is the best guess among them.
+  let undated: Club | null = null;
   for (const entry of history) {
     if (nationalTeams.has(entry.team.id)) continue;
-    if (entry.seasons.length === 0) continue;
+    if (entry.seasons.length === 0) {
+      undated ??= entry.team;
+      continue;
+    }
     const latest = Math.max(...entry.seasons);
     if (latest > bestSeason) {
       bestSeason = latest;
       best = entry.team;
     }
   }
-  return best;
+  return best ?? undated;
 }
 
 export interface RefreshSquadsOptions {
