@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-12T08:40:22.043Z",
+  "generatedAt": "2026-09-13T14:48:56.886Z",
   "fixtures": [
     {
       "fixture": {
@@ -821,6 +821,32 @@
     },
     {
       "fixture": {
+        "id": 1582773,
+        "date": "2026-09-16T16:00:00+00:00",
+        "venue": {
+          "name": "Stadion Luke"
+        }
+      },
+      "league": {
+        "name": "Premijer Liga",
+        "logo": "https://media.api-sports.io/football/leagues/315.png",
+        "round": "Regular Season - 2"
+      },
+      "teams": {
+        "home": {
+          "id": 8504,
+          "name": "Sloga Doboj",
+          "logo": "https://media.api-sports.io/football/teams/8504.png"
+        },
+        "away": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1636341,
         "date": "2026-09-16T19:00:00+00:00",
         "venue": {
@@ -1230,6 +1256,32 @@
           "id": 19194,
           "name": "Rapperswil Jona W",
           "logo": "https://media.api-sports.io/football/teams/19194.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1582802,
+        "date": "2026-09-19T15:00:00+00:00",
+        "venue": {
+          "name": "Stadion Pecara"
+        }
+      },
+      "league": {
+        "name": "Premijer Liga",
+        "logo": "https://media.api-sports.io/football/leagues/315.png",
+        "round": "Regular Season - 8"
+      },
+      "teams": {
+        "home": {
+          "id": 642,
+          "name": "Siroki Brijeg",
+          "logo": "https://media.api-sports.io/football/teams/642.png"
+        },
+        "away": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
         }
       }
     },
@@ -2601,6 +2653,32 @@
     },
     {
       "fixture": {
+        "id": 1582805,
+        "date": "2026-10-10T15:00:00+00:00",
+        "venue": {
+          "name": "Gradski stadion Banja Luka"
+        }
+      },
+      "league": {
+        "name": "Premijer Liga",
+        "logo": "https://media.api-sports.io/football/leagues/315.png",
+        "round": "Regular Season - 9"
+      },
+      "teams": {
+        "home": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
+        },
+        "away": {
+          "id": 21736,
+          "name": "BSK Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/21736.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1548538,
         "date": "2026-10-10T15:00:00+00:00",
         "venue": {
@@ -3061,6 +3139,32 @@
     },
     {
       "fixture": {
+        "id": 1636464,
+        "date": "2026-10-15T16:45:00+00:00",
+        "venue": {
+          "name": "Olympic Stadium of Athens"
+        }
+      },
+      "league": {
+        "name": "UEFA Europa Conference League",
+        "logo": "https://media.api-sports.io/football/leagues/848.png",
+        "round": "League Stage - 1"
+      },
+      "teams": {
+        "home": {
+          "id": 617,
+          "name": "Panathinaikos",
+          "logo": "https://media.api-sports.io/football/teams/617.png"
+        },
+        "away": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1636419,
         "date": "2026-10-15T16:45:00+00:00",
         "venue": {
@@ -3492,6 +3596,32 @@
           "id": 197,
           "name": "PSV Eindhoven",
           "logo": "https://media.api-sports.io/football/teams/197.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1635087,
+        "date": "2026-10-17T15:00:00+00:00",
+        "venue": {
+          "name": "Stadion Rodjeni"
+        }
+      },
+      "league": {
+        "name": "Premijer Liga",
+        "logo": "https://media.api-sports.io/football/leagues/315.png",
+        "round": "Regular Season - 10"
+      },
+      "teams": {
+        "home": {
+          "id": 3381,
+          "name": "Velež",
+          "logo": "https://media.api-sports.io/football/teams/3381.png"
+        },
+        "away": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
         }
       }
     },
@@ -4315,6 +4445,32 @@
     },
     {
       "fixture": {
+        "id": 1636385,
+        "date": "2026-10-22T19:00:00+00:00",
+        "venue": {
+          "name": "Gradski stadion Banja Luka"
+        }
+      },
+      "league": {
+        "name": "UEFA Europa Conference League",
+        "logo": "https://media.api-sports.io/football/leagues/848.png",
+        "round": "League Stage - 2"
+      },
+      "teams": {
+        "home": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
+        },
+        "away": {
+          "id": 1165,
+          "name": "KuPS",
+          "logo": "https://media.api-sports.io/football/teams/1165.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1636311,
         "date": "2026-10-22T19:00:00+00:00",
         "venue": {
@@ -4750,6 +4906,32 @@
           "id": 163,
           "name": "Borussia Mönchengladbach",
           "logo": "https://media.api-sports.io/football/teams/163.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1635088,
+        "date": "2026-10-24T15:00:00+00:00",
+        "venue": {
+          "name": "Gradski stadion Banja Luka"
+        }
+      },
+      "league": {
+        "name": "Premijer Liga",
+        "logo": "https://media.api-sports.io/football/leagues/315.png",
+        "round": "Regular Season - 11"
+      },
+      "teams": {
+        "home": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
+        },
+        "away": {
+          "id": 8504,
+          "name": "Sloga Doboj",
+          "logo": "https://media.api-sports.io/football/teams/8504.png"
         }
       }
     },
@@ -5907,6 +6089,30 @@
     },
     {
       "fixture": {
+        "id": 1635094,
+        "date": "2026-10-31T16:00:00+00:00",
+        "venue": null
+      },
+      "league": {
+        "name": "Premijer Liga",
+        "logo": "https://media.api-sports.io/football/leagues/315.png",
+        "round": "Regular Season - 12"
+      },
+      "teams": {
+        "home": {
+          "id": 3363,
+          "name": "Čelik",
+          "logo": "https://media.api-sports.io/football/teams/3363.png"
+        },
+        "away": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1601922,
         "date": "2026-10-31T16:00:00+00:00",
         "venue": null
@@ -6487,6 +6693,32 @@
     },
     {
       "fixture": {
+        "id": 1636452,
+        "date": "2026-11-05T17:45:00+00:00",
+        "venue": {
+          "name": "Olympia"
+        }
+      },
+      "league": {
+        "name": "UEFA Europa Conference League",
+        "logo": "https://media.api-sports.io/football/leagues/848.png",
+        "round": "League Stage - 3"
+      },
+      "teams": {
+        "home": {
+          "id": 2240,
+          "name": "Mjallby AIF",
+          "logo": "https://media.api-sports.io/football/teams/2240.png"
+        },
+        "away": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1636444,
         "date": "2026-11-05T17:45:00+00:00",
         "venue": {
@@ -6998,6 +7230,32 @@
           "id": 47,
           "name": "Tottenham",
           "logo": "https://media.api-sports.io/football/teams/47.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1635098,
+        "date": "2026-11-07T16:00:00+00:00",
+        "venue": {
+          "name": "Gradski stadion Banja Luka"
+        }
+      },
+      "league": {
+        "name": "Premijer Liga",
+        "logo": "https://media.api-sports.io/football/leagues/315.png",
+        "round": "Regular Season - 13"
+      },
+      "teams": {
+        "home": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
+        },
+        "away": {
+          "id": 3359,
+          "name": "Radnik Bijeljina",
+          "logo": "https://media.api-sports.io/football/teams/3359.png"
         }
       }
     },
@@ -7945,6 +8203,32 @@
     },
     {
       "fixture": {
+        "id": 1635107,
+        "date": "2026-11-21T16:00:00+00:00",
+        "venue": {
+          "name": "Stadion Grbavica"
+        }
+      },
+      "league": {
+        "name": "Premijer Liga",
+        "logo": "https://media.api-sports.io/football/leagues/315.png",
+        "round": "Regular Season - 14"
+      },
+      "teams": {
+        "home": {
+          "id": 654,
+          "name": "Zeljeznicar Sarajevo",
+          "logo": "https://media.api-sports.io/football/teams/654.png"
+        },
+        "away": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1601935,
         "date": "2026-11-21T16:00:00+00:00",
         "venue": null
@@ -8581,6 +8865,32 @@
     },
     {
       "fixture": {
+        "id": 1636386,
+        "date": "2026-11-26T20:00:00+00:00",
+        "venue": {
+          "name": "Gradski stadion Banja Luka"
+        }
+      },
+      "league": {
+        "name": "UEFA Europa Conference League",
+        "logo": "https://media.api-sports.io/football/leagues/848.png",
+        "round": "League Stage - 4"
+      },
+      "teams": {
+        "home": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
+        },
+        "away": {
+          "id": 499,
+          "name": "Atalanta",
+          "logo": "https://media.api-sports.io/football/teams/499.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1636270,
         "date": "2026-11-26T20:00:00+00:00",
         "venue": {
@@ -8628,32 +8938,6 @@
           "id": 735,
           "name": "St. Truiden",
           "logo": "https://media.api-sports.io/football/teams/735.png"
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1636386,
-        "date": "2026-11-26T20:00:00+00:00",
-        "venue": {
-          "name": "Gradski stadion Banja Luka"
-        }
-      },
-      "league": {
-        "name": "UEFA Europa Conference League",
-        "logo": "https://media.api-sports.io/football/leagues/848.png",
-        "round": "League Stage - 4"
-      },
-      "teams": {
-        "home": {
-          "id": 3364,
-          "name": "Borac Banja Luka",
-          "logo": "https://media.api-sports.io/football/teams/3364.png"
-        },
-        "away": {
-          "id": 499,
-          "name": "Atalanta",
-          "logo": "https://media.api-sports.io/football/teams/499.png"
         }
       }
     },
@@ -8808,6 +9092,32 @@
           "id": 1346,
           "name": "Coventry",
           "logo": "https://media.api-sports.io/football/teams/1346.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1635108,
+        "date": "2026-11-28T16:00:00+00:00",
+        "venue": {
+          "name": "Gradski stadion Banja Luka"
+        }
+      },
+      "league": {
+        "name": "Premijer Liga",
+        "logo": "https://media.api-sports.io/football/leagues/315.png",
+        "round": "Regular Season - 15"
+      },
+      "teams": {
+        "home": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
+        },
+        "away": {
+          "id": 679,
+          "name": "FK Sarajevo",
+          "logo": "https://media.api-sports.io/football/teams/679.png"
         }
       }
     },
@@ -9303,6 +9613,32 @@
     },
     {
       "fixture": {
+        "id": 1635117,
+        "date": "2026-12-02T16:00:00+00:00",
+        "venue": {
+          "name": "Stadion pod Bijelim Brijegom"
+        }
+      },
+      "league": {
+        "name": "Premijer Liga",
+        "logo": "https://media.api-sports.io/football/leagues/315.png",
+        "round": "Regular Season - 16"
+      },
+      "teams": {
+        "home": {
+          "id": 588,
+          "name": "Zrinjski",
+          "logo": "https://media.api-sports.io/football/teams/588.png"
+        },
+        "away": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1638135,
         "date": "2026-12-02T17:00:00+00:00",
         "venue": {
@@ -9558,6 +9894,32 @@
           "id": 57,
           "name": "Ipswich",
           "logo": "https://media.api-sports.io/football/teams/57.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1635118,
+        "date": "2026-12-05T16:00:00+00:00",
+        "venue": {
+          "name": "Gradski stadion Banja Luka"
+        }
+      },
+      "league": {
+        "name": "Premijer Liga",
+        "logo": "https://media.api-sports.io/football/leagues/315.png",
+        "round": "Regular Season - 17"
+      },
+      "teams": {
+        "home": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
+        },
+        "away": {
+          "id": 642,
+          "name": "Siroki Brijeg",
+          "logo": "https://media.api-sports.io/football/teams/642.png"
         }
       }
     },
@@ -10151,6 +10513,32 @@
     },
     {
       "fixture": {
+        "id": 1636422,
+        "date": "2026-12-10T20:00:00+00:00",
+        "venue": {
+          "name": "Tynecastle Park"
+        }
+      },
+      "league": {
+        "name": "UEFA Europa Conference League",
+        "logo": "https://media.api-sports.io/football/leagues/848.png",
+        "round": "League Stage - 5"
+      },
+      "teams": {
+        "home": {
+          "id": 254,
+          "name": "Heart Of Midlothian",
+          "logo": "https://media.api-sports.io/football/teams/254.png"
+        },
+        "away": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1636230,
         "date": "2026-12-10T20:00:00+00:00",
         "venue": null
@@ -10482,6 +10870,32 @@
           "id": 63,
           "name": "Leeds",
           "logo": "https://media.api-sports.io/football/teams/63.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1635123,
+        "date": "2026-12-12T16:00:00+00:00",
+        "venue": {
+          "name": "Stadion Caire"
+        }
+      },
+      "league": {
+        "name": "Premijer Liga",
+        "logo": "https://media.api-sports.io/football/leagues/315.png",
+        "round": "Regular Season - 18"
+      },
+      "teams": {
+        "home": {
+          "id": 21736,
+          "name": "BSK Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/21736.png"
+        },
+        "away": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
         }
       }
     },
@@ -10994,6 +11408,32 @@
           "id": 26738,
           "name": "Al Diriyah",
           "logo": "https://media.api-sports.io/football/teams/26738.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1636387,
+        "date": "2026-12-17T20:00:00+00:00",
+        "venue": {
+          "name": "Gradski stadion Banja Luka"
+        }
+      },
+      "league": {
+        "name": "UEFA Europa Conference League",
+        "logo": "https://media.api-sports.io/football/leagues/848.png",
+        "round": "League Stage - 6"
+      },
+      "teams": {
+        "home": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
+        },
+        "away": {
+          "id": 10124,
+          "name": "Riga",
+          "logo": "https://media.api-sports.io/football/teams/10124.png"
         }
       }
     },
@@ -13183,6 +13623,32 @@
     },
     {
       "fixture": {
+        "id": 1635128,
+        "date": "2027-02-06T16:00:00+00:00",
+        "venue": {
+          "name": "Gradski stadion Banja Luka"
+        }
+      },
+      "league": {
+        "name": "Premijer Liga",
+        "logo": "https://media.api-sports.io/football/leagues/315.png",
+        "round": "Regular Season - 19"
+      },
+      "teams": {
+        "home": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
+        },
+        "away": {
+          "id": 3381,
+          "name": "Velež",
+          "logo": "https://media.api-sports.io/football/teams/3381.png"
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1601977,
         "date": "2027-02-06T16:00:00+00:00",
         "venue": {
@@ -13460,6 +13926,32 @@
           "id": 174,
           "name": "FC Schalke 04",
           "logo": "https://media.api-sports.io/football/teams/174.png"
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1635136,
+        "date": "2027-02-13T16:00:00+00:00",
+        "venue": {
+          "name": "Stadion Luke"
+        }
+      },
+      "league": {
+        "name": "Premijer Liga",
+        "logo": "https://media.api-sports.io/football/leagues/315.png",
+        "round": "Regular Season - 20"
+      },
+      "teams": {
+        "home": {
+          "id": 8504,
+          "name": "Sloga Doboj",
+          "logo": "https://media.api-sports.io/football/teams/8504.png"
+        },
+        "away": {
+          "id": 3364,
+          "name": "Borac Banja Luka",
+          "logo": "https://media.api-sports.io/football/teams/3364.png"
         }
       }
     },
@@ -14455,7 +14947,7 @@
     {
       "id": 63,
       "name": "Leeds",
-      "fetchedAt": "2026-09-12T08:38:11.912Z"
+      "fetchedAt": "2026-09-13T14:48:55.624Z"
     },
     {
       "id": 172,
@@ -14470,22 +14962,22 @@
     {
       "id": 197,
       "name": "PSV Eindhoven",
-      "fetchedAt": "2026-09-12T08:39:16.933Z"
+      "fetchedAt": "2026-09-13T14:48:56.616Z"
     },
     {
       "id": 211,
       "name": "Benfica",
-      "fetchedAt": "2026-09-12T08:37:52.404Z"
+      "fetchedAt": "2026-09-13T14:48:55.117Z"
     },
     {
       "id": 407,
       "name": "Brondby",
-      "fetchedAt": "2026-09-12T08:38:50.920Z"
+      "fetchedAt": "2026-09-13T14:48:56.143Z"
     },
     {
       "id": 496,
       "name": "Juventus",
-      "fetchedAt": "2026-09-12T08:39:10.452Z"
+      "fetchedAt": "2026-09-13T14:48:56.367Z"
     },
     {
       "id": 499,
@@ -14500,7 +14992,7 @@
     {
       "id": 556,
       "name": "Qarabag",
-      "fetchedAt": "2026-09-12T08:37:39.401Z"
+      "fetchedAt": "2026-09-13T14:48:54.635Z"
     },
     {
       "id": 562,
@@ -14525,7 +15017,7 @@
     {
       "id": 608,
       "name": "HNK Hajduk Split",
-      "fetchedAt": "2026-09-12T08:37:58.919Z"
+      "fetchedAt": "2026-09-13T14:48:55.375Z"
     },
     {
       "id": 620,
@@ -14535,7 +15027,7 @@
     {
       "id": 637,
       "name": "Sturm Graz",
-      "fetchedAt": "2026-09-12T08:37:45.896Z"
+      "fetchedAt": "2026-09-13T14:48:54.869Z"
     },
     {
       "id": 735,
@@ -14560,7 +15052,7 @@
     {
       "id": 2599,
       "name": "Universitatea Cluj",
-      "fetchedAt": "2026-09-12T08:39:36.441Z"
+      "fetchedAt": "2026-09-13T14:48:56.874Z"
     },
     {
       "id": 2998,
@@ -14568,9 +15060,14 @@
       "fetchedAt": "2026-09-12T08:40:22.024Z"
     },
     {
+      "id": 3364,
+      "name": "Borac Banja Luka",
+      "fetchedAt": "2026-09-13T14:48:54.170Z"
+    },
+    {
       "id": 3403,
       "name": "Pafos",
-      "fetchedAt": "2026-09-12T08:38:44.419Z"
+      "fetchedAt": "2026-09-13T14:48:55.868Z"
     },
     {
       "id": 6343,
@@ -14640,7 +15137,7 @@
     {
       "id": 26738,
       "name": "Al Diriyah",
-      "fetchedAt": "2026-09-12T08:37:32.892Z"
+      "fetchedAt": "2026-09-13T14:48:54.374Z"
     },
     {
       "id": 27869,

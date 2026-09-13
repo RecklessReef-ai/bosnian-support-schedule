@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-12T08:37:26.393Z",
+  "generatedAt": "2026-09-13T14:48:53.869Z",
   "members": [
     {
       "id": 446130,
@@ -7,8 +7,11 @@
       "photo": "https://media.api-sports.io/football/players/446130.png",
       "position": "Goalkeeper",
       "squad": "men",
-      "club": null,
-      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
+      "club": {
+        "id": 3364,
+        "name": "Borac Banja Luka",
+        "logo": "https://media.api-sports.io/football/teams/3364.png"
+      }
     },
     {
       "id": 9026,
@@ -361,8 +364,11 @@
       "photo": "https://media.api-sports.io/football/players/213456.png",
       "position": "Goalkeeper",
       "squad": "women",
-      "club": null,
-      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
+      "club": {
+        "id": 10902,
+        "name": "SFK 2000 W",
+        "logo": "https://media.api-sports.io/football/teams/10902.png"
+      }
     },
     {
       "id": 213806,
@@ -490,8 +496,11 @@
       "photo": "https://media.api-sports.io/football/players/213398.png",
       "position": "Midfielder",
       "squad": "women",
-      "club": null,
-      "clubCheckedAt": "2026-09-07T09:18:40.657Z"
+      "club": {
+        "id": 10902,
+        "name": "SFK 2000 W",
+        "logo": "https://media.api-sports.io/football/teams/10902.png"
+      }
     },
     {
       "id": 299479,
